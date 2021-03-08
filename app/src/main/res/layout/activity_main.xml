@@ -13,9 +13,10 @@
         android:layout_marginTop="48dp"
         android:text="Health Management App"
         android:textColorHint="#000000"
-        android:textSize="30sp"
+        android:textSize="36sp"
         android:textStyle="bold|italic"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
