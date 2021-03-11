@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "556111913051",
+    "project_id": "healthmanagementapp-909df",
+    "storage_bucket": "healthmanagementapp-909df.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:556111913051:android:78a29a102cf9dd2abadf7e",
+        "android_client_info": {
+          "package_name": "com.example.healthmanagementapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "556111913051-sk10liv9cv2d8b29bd1b4al28tc9i1f0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBksX4nYcC9X-6fohszVYLs-G3c-rLRb6M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "556111913051-sk10liv9cv2d8b29bd1b4al28tc9i1f0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
