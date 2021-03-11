@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="AppTheme" parent="Theme.AppCompat.Light">
+        <item name="actionBarStyle">@style/AppTheme.ActionBarStyle</item>
+        <item name="colorPrimary">#F44336</item>
+        <item name="colorPrimaryVariant">#F44336</item>
+        <item name="colorOnPrimary">@color/black</item>
+    </style>
+
+    <style name="AppTheme.ActionBarStyle" parent="Widget.AppCompat.ActionBar.Solid">
+        <item name="logo" >@mipmap/ic_launcher_round</item>
+        <item name="displayOptions" >showHome|useLogo|showTitle</item>
+    </style>
+</resources>
