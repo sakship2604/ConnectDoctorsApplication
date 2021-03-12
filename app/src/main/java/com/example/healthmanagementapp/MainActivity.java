@@ -23,13 +23,14 @@ public class MainActivity extends AppCompatActivity {
     Button btnLogin, btnSignUp, btnALogin;
     TextView register, resetPass;
     LinearLayout layoutAdmin, layoutUser;
+    //firebase connection
     private FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+// object to connect firebase
         auth = FirebaseAuth.getInstance();
 
         btnALogin = findViewById(R.id.buttonAdminLogin);
