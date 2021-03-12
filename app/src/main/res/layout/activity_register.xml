@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="Registeration"
+        android:text="Registration"
         android:textColor="#F44336"
         android:textSize="30sp"
         android:textStyle="bold|italic"
@@ -23,7 +23,8 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/textView3">
+        app:layout_constraintTop_toBottomOf="@+id/textView3"
+        tools:layout_editor_absoluteX="-29dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -108,13 +109,26 @@
                     android:hint="PostalAddress"
                     android:inputType="textPostalAddress" />
 
+                <EditText
+                    android:id="@+id/editTextSpeciality"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Speciality"
+                    android:inputType="textPersonName" />
+
+                <Button
+                    android:id="@+id/buttonDRegister"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Register" />
+
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/linearLayoutPatient"
-                android:layout_width="250dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_width="273dp"
+                android:layout_height="242dp"
                 android:background="#ECBFBF"
                 android:orientation="vertical"
                 android:visibility="visible"
@@ -124,7 +138,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
                 <EditText
-                    android:id="@+id/editTextDoctorName"
+                    android:id="@+id/editTextPatName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
@@ -132,7 +146,7 @@
                     android:inputType="textPersonName" />
 
                 <EditText
-                    android:id="@+id/editTextDoctorEmail"
+                    android:id="@+id/editTextPatEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
@@ -140,7 +154,7 @@
                     android:inputType="textEmailAddress" />
 
                 <EditText
-                    android:id="@+id/editTextDocPassword"
+                    android:id="@+id/editTextPatPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
@@ -148,7 +162,7 @@
                     android:inputType="textPassword" />
 
                 <EditText
-                    android:id="@+id/editTextDocPhone"
+                    android:id="@+id/editTextPatPhone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
@@ -156,7 +170,7 @@
                     android:inputType="phone" />
 
                 <EditText
-                    android:id="@+id/editTextDocPostalAddress"
+                    android:id="@+id/editTextPatPostalAddress"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
@@ -164,13 +178,69 @@
                     android:inputType="textPostalAddress" />
 
                 <EditText
-                    android:id="@+id/editTextDoctorSpecialist"
+                    android:id="@+id/editTextHeight"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:hint="Speciality"
+                    android:hint="Height"
+                    android:inputType="textPersonName" />
+
+                <EditText
+                    android:id="@+id/editTextWeight"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Weight"
                     android:inputType="textPersonName"
                     android:text="Name" />
+
+                <EditText
+                    android:id="@+id/editTextBMI"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="BMI"
+                    android:inputType="textPersonName"
+                    android:text="Name" />
+
+                <EditText
+                    android:id="@+id/editTextMedications"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Medications"
+                    android:inputType="textPersonName"
+                    android:text="Name" />
+
+                <TextView
+                    android:id="@+id/textViewAge"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Age"
+                    android:text="Age" />
+
+                <RadioGroup
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <RadioButton
+                        android:id="@+id/radioButtonMale"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Male" />
+
+                    <RadioButton
+                        android:id="@+id/radioButtonFemale"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Female" />
+                </RadioGroup>
+
+                <Button
+                    android:id="@+id/buttonPRegister"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Register" />
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

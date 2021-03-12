@@ -15,7 +15,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    LinearLayout layoutDoctor,layoutPatient;
+    LinearLayout layoutDoctor,layoutPatient,layoutImg;
     ImageView imgDoc, imgPat;
 
     @Override
@@ -23,8 +23,12 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+        layoutImg = findViewById(R.id.linearLayout);
         layoutDoctor = findViewById(R.id.linearLayoutDoctor);
         layoutPatient = findViewById(R.id.linearLayoutPatient);
+
+        imgDoc.setImageResource(R.drawable.doctor);
+        imgPat.setImageResource(R.drawable.patient);
 
         layoutDoctor.setVisibility(View.GONE);
         layoutPatient.setVisibility(View.GONE);
