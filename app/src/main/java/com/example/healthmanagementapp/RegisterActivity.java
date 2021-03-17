@@ -27,6 +27,9 @@ public class RegisterActivity extends AppCompatActivity {
         layoutDoctor = findViewById(R.id.linearLayoutDoctor);
         layoutPatient = findViewById(R.id.linearLayoutPatient);
 
+        imgDoc =findViewById(R.id.imageViewDoctor);
+        imgPat = findViewById(R.id.imageViewPatient);
+
         imgDoc.setImageResource(R.drawable.doctor);
         imgPat.setImageResource(R.drawable.patient);
 
