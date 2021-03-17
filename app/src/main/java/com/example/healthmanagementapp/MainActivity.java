@@ -5,13 +5,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,24 +22,22 @@ public class MainActivity extends AppCompatActivity {
 
     RadioButton radAdmin, radPatient,radDoctor,radCashier;
     EditText username,pass;
-    Button btnLogin, btnSignUp, btnALogin;
+    Button btnULogin, btnSignUp, btnALogin;
     TextView register, resetPass;
     LinearLayout layoutAdmin, layoutUser;
     //firebase connection
     private FirebaseAuth auth;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 // object to connect firebase
-
         auth = FirebaseAuth.getInstance();
 
         btnALogin = findViewById(R.id.buttonAdminLogin);
         btnSignUp = findViewById(R.id.buttonAdminSignup);
-        btnLogin = findViewById(R.id.buttonLogin);
+        btnULogin = findViewById(R.id.buttonLogin);
 
         register = findViewById(R.id.textViewRegister);
         resetPass = findViewById(R.id.textViewForgotPassword);
@@ -48,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         radPatient = findViewById(R.id.radioButtonPatient);
         radDoctor = findViewById(R.id.radioButtonDoctor);
         radCashier = findViewById(R.id.radioButtonCashier);
+        RadioGroup radUsers = findViewById(R.id.radioGroupUsers);
 
         username = findViewById(R.id.editTextLoginUsername);
         pass = findViewById(R.id.editTextLoginPassword);
@@ -58,43 +57,54 @@ public class MainActivity extends AppCompatActivity {
         layoutAdmin.setVisibility(View.GONE);
         layoutUser.setVisibility(View.GONE);
 
-        radAdmin.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        register.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (radAdmin.isChecked()) {
-                    layoutAdmin.setVisibility(View.VISIBLE);
-                    layoutUser.setVisibility(View.GONE);
-                    btnALogin.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Login();
-                        }
-                    });
-                    btnSignUp.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Signup();
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this,RegisterActivity.class);
+                startActivity(intent);
 
-                        }
-                    });
-                } else if (radPatient.isChecked() || radDoctor.isChecked() || radCashier.isChecked()) {
-                    layoutUser.setVisibility(View.VISIBLE);
-                    layoutAdmin.setVisibility(View.GONE);
-
-                }
-
+            }
+        });
+        resetPass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this,ResetPasswordActivity.class);
+                startActivity(intent);
+            }
+        });
+        btnALogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Login();
+            }
+        });
+        btnSignUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Signup();
+            }
+        });
+        btnULogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
             }
         });
 
+        radUsers.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if(radAdmin.isChecked()){
+                    layoutAdmin.setVisibility(View.VISIBLE);
+                    layoutUser.setVisibility(View.GONE);
 
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
-        getMenuInflater().inflate(R.menu.menu, menu);
-        return super.onCreateOptionsMenu(menu);
+                }
+                else if(radPatient.isChecked() || radDoctor.isChecked() || radCashier.isChecked()){
+                    layoutUser.setVisibility(View.VISIBLE);
+                    layoutAdmin.setVisibility(View.GONE);
+                }
+            }
+        });
     }
 
     public void Signup(){

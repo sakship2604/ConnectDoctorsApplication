@@ -23,6 +23,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3"
         tools:layout_editor_absoluteX="-29dp">
 
@@ -128,7 +129,7 @@
             <LinearLayout
                 android:id="@+id/linearLayoutPatient"
                 android:layout_width="273dp"
-                android:layout_height="242dp"
+                android:layout_height="wrap_content"
                 android:background="#ECBFBF"
                 android:orientation="vertical"
                 android:visibility="visible"
@@ -223,17 +224,25 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                    <RadioButton
-                        android:id="@+id/radioButtonMale"
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Male" />
+                        android:layout_height="match_parent"
+                        android:gravity="center_horizontal"
+                        android:orientation="horizontal">
 
-                    <RadioButton
-                        android:id="@+id/radioButtonFemale"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Female" />
+                        <RadioButton
+                            android:id="@+id/radioButtonFemale"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Female" />
+
+                        <RadioButton
+                            android:id="@+id/radioButtonMale"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Male" />
+                    </LinearLayout>
+
                 </RadioGroup>
 
                 <Button
