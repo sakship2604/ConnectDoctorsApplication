@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">HealthManagementApp</string>
-    <string name="Patient_Title">Welcome Patient Name !!!</string>
-    <string name="PatientQuickLinks">Quick Links</string>
+    <string name="Patient_Title">Welcome !!!</string>
+
     <string name="TrackCalories">Track Calories</string>
     <string name="BookAppontment">Book Appointment</string>
     <string name="OnlineHelp">Online Help</string>
