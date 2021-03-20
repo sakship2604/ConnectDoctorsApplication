@@ -196,7 +196,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(TCCOL_4,password);
 
 
-        long r = sqLiteDatabase.insert(TABLE_DOCTOR,null,contentValues);
+        long r = sqLiteDatabase.insert(TABLE_CASHIER,null,contentValues);
         if(r>0){
             return true;
         }
@@ -214,7 +214,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(TQCOL_5,solutions);
 
 
-        long r = sqLiteDatabase.insert(TABLE_DOCTOR,null,contentValues);
+        long r = sqLiteDatabase.insert(TABLE_QUERIES,null,contentValues);
         if(r>0){
             return true;
         }
@@ -232,7 +232,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(TBCOL_4,paymentStatus);
 
 
-        long r = sqLiteDatabase.insert(TABLE_DOCTOR,null,contentValues);
+        long r = sqLiteDatabase.insert(TABLE_BILLING,null,contentValues);
         if(r>0){
             return true;
         }
