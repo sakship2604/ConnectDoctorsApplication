@@ -30,7 +30,6 @@ public class RegisterActivity extends AppCompatActivity {
 
         databaseHelper = new DatabaseHelper(this);
 
-
         layoutImg = findViewById(R.id.linearLayout);
         layoutDoctor = findViewById(R.id.linearLayoutDoctor);
         layoutPatient = findViewById(R.id.linearLayoutPatient);
