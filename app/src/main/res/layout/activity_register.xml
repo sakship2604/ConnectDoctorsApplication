@@ -171,7 +171,7 @@
                     android:inputType="phone" />
 
                 <EditText
-                    android:id="@+id/editTextPatPostalAddress"
+                    android:id="@+id/editTextPatPostalCode"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
@@ -196,11 +196,11 @@
                     android:text="Name" />
 
                 <EditText
-                    android:id="@+id/editTextBMI"
+                    android:id="@+id/editTextDiseases"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:hint="BMI"
+                    android:hint="Diseases"
                     android:inputType="textPersonName"
                     android:text="Name" />
 
