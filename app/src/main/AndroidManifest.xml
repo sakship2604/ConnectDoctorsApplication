@@ -16,7 +16,8 @@
         <activity android:name=".AdminActivity" >
 
         </activity>
-        <activity android:name=".CashierHomeActivity" />
+        <activity android:name=".CashierHomeActivity"
+            android:exported="true"/>
         <activity android:name=".PatientHomeActivity" />
         <activity android:name=".ResetPasswordActivity" >
 
