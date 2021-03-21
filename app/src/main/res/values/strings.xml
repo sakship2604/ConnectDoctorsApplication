@@ -16,5 +16,6 @@
     <string name="AddItem">Add Food Item</string>
     <string name="postalcodehint">Enter your postal code</string>
     <string name="searchdoctor">Search</string>
+    <string name="refresh_button">Refresh</string>
 
 </resources>

@@ -12,8 +12,8 @@ import androidx.annotation.Nullable;
 import java.util.Date;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
-    final static String DATABASE_NAME = "HealthManagement.db";
-    final static int DATABASE_VERSION = 1;
+    final static String DATABASE_NAME = "HealthManagement1.db";
+    final static int DATABASE_VERSION = 2;
 
 
     final static String TABLE_PATIENT = "Patient";
@@ -75,6 +75,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     final static String TADCOL_2 = "Admin_email";
     final static String TADCOL_3 = "Admin_password";
 
+    final static String TABLE_FoodItems = "FoodItems";
+    final static String T1COL_1 = "Id";
+    final static String T1Col_2 = "Food_Name";
+    final static String T1Col_3 = "Amount";
+
 
     public DatabaseHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -115,6 +120,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 TADCOL_2 + " TEXT," + TADCOL_3 + " TEXT)";
 
 
+        String queryF = "CREATE TABLE " + TABLE_FoodItems + " (" + T1COL_1 + " INTEGER PRIMARY KEY," +
+                T1Col_2 + " TEXT," + T1Col_3 + " TEXT)";
+
         db.execSQL(queryP);
         db.execSQL(queryD);
         db.execSQL(queryC);
@@ -122,6 +130,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(queryA);
         db.execSQL(queryB);
         db.execSQL(queryAd);
+        db.execSQL(queryF);
+
     }
 
     @Override
@@ -299,6 +309,71 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         db.close();
         return result;
+
+
+    }
+
+    public boolean addRecord(String fn,String am){
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(T1Col_2,fn);
+        values.put(T1Col_3,am);
+
+
+        long r = sqLiteDatabase.insert(TABLE_FoodItems,null,values);
+        if(r>0)
+            return true;
+        else
+            return false;
+
+    }
+    public boolean addFoodItem(String fn,String am)
+    {
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(T1Col_2,fn);
+        values.put(T1Col_3,am);
+
+
+        long r = sqLiteDatabase.insert(TABLE_FoodItems,null,values);
+        if(r>0)
+            return true;
+        else
+            return false;
+
+    }
+    public Cursor viewData()
+    {
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+        String query = "SELECT * FROM " + TABLE_FoodItems;
+        Cursor c = sqLiteDatabase.rawQuery(query,null);
+        return c;
+    }
+    public Cursor viewAmountTotal()
+    {
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+        String query = "SELECT SUM(T1Col_3) FROM " + TABLE_FoodItems;
+        Cursor c = sqLiteDatabase.rawQuery(query,null);
+        return c;
+    }
+    public Cursor onrefresh() {
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+        String query = "DELETE  FROM " + TABLE_FoodItems;
+        Cursor c = sqLiteDatabase.rawQuery(query, null);
+        return c;
+    }
+    public boolean updateRec(int id,String c)
+    {
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(T1Col_3,c);
+
+        int d = sqLiteDatabase.update(TABLE_FoodItems,values,"id=?",
+                new String[]{Integer.toString(id)});
+        if(d>0)
+            return true;
+        else
+            return false;
     }
 }
 
