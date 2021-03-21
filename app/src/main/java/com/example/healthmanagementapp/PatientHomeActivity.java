@@ -26,7 +26,8 @@ public class PatientHomeActivity extends AppCompatActivity
             public void onClick(View v)
             {
 
-                startActivity(new Intent(PatientHomeActivity.this, TrackCalories.class));
+                Intent intent = new Intent(PatientHomeActivity.this, TrackCalories.class);
+                startActivity(intent);
             }
         });
     }
