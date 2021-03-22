@@ -10,6 +10,7 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 
 import java.util.Date;
+import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     final static String DATABASE_NAME = "HealthManagement1.db";
@@ -79,6 +80,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     final static String T1COL_1 = "Id";
     final static String T1Col_2 = "Food_Name";
     final static String T1Col_3 = "Amount";
+    final static String T1Col_4 = "Date";
 
 
     public DatabaseHelper(@Nullable Context context) {
@@ -121,7 +123,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
         String queryF = "CREATE TABLE " + TABLE_FoodItems + " (" + T1COL_1 + " INTEGER PRIMARY KEY," +
-                T1Col_2 + " TEXT," + T1Col_3 + " TEXT)";
+                T1Col_2 + " TEXT," + T1Col_3 + " INTEGER, " + T1Col_4 + " TEXT )";
 
         db.execSQL(queryP);
         db.execSQL(queryD);
@@ -313,11 +315,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-    public boolean addRecord(String fn,String am){
+        public Cursor viewdoctors()
+    {
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+        String query = "SELECT * FROM " + TABLE_DOCTOR;
+        Cursor c = sqLiteDatabase.rawQuery(query,null);
+        return  c;
+    }
+
+
+    public boolean addFoodItem(String fn,int am, String date) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(T1Col_2,fn);
         values.put(T1Col_3,am);
+        values.put(T1Col_4, date);
 
 
         long r = sqLiteDatabase.insert(TABLE_FoodItems,null,values);
@@ -327,41 +339,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             return false;
 
     }
-    public boolean addFoodItem(String fn,String am)
-    {
-        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(T1Col_2,fn);
-        values.put(T1Col_3,am);
 
-
-        long r = sqLiteDatabase.insert(TABLE_FoodItems,null,values);
-        if(r>0)
-            return true;
-        else
-            return false;
-
-    }
-    public Cursor viewData()
-    {
+    public Cursor getFoodData(String dateTodayString) {
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
-        String query = "SELECT * FROM " + TABLE_FoodItems;
+        String query = "SELECT *, SUM(amount)  FROM " + TABLE_FoodItems + " WHERE " + T1Col_4 + " LIKE '" + dateTodayString + "'";
+        Log.i("QUERY", query);
         Cursor c = sqLiteDatabase.rawQuery(query,null);
         return c;
     }
-    public Cursor viewAmountTotal()
-    {
-        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
-        String query = "SELECT SUM(T1Col_3) FROM " + TABLE_FoodItems;
-        Cursor c = sqLiteDatabase.rawQuery(query,null);
-        return c;
-    }
+
     public Cursor onrefresh() {
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
         String query = "DELETE  FROM " + TABLE_FoodItems;
         Cursor c = sqLiteDatabase.rawQuery(query, null);
         return c;
     }
+
     public boolean updateRec(int id,String c)
     {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();

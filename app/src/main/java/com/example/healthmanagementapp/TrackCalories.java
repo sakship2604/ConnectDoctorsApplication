@@ -1,9 +1,11 @@
 package com.example.healthmanagementapp;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -11,19 +13,21 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Date;
+
 public class TrackCalories extends AppCompatActivity
 {
     DatabaseHelper databaseHelper;
 
     EditText food_item, amount;
 
+    Button btnadd, calculateCalories, back;
 
-    Button btnadd = findViewById(R.id.buttonAddFood);
-    Button calculateCalories = findViewById(R.id.buttonTotalCal);
-    Button refresh = findViewById(R.id.refresh_button);
-    Button back = findViewById(R.id.buttonFoodBack);
+    TextView output;
 
-    TextView output = findViewById(R.id.textViewDisplayCalories);
+    String datePattern;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -31,8 +35,17 @@ public class TrackCalories extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_track_calories);
 
+
+        datePattern = "yyyy/MM/dd";
+
         food_item = findViewById(R.id.food_item);
         amount = findViewById(R.id.food_amount);
+
+        btnadd = findViewById(R.id.buttonAddFood);
+        calculateCalories = findViewById(R.id.buttonTotalCal);
+        back = findViewById(R.id.buttonFoodBack);
+
+        output = findViewById(R.id.textViewDisplayCalories);
 
         databaseHelper = new DatabaseHelper(this);
 
@@ -41,8 +54,9 @@ public class TrackCalories extends AppCompatActivity
             boolean isInserted;
             @Override
             public void onClick(View v) {
-                isInserted = databaseHelper.addRecord(food_item.getText().toString(),
-                        amount.getText().toString());
+                String dateTodayString = new SimpleDateFormat(datePattern).format(new Date());
+                isInserted = databaseHelper.addFoodItem(food_item.getText().toString(),
+                        Integer.valueOf(amount.getText().toString()), dateTodayString);
 
                 if(isInserted)
                 {
@@ -60,39 +74,34 @@ public class TrackCalories extends AppCompatActivity
         calculateCalories.setOnClickListener(new View.OnClickListener()
         {
             @Override
-            public void onClick(View v) {
-                Cursor c = databaseHelper.viewData();
-                Cursor c1 = databaseHelper.viewAmountTotal();
+            public void onClick(View v)
+            {
+                String dateTodayString = new SimpleDateFormat(datePattern).format(new Date());
+                Cursor c = databaseHelper.getFoodData(dateTodayString);
 
                 StringBuilder str = new StringBuilder();
                 if(c.getCount()>0) {
                     while (c.moveToNext()) {
-                        str.append("ID : " + c.getString(0));
+                        //str.append("ID : " + c.getString(0));
                         str.append("Food : " + c.getString(1));
-                        str.append("Amount" + c.getString(2));
-                        str.append("Total Calories Eaten : " + c1.getString(0));
-
+                        str.append(", Amount: " + c.getString(2));
+                        str.append("\n");
+                        str.append("Total Calories Eaten : ").append(c.getString(4));
                         str.append("\n");
                     }
+                    str.append("\n");
                     output.setText(str);
                 }
                 c.close();
             }
         });
 
-        refresh.setOnClickListener(new View.OnClickListener()
+
+        back.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                Cursor c = databaseHelper.onrefresh();
-
-                c.close();
-            }
-        });
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
                 Intent intent = new Intent(TrackCalories.this,PatientHomeActivity.class);
                 startActivity(intent);
             }

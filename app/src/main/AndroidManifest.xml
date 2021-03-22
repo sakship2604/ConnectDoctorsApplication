@@ -3,6 +3,7 @@
     package="com.example.healthmanagementapp">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -10,24 +11,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".FindADoctorActivity"></activity>
+        <activity android:name=".Doctors_List"></activity>
+        <activity android:name=".FindADoctorActivity" />
         <activity android:name=".TrackCalories" />
         <activity android:name=".DoctorHomeActivity" />
-        <activity android:name=".AdminActivity" >
-
-        </activity>
+        <activity android:name=".AdminActivity"></activity>
         <activity android:name=".CashierHomeActivity" />
         <activity android:name=".PatientHomeActivity" />
-        <activity android:name=".ResetPasswordActivity" >
-
-        </activity>
-        <activity android:name=".RegisterActivity" >
-
-        </activity>
-        <activity android:name=".SplashActivity">
-
-        </activity>
-        <activity android:name=".MainActivity" >
+        <activity android:name=".ResetPasswordActivity"></activity>
+        <activity android:name=".RegisterActivity"></activity>
+        <activity android:name=".SplashActivity"></activity>
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

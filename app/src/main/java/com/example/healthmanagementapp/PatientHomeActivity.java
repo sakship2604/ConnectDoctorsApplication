@@ -20,6 +20,8 @@ public class PatientHomeActivity extends AppCompatActivity
 
         find_doctor = findViewById(R.id.imageViewFindDoctor);
         track_calories = findViewById(R.id.imageViewTrackCalories);
+
+
         track_calories.setOnClickListener(new View.OnClickListener()
         {
             @Override

@@ -17,5 +17,6 @@
     <string name="postalcodehint">Enter your postal code</string>
     <string name="searchdoctor">Search</string>
     <string name="refresh_button">Refresh</string>
+    <string name="text">button</string>
 
 </resources>
