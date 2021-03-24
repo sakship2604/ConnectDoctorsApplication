@@ -45,6 +45,19 @@
         app:layout_constraintTop_toBottomOf="@+id/textViewHeaderCashier"
         app:layout_constraintVertical_bias="0.077" />
 
+    <Button
+        android:id="@+id/buttonCashierLogout"
+        android:layout_width="80dp"
+        android:layout_height="21dp"
+        android:background="#F44336"
+        android:text="Logout"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.627"
+        app:layout_constraintStart_toEndOf="@+id/textViewHeaderCashier"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.035" />
+
     <ScrollView
         android:layout_width="300dp"
         android:layout_height="350dp"

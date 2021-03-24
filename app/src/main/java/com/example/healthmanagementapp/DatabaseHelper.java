@@ -29,6 +29,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     final static String TPCOL_12 = "MSP";
     final static String TPCOL_13 = "Medication";
     final static String TPCOL_14 = "Diseases";
+
     final static String TABLE_DOCTOR = "Doctor";
     final static String TDCOL_1 = "Doctor_Id";
     final static String TDCOL_2 = "Doctor_Name";
@@ -124,6 +125,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
+        db.execSQL("DROP TABLE if exists " + TABLE_PATIENT);
+        db.execSQL("DROP TABLE if exists "+ TABLE_ADMIN);
+        db.execSQL("DROP TABLE if exists "+ TABLE_APPOINTMENTS);
+        db.execSQL("DROP TABLE if exists "+ TABLE_BILLING);
+        db.execSQL("DROP TABLE if exists "+ TABLE_CASHIER);
+        db.execSQL("DROP TABLE if exists "+ TABLE_DOCTOR);
+        db.execSQL("DROP TABLE if exists "+ TABLE_QUERIES);
+
+        onCreate(db);
+
     }
 
     public boolean addPatient(String name, String email, String password, String postalCode,
@@ -171,6 +182,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         } else {
             return false;
         }
+    }
+
+    public Cursor viewDataQuery(){
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+        String query =  "SELECT * FROM " + TABLE_QUERIES;
+        Cursor c = sqLiteDatabase.rawQuery(query,null);
+        return c;
     }
 
     public boolean bookAppointment(int doctorId, int patientId, String date, int status, double fees) {
@@ -333,7 +351,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             db.delete(TABLE_DOCTOR, where, new String[]{email});
         }
         catch (Exception e){
-
+            Log.d("HERE", e.getMessage());
         }
     }
 
@@ -376,6 +394,5 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             Log.d("Update Tasks: ",e.getMessage());
         }
     }
-
 }
 

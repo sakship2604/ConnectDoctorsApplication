@@ -21,28 +21,29 @@ public class DeleteUsersActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_delete_users);
 
-         delemail = findViewById(R.id.editTextDelEmail);
-         btndel = findViewById(R.id.buttonDEL);
+        radDelPat = findViewById(R.id.radioButtonDELpat);
+        radDelDoc = findViewById(R.id.radioButtonDELdoc);
+        radDelCashier = findViewById(R.id.radioButtonDELcashier);
+        delemail = findViewById(R.id.editTextDelEmail);
+        btndel = findViewById(R.id.buttonDEL);
         databaseHelper = new DatabaseHelper(this);
 
 
         btndel.setOnClickListener(new View.OnClickListener() {
-             @Override
-             public void onClick(View v) {
-                 if (radDelPat.isChecked()){
-                     databaseHelper.deletePatient(delemail.getText().toString());
-                     Toast.makeText(DeleteUsersActivity.this, "deleted Patient Record", Toast.LENGTH_SHORT).show();
-                 }
-                 else if(radDelDoc.isChecked()){
-                     databaseHelper.deleteDoctor(delemail.getText().toString());
-                     Toast.makeText(DeleteUsersActivity.this, "deleted Doctor Record", Toast.LENGTH_SHORT).show();
-                 }
-                 else if (radDelCashier.isChecked()) {
-                     databaseHelper.deleteCashier(delemail.getText().toString());
-                     Toast.makeText(DeleteUsersActivity.this, "deleted Cashier Record", Toast.LENGTH_SHORT).show();
-                 }
-             }
-         });
+            @Override
+            public void onClick(View v) {
+                if (radDelPat.isChecked()) {
+                    databaseHelper.deletePatient(delemail.getText().toString());
+                    Toast.makeText(DeleteUsersActivity.this, "deleted Patient Record", Toast.LENGTH_SHORT).show();
+                } else if (radDelDoc.isChecked()) {
+                    databaseHelper.deleteDoctor(delemail.getText().toString());
+                    Toast.makeText(DeleteUsersActivity.this, "deleted Doctor Record", Toast.LENGTH_SHORT).show();
+                } else if (radDelCashier.isChecked()) {
+                    databaseHelper.deleteCashier(delemail.getText().toString());
+                    Toast.makeText(DeleteUsersActivity.this, "deleted Cashier Record", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
     }
 }

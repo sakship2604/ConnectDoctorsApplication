@@ -3,23 +3,16 @@ package com.example.healthmanagementapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.Preference;
-import android.preference.PreferenceManager;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import static com.example.healthmanagementapp.RegisterActivity.MyPREFERENCES;
 
 public class PatientHomeActivity extends AppCompatActivity {
-
     SharedPreferences sharedPreferences;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,7 +28,7 @@ public class PatientHomeActivity extends AppCompatActivity {
         }
     }
 
-    // for back navigation
+// for back navigation
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
@@ -44,5 +37,9 @@ public class PatientHomeActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+    public void goToFindDoctor(View view) {
+        Intent intent = new Intent(PatientHomeActivity.this, AddQueryActivity.class);
+        startActivity(intent);
     }
 }
