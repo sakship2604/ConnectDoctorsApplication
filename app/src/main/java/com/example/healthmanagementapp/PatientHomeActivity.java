@@ -14,23 +14,31 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class PatientHomeActivity extends AppCompatActivity
-{
+import static com.example.healthmanagementapp.RegisterActivity.MyPREFERENCES;
+
+public class PatientHomeActivity extends AppCompatActivity {
+
+    SharedPreferences sharedPreferences;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_home);
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        sharedPreferences = getSharedPreferences(MyPREFERENCES, MODE_PRIVATE);
+        if (sharedPreferences.getInt("admin", 0) == 1) {
+            Intent intent = new Intent(this, ResetPasswordActivity.class);
+            startActivity(intent);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putInt("admin", 0);
+            editor.apply();
+        }
     }
 
     // for back navigation
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId())
-        {
+        switch (item.getItemId()) {
             case android.R.id.home:
                 this.finish();
                 return true;

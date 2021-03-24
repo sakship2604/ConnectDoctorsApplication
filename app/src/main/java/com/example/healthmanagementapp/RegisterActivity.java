@@ -20,7 +20,6 @@ import android.widget.Toast;
 public class RegisterActivity extends AppCompatActivity {
 
     int flag =0;
-
     DatabaseHelper databaseHelper;
     LinearLayout layoutDoctor,layoutPatient,layoutImg, layoutCashier;
     ImageView aImage;
@@ -34,6 +33,7 @@ public class RegisterActivity extends AppCompatActivity {
     EditText docName, docEmail, docPass, docCode, docPhone, docSpl, docFees;
     EditText cashName, cashEmail, cashPass;
     SharedPreferences preferences;
+    public static final String MyPREFERENCES = "MyPrefs" ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,15 +41,18 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        flag = getIntent().getIntExtra("Flag",0);
-        databaseHelper = new DatabaseHelper(this);
-        preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        aImage = findViewById(R.id.imageViewUserType);
 
+        flag = getIntent().getIntExtra("layoutToShow",0);
+
+        databaseHelper = new DatabaseHelper(this);
+
+        aImage = findViewById(R.id.imageViewUserType);
+        preferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
 
         addPat = findViewById(R.id.buttonAddPat);
         addDoc = findViewById(R.id.buttonAddDoctor);
         addCash = findViewById(R.id.buttonAddCashier);
+
         updatePat = findViewById(R.id.buttonUpdatePat);
         updateDoc = findViewById(R.id.buttonUpdateDoctor);
         updateCashier = findViewById(R.id.buttonUpdateCashier);
@@ -57,7 +60,6 @@ public class RegisterActivity extends AppCompatActivity {
         delPat = findViewById(R.id.buttonDeletePat);
         delDoc = findViewById(R.id.buttonDeleteDoctor);
         delCashier = findViewById(R.id.buttonDeleteCashier);
-
 
         layoutDoctor = findViewById(R.id.linearLayoutDoctor);
         layoutPatient = findViewById(R.id.linearLayoutPatient);
@@ -121,7 +123,6 @@ public class RegisterActivity extends AppCompatActivity {
                 break;
         }
 
-
         // to add patients in database
         addPat.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -145,7 +146,7 @@ public class RegisterActivity extends AppCompatActivity {
                         ,Double.parseDouble(patHeight.getText().toString()), Double.parseDouble(patWeight.getText().toString()),
                         gender, 0, Integer.parseInt(patAge.getText().toString()), msp, patMedi.getText().toString(),patDiseases.getText().toString());
                 Toast.makeText(RegisterActivity.this, "Patient added", Toast.LENGTH_SHORT).show();
-                if(flag == 1){
+                if(layoutToShow == 3){
                     SharedPreferences.Editor editor = preferences.edit();
                     editor.putInt("admin",1);
                     editor.apply();

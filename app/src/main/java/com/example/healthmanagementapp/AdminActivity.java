@@ -25,7 +25,6 @@ public class AdminActivity extends AppCompatActivity {
         acashier = findViewById(R.id.imageView4);
         apatient = findViewById(R.id.imageView5);
 
-        logOutadmin.setImageResource(R.drawable.logout);
         adoc.setImageResource(R.drawable.doctor);
         acashier.setImageResource(R.drawable.cashier);
         apatient.setImageResource(R.drawable.patient);
@@ -57,13 +56,6 @@ public class AdminActivity extends AppCompatActivity {
                 Intent intent = new Intent(AdminActivity.this,RegisterActivity.class);
                 intent.putExtra("layoutToShow",3);
                 startActivity(intent);
-            }
-        });
-
-        logOutadmin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
             }
         });
     }
