@@ -4,165 +4,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_gravity="right|top"
     android:background="@drawable/layoutimage"
     tools:context=".RegisterActivity">
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Registration"
-        android:textColor="#F44336"
-        android:textSize="30sp"
-        android:textStyle="bold|italic"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal|center_vertical"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3">
-
-        <ImageView
-            android:id="@+id/imageViewAdminReg"
-            android:layout_width="100dp"
-            android:layout_height="80dp"
-            android:layout_weight="6"
-            app:srcCompat="@drawable/admin"
-            tools:srcCompat="@drawable/admin" />
-
-        <Button
-            android:id="@+id/buttonAdminBack"
-            android:layout_width="82dp"
-            android:layout_height="34dp"
-            android:layout_margin="30dp"
-            android:layout_weight="1"
-            android:background="#F44336"
-            android:text="BACK" />
-
-    </LinearLayout>
-
     <ScrollView
+        android:id="@+id/scrollView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
+        android:foregroundGravity="top"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <LinearLayout
-                android:id="@+id/linearLayoutDoctor"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="#F3A9A9"
-                android:orientation="vertical"
-                android:visibility="visible"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <EditText
-                    android:id="@+id/editTextDocName"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="name"
-                    android:inputType="textPersonName" />
-
-                <EditText
-                    android:id="@+id/editTextDocEmail"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="Email"
-                    android:inputType="textEmailAddress" />
-
-                <EditText
-                    android:id="@+id/editTextDocPassword"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="Password"
-                    android:inputType="textPassword" />
-
-                <EditText
-                    android:id="@+id/editTextDocPostalCode"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="PostalCode"
-                    android:inputType="textPersonName" />
-
-                <EditText
-                    android:id="@+id/editTextDocPhone"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="Phone number"
-                    android:inputType="phone" />
-
-                <EditText
-                    android:id="@+id/editTextSpeciality"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="Speciality"
-                    android:inputType="textPersonName" />
-
-                <EditText
-                    android:id="@+id/editTextfees"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="Fees per appointment"
-                    android:inputType="textPersonName" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
-
-                    <Button
-                        android:id="@+id/buttonAddDoctor"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
-                        android:background="#F8F4F4"
-                        android:text="add"
-                        android:textColor="#F44336" />
-
-                    <Button
-                        android:id="@+id/buttonUpdateDoctor"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
-                        android:background="#F8F6F6"
-                        android:text="update"
-                        android:textColor="#F44336" />
-
-                    <Button
-                        android:id="@+id/buttonDeleteDoctor"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
-                        android:background="#F8F6F5"
-                        android:text="delete"
-                        android:textColor="#F44336" />
-                </LinearLayout>
-
-            </LinearLayout>
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:layout_marginTop="0dp">
 
             <LinearLayout
                 android:id="@+id/linearLayoutPatient"
@@ -173,7 +34,7 @@
                 android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayoutDoctor">
+                app:layout_constraintTop_toTopOf="parent">
 
                 <EditText
                     android:id="@+id/editTextPatName"
@@ -387,15 +248,119 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/linearLayoutDoctor"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="#F3A9A9"
+                android:orientation="vertical"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayoutPatient"
+                tools:layout_editor_absoluteY="700dp">
+
+                <EditText
+                    android:id="@+id/editTextDocName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="name"
+                    android:inputType="textPersonName" />
+
+                <EditText
+                    android:id="@+id/editTextDocEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Email"
+                    android:inputType="textEmailAddress" />
+
+                <EditText
+                    android:id="@+id/editTextDocPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Password"
+                    android:inputType="textPassword" />
+
+                <EditText
+                    android:id="@+id/editTextDocPostalCode"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="PostalCode"
+                    android:inputType="textPersonName" />
+
+                <EditText
+                    android:id="@+id/editTextDocPhone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Phone number"
+                    android:inputType="phone" />
+
+                <EditText
+                    android:id="@+id/editTextSpeciality"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Speciality"
+                    android:inputType="textPersonName" />
+
+                <EditText
+                    android:id="@+id/editTextfees"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Fees per appointment"
+                    android:inputType="textPersonName" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/buttonAddDoctor"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:background="#F8F4F4"
+                        android:text="add"
+                        android:textColor="#F44336" />
+
+                    <Button
+                        android:id="@+id/buttonUpdateDoctor"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:background="#F8F6F6"
+                        android:text="update"
+                        android:textColor="#F44336" />
+
+                    <Button
+                        android:id="@+id/buttonDeleteDoctor"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:background="#F8F6F5"
+                        android:text="delete"
+                        android:textColor="#F44336" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/linearLayoutCashier"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:background="#F8CCCC"
                 android:orientation="vertical"
                 android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayoutPatient">
+                app:layout_constraintTop_toBottomOf="@+id/linearLayoutDoctor"
+                tools:layout_editor_absoluteY="507dp">
 
                 <EditText
                     android:id="@+id/editTextCashierName"
@@ -424,6 +389,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_gravity="center_horizontal"
                     android:orientation="horizontal">
 
                     <Button
@@ -457,5 +423,16 @@
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
+
+    <ImageView
+        android:id="@+id/imageViewUserType"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintRight_toRightOf="@+id/scrollView2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/cashier" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
