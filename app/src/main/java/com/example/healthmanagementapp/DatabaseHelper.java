@@ -13,7 +13,13 @@ import java.util.Date;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     final static String DATABASE_NAME = "HealthManagement.db";
+<<<<<<< HEAD
     final static int DATABASE_VERSION = 1;
+=======
+    final static int DATABASE_VERSION = 3;
+
+
+>>>>>>> 865a39abf66efeea78be19450c9bee5c0ba56254
     final static String TABLE_PATIENT = "Patient";
     final static String TPCOL_1 = "Patient_Id";
     final static String TPCOL_2 = "Patient_Name";
@@ -29,6 +35,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     final static String TPCOL_12 = "MSP";
     final static String TPCOL_13 = "Medication";
     final static String TPCOL_14 = "Diseases";
+<<<<<<< HEAD
+=======
+
+>>>>>>> 865a39abf66efeea78be19450c9bee5c0ba56254
     final static String TABLE_DOCTOR = "Doctor";
     final static String TDCOL_1 = "Doctor_Id";
     final static String TDCOL_2 = "Doctor_Name";
@@ -81,15 +91,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String queryP = "CREATE TABLE " + TABLE_PATIENT + " (" + TPCOL_1 + " INTEGER PRIMARY KEY NOT NULL," +
+<<<<<<< HEAD
                 TPCOL_2 + " TEXT," + TPCOL_3 + " TEXT UNIQUE ," + TPCOL_4 + " TEXT," + TPCOL_5 + " TEXT," + TPCOL_6 +
+=======
+                TPCOL_2 + " TEXT," + TPCOL_3 + " TEXT," + TPCOL_4 + " TEXT," + TPCOL_5 + " TEXT," + TPCOL_6 +
+>>>>>>> 865a39abf66efeea78be19450c9bee5c0ba56254
                 " INTEGER," + TPCOL_7 + " DECIMAL," + TPCOL_8 + " DECIMAL," + TPCOL_9 + " DECIMAL," + TPCOL_10 + " INTEGER,"
                 + TPCOL_11 + " TEXT," + TPCOL_12 + " TEXT," + TPCOL_13 + " TEXT," + TPCOL_14 + " TEXT)";
 
         String queryD = "CREATE TABLE " + TABLE_DOCTOR + " (" + TDCOL_1 + " INTEGER PRIMARY KEY NOT NULL," +
+<<<<<<< HEAD
                 TDCOL_2 + " TEXT," + TDCOL_3 + " TEXT UNIQUE," + TDCOL_4 + " TEXT," + TDCOL_5 + " TEXT," + TDCOL_6 + " INTEGER," + TDCOL_7 + " TEXT," + TDCOL_8 + " DECIMAL)";
 
         String queryC = "CREATE TABLE " + TABLE_CASHIER + " (" + TCCOL_1 + " INTEGER PRIMARY KEY NOT NULL," +
                 TCCOL_2 + " TEXT," + TCCOL_3 + " TEXT UNIQUE," + TCCOL_4 + " TEXT)";
+=======
+                TDCOL_2 + " TEXT," + TDCOL_3 + " TEXT," + TDCOL_4 + " TEXT," + TDCOL_5 + " TEXT," + TDCOL_6 + " INTEGER," + TDCOL_7 + " TEXT," + TDCOL_8 + " DECIMAL)";
+
+        String queryC = "CREATE TABLE " + TABLE_CASHIER + " (" + TCCOL_1 + " INTEGER PRIMARY KEY NOT NULL," +
+                TCCOL_2 + " TEXT," + TCCOL_3 + " TEXT," + TCCOL_4 + " TEXT)";
+>>>>>>> 865a39abf66efeea78be19450c9bee5c0ba56254
 
         String queryQ = "CREATE TABLE " + TABLE_QUERIES + " (" + TQCOL_1 + " INTEGER PRIMARY KEY NOT NULL," +
                 TQCOL_2 + " INTEGER," + TQCOL_3 + " INTERGER," + TQCOL_4 + " TEXT," + TQCOL_5 + " TEXT" +
@@ -112,6 +133,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 TADCOL_2 + " TEXT," + TADCOL_3 + " TEXT)";
 
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 865a39abf66efeea78be19450c9bee5c0ba56254
         db.execSQL(queryP);
         db.execSQL(queryD);
         db.execSQL(queryC);
@@ -119,11 +145,28 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(queryA);
         db.execSQL(queryB);
         db.execSQL(queryAd);
+<<<<<<< HEAD
+=======
+        Log.i("------>","DB-CREATED");
+>>>>>>> 865a39abf66efeea78be19450c9bee5c0ba56254
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
+<<<<<<< HEAD
+=======
+        db.execSQL("DROP TABLE if exists " + TABLE_PATIENT);
+        db.execSQL("DROP TABLE if exists "+ TABLE_ADMIN);
+        db.execSQL("DROP TABLE if exists "+ TABLE_APPOINTMENTS);
+        db.execSQL("DROP TABLE if exists "+ TABLE_BILLING);
+        db.execSQL("DROP TABLE if exists "+ TABLE_CASHIER);
+        db.execSQL("DROP TABLE if exists "+ TABLE_DOCTOR);
+        db.execSQL("DROP TABLE if exists "+ TABLE_QUERIES);
+
+        onCreate(db);
+
+>>>>>>> 865a39abf66efeea78be19450c9bee5c0ba56254
     }
 
     public boolean addPatient(String name, String email, String password, String postalCode,
@@ -173,6 +216,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
+<<<<<<< HEAD
+=======
+    public Cursor viewDataQuery(){
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+        String query =  "SELECT * FROM " + TABLE_QUERIES;
+        Cursor c = sqLiteDatabase.rawQuery(query,null);
+        return c;
+    }
+
+>>>>>>> 865a39abf66efeea78be19450c9bee5c0ba56254
     public boolean bookAppointment(int doctorId, int patientId, String date, int status, double fees) {
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -297,6 +350,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
         return result;
     }
+<<<<<<< HEAD
 
     // reset password
     public boolean resetPassword( String email, String password) {
@@ -377,5 +431,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
+=======
+>>>>>>> 865a39abf66efeea78be19450c9bee5c0ba56254
 }
 
