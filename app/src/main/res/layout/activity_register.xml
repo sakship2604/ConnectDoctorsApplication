@@ -20,65 +20,69 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal|center_vertical"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView3">
+
+        <ImageView
+            android:id="@+id/imageViewAdminReg"
+            android:layout_width="100dp"
+            android:layout_height="80dp"
+            android:layout_weight="6"
+            app:srcCompat="@drawable/admin"
+            tools:srcCompat="@drawable/admin" />
+
+        <Button
+            android:id="@+id/buttonAdminBack"
+            android:layout_width="82dp"
+            android:layout_height="34dp"
+            android:layout_margin="30dp"
+            android:layout_weight="1"
+            android:background="#F44336"
+            android:text="BACK" />
+
+    </LinearLayout>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/textView3"
-        tools:layout_editor_absoluteX="-29dp">
+        android:layout_margin="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <LinearLayout
-                android:id="@+id/linearLayout"
-                android:layout_width="match_parent"
+                android:id="@+id/linearLayoutDoctor"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:gravity="center_horizontal|center_vertical"
-                android:orientation="horizontal"
+                android:background="#F3A9A9"
+                android:orientation="vertical"
+                android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <ImageView
-                    android:id="@+id/imageViewDoctor"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_weight="1"
-                    tools:srcCompat="@drawable/doctor" />
-
-                <ImageView
-                    android:id="@+id/imageViewPatient"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_weight="1"
-                    tools:srcCompat="@drawable/patient" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/linearLayoutDoctor"
-                android:layout_width="250dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:background="#EAA4A4"
-                android:orientation="vertical"
-                android:visibility="visible"
-                app:layout_constraintBottom_toTopOf="@+id/linearLayoutPatient"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayout">
-
                 <EditText
-                    android:id="@+id/editTextTextPersonName"
+                    android:id="@+id/editTextDocName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:hint="Name"
+                    android:hint="name"
                     android:inputType="textPersonName" />
 
                 <EditText
-                    android:id="@+id/editTextTextEmailAddress"
+                    android:id="@+id/editTextDocEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
@@ -86,7 +90,7 @@
                     android:inputType="textEmailAddress" />
 
                 <EditText
-                    android:id="@+id/editTextTextPassword"
+                    android:id="@+id/editTextDocPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
@@ -94,20 +98,20 @@
                     android:inputType="textPassword" />
 
                 <EditText
-                    android:id="@+id/editTextPhone"
+                    android:id="@+id/editTextDocPostalCode"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:hint="Phone"
-                    android:inputType="phone" />
+                    android:hint="PostalCode"
+                    android:inputType="textPersonName" />
 
                 <EditText
-                    android:id="@+id/editTextTextPostalAddress"
+                    android:id="@+id/editTextDocPhone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:hint="PostalAddress"
-                    android:inputType="textPostalAddress" />
+                    android:hint="Phone number"
+                    android:inputType="phone" />
 
                 <EditText
                     android:id="@+id/editTextSpeciality"
@@ -117,30 +121,66 @@
                     android:hint="Speciality"
                     android:inputType="textPersonName" />
 
-                <Button
-                    android:id="@+id/buttonDRegister"
+                <EditText
+                    android:id="@+id/editTextfees"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Register" />
+                    android:ems="10"
+                    android:hint="Fees per appointment"
+                    android:inputType="textPersonName" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/buttonAddDoctor"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:background="#F8F4F4"
+                        android:text="add"
+                        android:textColor="#F44336" />
+
+                    <Button
+                        android:id="@+id/buttonUpdateDoctor"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:background="#F8F6F6"
+                        android:text="update"
+                        android:textColor="#F44336" />
+
+                    <Button
+                        android:id="@+id/buttonDeleteDoctor"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:background="#F8F6F5"
+                        android:text="delete"
+                        android:textColor="#F44336" />
+                </LinearLayout>
 
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/linearLayoutPatient"
-                android:layout_width="273dp"
-                android:layout_height="242dp"
-                android:background="#ECBFBF"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#ECABAB"
                 android:orientation="vertical"
                 android:visibility="visible"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+                app:layout_constraintTop_toBottomOf="@+id/linearLayoutDoctor">
 
                 <EditText
                     android:id="@+id/editTextPatName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_margin="2dp"
+                    android:layout_weight="1"
                     android:ems="10"
                     android:hint="Name"
                     android:inputType="textPersonName" />
@@ -149,98 +189,271 @@
                     android:id="@+id/editTextPatEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_margin="2dp"
+                    android:layout_weight="3"
                     android:ems="10"
                     android:hint="Email"
-                    android:inputType="textEmailAddress" />
-
-                <EditText
-                    android:id="@+id/editTextPatPassword"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="Password"
-                    android:inputType="textPassword" />
-
-                <EditText
-                    android:id="@+id/editTextPatPhone"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="Phone"
-                    android:inputType="phone" />
-
-                <EditText
-                    android:id="@+id/editTextPatPostalAddress"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="Address"
-                    android:inputType="textPostalAddress" />
-
-                <EditText
-                    android:id="@+id/editTextHeight"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="Height"
                     android:inputType="textPersonName" />
 
                 <EditText
-                    android:id="@+id/editTextWeight"
+                    android:id="@+id/editTextPatPass"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_margin="2dp"
                     android:ems="10"
-                    android:hint="Weight"
-                    android:inputType="textPersonName"
-                    android:text="Name" />
+                    android:hint="Password"
+                    android:inputType="textPersonName" />
 
-                <EditText
-                    android:id="@+id/editTextBMI"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="BMI"
-                    android:inputType="textPersonName"
-                    android:text="Name" />
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
 
-                <EditText
-                    android:id="@+id/editTextMedications"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="Medications"
-                    android:inputType="textPersonName"
-                    android:text="Name" />
+                    <EditText
+                        android:id="@+id/editTextPatPostalCode"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="2dp"
+                        android:ems="10"
+                        android:hint="Postal Code"
+                        android:inputType="textPersonName" />
 
-                <TextView
-                    android:id="@+id/textViewAge"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Age"
-                    android:text="Age" />
+                    <EditText
+                        android:id="@+id/editTextPatPhone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:ems="10"
+                        android:hint="Phone"
+                        android:inputType="textPersonName" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/editTextHeight"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:ems="10"
+                        android:hint="Height"
+                        android:inputType="textPersonName" />
+
+                    <EditText
+                        android:id="@+id/editTextWeight"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:ems="10"
+                        android:hint="Weight"
+                        android:inputType="textPersonName" />
+
+                    <EditText
+                        android:id="@+id/editTextAge"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:ems="10"
+                        android:hint="Age"
+                        android:inputType="textPersonName" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_horizontal"
+                    android:orientation="horizontal">
+
+                    <RadioGroup
+                        android:id="@+id/radioGroupGender"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="center_horizontal"
+                            android:orientation="horizontal">
+
+                            <RadioButton
+                                android:id="@+id/radioButtonFemale"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="5dp"
+                                android:layout_marginLeft="5dp"
+                                android:layout_marginEnd="5dp"
+                                android:layout_marginRight="5dp"
+                                android:text="FEMALE" />
+
+                            <RadioButton
+                                android:id="@+id/radioButtonMale"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="5dp"
+                                android:layout_marginLeft="5dp"
+                                android:layout_marginEnd="5dp"
+                                android:layout_marginRight="5dp"
+                                android:paddingLeft="5dp"
+                                android:paddingRight="5dp"
+                                android:text="MALE" />
+                        </LinearLayout>
+
+                    </RadioGroup>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/editTextMedication"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:hint="medications"
+                        android:inputType="textPersonName" />
+
+                    <EditText
+                        android:id="@+id/editTextDiseases"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:hint="Diseases"
+                        android:inputType="textPersonName" />
+                </LinearLayout>
 
                 <RadioGroup
+                    android:id="@+id/radioGroupMSP"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                    <RadioButton
-                        android:id="@+id/radioButtonMale"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Male" />
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_horizontal"
+                        android:orientation="horizontal">
 
-                    <RadioButton
-                        android:id="@+id/radioButtonFemale"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Female" />
+                        <RadioButton
+                            android:id="@+id/radioButtonNOMSP"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="WITHOUT MSP" />
+
+                        <RadioButton
+                            android:id="@+id/radioButtonMSP"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="WITH MSP" />
+                    </LinearLayout>
+
                 </RadioGroup>
 
-                <Button
-                    android:id="@+id/buttonPRegister"
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_horizontal"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/buttonAddPat"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:background="#F4F2F2"
+                        android:text="add" />
+
+                    <Button
+                        android:id="@+id/buttonDeletePat"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:background="#FBF8F8"
+                        android:text="Delete" />
+
+                    <Button
+                        android:id="@+id/buttonUpdatePat"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:background="#FBF8F7"
+                        android:text="Update" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayoutCashier"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#F8CCCC"
+                android:orientation="vertical"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayoutPatient">
+
+                <EditText
+                    android:id="@+id/editTextCashierName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Register" />
+                    android:ems="10"
+                    android:hint="name"
+                    android:inputType="textPersonName" />
+
+                <EditText
+                    android:id="@+id/editTextCashierEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="email"
+                    android:inputType="textEmailAddress" />
+
+                <EditText
+                    android:id="@+id/editTextCashierPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="password"
+                    android:inputType="textPassword" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/buttonAddCashier"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:background="#F4EEEE"
+                        android:text="add"
+                        android:textColor="#F44336" />
+
+                    <Button
+                        android:id="@+id/buttonUpdateCashier"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:background="#F6F4F4"
+                        android:text="update"
+                        android:textColor="#F44336" />
+
+                    <Button
+                        android:id="@+id/buttonDeleteCashier"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:background="#F4F3F3"
+                        android:text="Delete"
+                        android:textColor="#F44336" />
+                </LinearLayout>
+
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
