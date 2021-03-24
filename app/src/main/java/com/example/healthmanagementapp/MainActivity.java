@@ -3,7 +3,9 @@ package com.example.healthmanagementapp;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -27,16 +29,12 @@ public class MainActivity extends AppCompatActivity {
     TextView register, resetPass;
     LinearLayout layoutAdmin, layoutUser;
     DatabaseHelper databaseHelper;
-    //firebase connection
-   // private FirebaseAuth auth;
+    int FLAG = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-// object to connect firebase
-        //auth = FirebaseAuth.getInstance();
-
 
         databaseHelper = new DatabaseHelper(this);
         btnALogin = findViewById(R.id.buttonAdminLogin);
@@ -90,8 +88,10 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (radPatient.isChecked()) {
                     boolean result = databaseHelper.getPatient(username.getText().toString(), pass.getText().toString());
+                    FLAG = 1;
                     Toast.makeText(MainActivity.this, String.valueOf("Successfully Logged In"), Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(MainActivity.this, PatientHomeActivity.class);
+                    intent.putExtra("Flag",FLAG);
                     startActivity(intent);
                 } else if (radDoctor.isChecked()) {
                     boolean result = databaseHelper.getDoctor(username.getText().toString(), pass.getText().toString());
@@ -145,48 +145,4 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    /*public void Signup(){
-        String email = username.getText().toString();
-        String password = pass.getText().toString();
-        if (email.length() > 0 && password.length() > 0){
-            if(password.length()>=9){
-                auth.createUserWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(this, task -> {
-                            if (task.isSuccessful()) {
-                                // Sign in success, update UI with the signed-in user's information
-                                Log.d("TAG", "createUserWithEmail:success");
-                                FirebaseUser user = auth.getCurrentUser();
-                                Toast.makeText(this, "Successfully Registered", Toast.LENGTH_LONG).show();
-
-                            } else {
-                                // If sign in fails, display a message to the user.
-                                // Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                                Toast.makeText(this, "There's an exiting account with same Email.",Toast.LENGTH_SHORT).show();
-                            }
-                        });
-            }
-            else{
-                Toast.makeText(this, "Password should at least have 9 characters.", Toast.LENGTH_LONG).show();
-            }
-        }else{
-            Toast.makeText(this, "Oh no, seems like you missed a spot!", Toast.LENGTH_LONG).show();
-        }
-    }
-    public void Login(){
-        String email = username.getText().toString();
-        String password = pass.getText().toString();
-        if(email.length() > 0 && password.length() > 0){
-            auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, task -> {
-                if(task.isSuccessful()){
-                    Toast.makeText(this, "Successfully Logged In",Toast.LENGTH_SHORT).show();
-
-                }
-                else{
-                    Toast.makeText(this, "Authentication failed.",Toast.LENGTH_SHORT).show();
-                }
-            });
-        }else{
-            Toast.makeText(this,"Please enter email and password!",Toast.LENGTH_SHORT).show();
-        }
-    }*/
 }

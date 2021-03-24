@@ -1,9 +1,11 @@
 package com.example.healthmanagementapp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -17,9 +19,8 @@ public class AdminActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
-
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 //setting images to the panel
-        logOutadmin = findViewById(R.id.imageViewALogout);
         adoc = findViewById(R.id.imageView3);
         acashier = findViewById(R.id.imageView4);
         apatient = findViewById(R.id.imageView5);
@@ -28,14 +29,6 @@ public class AdminActivity extends AppCompatActivity {
         adoc.setImageResource(R.drawable.doctor);
         acashier.setImageResource(R.drawable.cashier);
         apatient.setImageResource(R.drawable.patient);
-
-      /*  logOutadmin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FirebaseAuth.getInstance().signOut();
-                finish();
-            }
-        });*/
 
         // TO MANAGE ADMIN PANEL
         lvDoctor = findViewById(R.id.AdminDoctor);
@@ -73,6 +66,16 @@ public class AdminActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId())
+        {
+            case android.R.id.home:
+                this.finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

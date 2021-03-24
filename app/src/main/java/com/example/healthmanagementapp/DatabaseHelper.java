@@ -14,8 +14,6 @@ import java.util.Date;
 public class DatabaseHelper extends SQLiteOpenHelper {
     final static String DATABASE_NAME = "HealthManagement.db";
     final static int DATABASE_VERSION = 1;
-
-
     final static String TABLE_PATIENT = "Patient";
     final static String TPCOL_1 = "Patient_Id";
     final static String TPCOL_2 = "Patient_Name";
@@ -31,7 +29,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     final static String TPCOL_12 = "MSP";
     final static String TPCOL_13 = "Medication";
     final static String TPCOL_14 = "Diseases";
-
     final static String TABLE_DOCTOR = "Doctor";
     final static String TDCOL_1 = "Doctor_Id";
     final static String TDCOL_2 = "Doctor_Name";
@@ -84,15 +81,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String queryP = "CREATE TABLE " + TABLE_PATIENT + " (" + TPCOL_1 + " INTEGER PRIMARY KEY NOT NULL," +
-                TPCOL_2 + " TEXT," + TPCOL_3 + " TEXT," + TPCOL_4 + " TEXT," + TPCOL_5 + " TEXT," + TPCOL_6 +
+                TPCOL_2 + " TEXT," + TPCOL_3 + " TEXT UNIQUE ," + TPCOL_4 + " TEXT," + TPCOL_5 + " TEXT," + TPCOL_6 +
                 " INTEGER," + TPCOL_7 + " DECIMAL," + TPCOL_8 + " DECIMAL," + TPCOL_9 + " DECIMAL," + TPCOL_10 + " INTEGER,"
                 + TPCOL_11 + " TEXT," + TPCOL_12 + " TEXT," + TPCOL_13 + " TEXT," + TPCOL_14 + " TEXT)";
 
         String queryD = "CREATE TABLE " + TABLE_DOCTOR + " (" + TDCOL_1 + " INTEGER PRIMARY KEY NOT NULL," +
-                TDCOL_2 + " TEXT," + TDCOL_3 + " TEXT," + TDCOL_4 + " TEXT," + TDCOL_5 + " TEXT," + TDCOL_6 + " INTEGER," + TDCOL_7 + " TEXT," + TDCOL_8 + " DECIMAL)";
+                TDCOL_2 + " TEXT," + TDCOL_3 + " TEXT UNIQUE," + TDCOL_4 + " TEXT," + TDCOL_5 + " TEXT," + TDCOL_6 + " INTEGER," + TDCOL_7 + " TEXT," + TDCOL_8 + " DECIMAL)";
 
         String queryC = "CREATE TABLE " + TABLE_CASHIER + " (" + TCCOL_1 + " INTEGER PRIMARY KEY NOT NULL," +
-                TCCOL_2 + " TEXT," + TCCOL_3 + " TEXT," + TCCOL_4 + " TEXT)";
+                TCCOL_2 + " TEXT," + TCCOL_3 + " TEXT UNIQUE," + TCCOL_4 + " TEXT)";
 
         String queryQ = "CREATE TABLE " + TABLE_QUERIES + " (" + TQCOL_1 + " INTEGER PRIMARY KEY NOT NULL," +
                 TQCOL_2 + " INTEGER," + TQCOL_3 + " INTERGER," + TQCOL_4 + " TEXT," + TQCOL_5 + " TEXT" +
@@ -300,5 +297,85 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
         return result;
     }
+
+    // reset password
+    public boolean resetPassword( String email, String password) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        boolean result = false;
+        Cursor cursor = db.rawQuery("select * from " + TABLE_PATIENT + " where " + TPCOL_3 + " =  \"" + email +  "\"", null);
+        if (cursor.getCount() > 0) {
+            ContentValues values = new ContentValues();
+            values.put(TPCOL_4,password);
+            result = true;
+            db.update(TABLE_PATIENT, values,TPCOL_3 + " =  \"" + email +  "\"",null);
+        }
+        db.close();
+        return result;
+    }
+
+    // delete records of patient
+    public void deletePatient(String email){
+        SQLiteDatabase db = this.getReadableDatabase();
+        try{
+            String where=TPCOL_3;
+            db.delete(TABLE_PATIENT, where, new String[]{email});
+        }
+        catch (Exception e){
+
+        }
+    }
+
+    // to delete doctor's records
+    public void deleteDoctor(String email){
+        SQLiteDatabase db = this.getReadableDatabase();
+        try{
+            String where=TPCOL_3;
+            db.delete(TABLE_DOCTOR, where, new String[]{email});
+        }
+        catch (Exception e){
+
+        }
+    }
+
+    // to delete cashier records
+
+    public void deleteCashier(String email){
+        SQLiteDatabase db = this.getReadableDatabase();
+        try{
+            String where=TPCOL_3;
+            db.delete(TABLE_CASHIER, where, new String[]{email});
+        }
+        catch (Exception e){
+
+        }
+    }
+
+    // to update patient records
+    public void updatePatient(String name, String email, String password, String postalCode,
+                              String PhoneNo, double height,
+                              double weight, String gender, int age, String msp, String medication, String diseases){
+        try {
+            SQLiteDatabase db = this.getReadableDatabase();
+            ContentValues values = new ContentValues();
+            values.put(TPCOL_2,name);
+            values.put(TPCOL_3,email);
+            values.put(TPCOL_4,password);
+            values.put(TPCOL_5,postalCode);
+            values.put(TPCOL_6,PhoneNo);
+            values.put(TPCOL_7,height);
+            values.put(TPCOL_8,weight);
+            values.put(TPCOL_11,gender);
+            values.put(TPCOL_10,age);
+            values.put(TPCOL_12,msp);
+            values.put(TPCOL_13,medication);
+            values.put(TPCOL_14,diseases);
+
+            db.update(TABLE_PATIENT, values,TPCOL_3 + " = ? ",new String[]{ String.valueOf(email) });
+        }
+        catch (Exception e){
+            Log.d("Update Tasks: ",e.getMessage());
+        }
+    }
+
 }
 
