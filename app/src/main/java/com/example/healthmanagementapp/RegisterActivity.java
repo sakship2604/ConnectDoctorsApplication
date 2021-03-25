@@ -216,7 +216,6 @@ public class RegisterActivity extends AppCompatActivity {
                 }
                 databaseHelper.updatePatient(patName.getText().toString(),
                         patEmail.getText().toString(),
-                        patPass.getText().toString(),
                         patCode.getText().toString(),
                         patPhone.getText().toString(),
                         Double.parseDouble(patHeight.getText().toString()),
@@ -227,6 +226,20 @@ public class RegisterActivity extends AppCompatActivity {
                         patMedi.getText().toString(),
                         patDiseases.getText().toString());
                 Toast.makeText(RegisterActivity.this, "Patient updated", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        updateDoc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                databaseHelper.updateDoctor((docName.getText().toString()),docEmail.getText().toString(),docCode.getText().toString(),docPhone.getText().toString(),docSpl.getText().toString(),docFees.getText().toString());
+            }
+        });
+
+        updateCashier.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                databaseHelper.updateCashier(cashName.getText().toString(),cashEmail.getText().toString());
             }
         });
     }

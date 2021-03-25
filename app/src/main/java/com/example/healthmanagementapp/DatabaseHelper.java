@@ -126,12 +126,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
         db.execSQL("DROP TABLE if exists " + TABLE_PATIENT);
-        db.execSQL("DROP TABLE if exists "+ TABLE_ADMIN);
-        db.execSQL("DROP TABLE if exists "+ TABLE_APPOINTMENTS);
-        db.execSQL("DROP TABLE if exists "+ TABLE_BILLING);
-        db.execSQL("DROP TABLE if exists "+ TABLE_CASHIER);
-        db.execSQL("DROP TABLE if exists "+ TABLE_DOCTOR);
-        db.execSQL("DROP TABLE if exists "+ TABLE_QUERIES);
+        db.execSQL("DROP TABLE if exists " + TABLE_ADMIN);
+        db.execSQL("DROP TABLE if exists " + TABLE_APPOINTMENTS);
+        db.execSQL("DROP TABLE if exists " + TABLE_BILLING);
+        db.execSQL("DROP TABLE if exists " + TABLE_CASHIER);
+        db.execSQL("DROP TABLE if exists " + TABLE_DOCTOR);
+        db.execSQL("DROP TABLE if exists " + TABLE_QUERIES);
 
         onCreate(db);
 
@@ -184,10 +184,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public Cursor viewDataQuery(){
+    public Cursor viewDataQuery() {
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
-        String query =  "SELECT * FROM " + TABLE_QUERIES;
-        Cursor c = sqLiteDatabase.rawQuery(query,null);
+        String query = "SELECT * FROM " + TABLE_QUERIES;
+        Cursor c = sqLiteDatabase.rawQuery(query, null);
         return c;
     }
 
@@ -271,44 +271,48 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             return false;
         }
     }
-// authenticate admin
+
+    // authenticate admin
     public boolean getAdmin(String email, String password) {
         SQLiteDatabase db = this.getReadableDatabase();
         boolean result = false;
-        Cursor cursor = db.rawQuery("select * from " + TABLE_ADMIN + " where " + TADCOL_2 + " =  \"" + email + "\""+ " AND " + TADCOL_3+" = \"" + password + "\"", null);
+        Cursor cursor = db.rawQuery("select * from " + TABLE_ADMIN + " where " + TADCOL_2 + " =  \"" + email + "\"" + " AND " + TADCOL_3 + " = \"" + password + "\"", null);
         if (cursor.getCount() > 0) {
             result = true;
         }
         db.close();
         return result;
     }
+
     // authenticate patient
     public boolean getPatient(String email, String password) {
         SQLiteDatabase db = this.getReadableDatabase();
         boolean result = false;
-        Cursor cursor = db.rawQuery("select * from " + TABLE_PATIENT + " where " + TPCOL_3 + " =  \"" + email + "\""+ " AND " + TPCOL_4+" = \"" + password + "\"", null);
+        Cursor cursor = db.rawQuery("select * from " + TABLE_PATIENT + " where " + TPCOL_3 + " =  \"" + email + "\"" + " AND " + TPCOL_4 + " = \"" + password + "\"", null);
         if (cursor.getCount() > 0) {
             result = true;
         }
         db.close();
         return result;
     }
+
     // authenticate doctor
     public boolean getDoctor(String email, String password) {
         SQLiteDatabase db = this.getReadableDatabase();
         boolean result = false;
-        Cursor cursor = db.rawQuery("select * from " + TABLE_DOCTOR + " where " + TDCOL_3 + " =  \"" + email + "\""+ " AND " + TDCOL_4+" = \"" + password + "\"", null);
+        Cursor cursor = db.rawQuery("select * from " + TABLE_DOCTOR + " where " + TDCOL_3 + " =  \"" + email + "\"" + " AND " + TDCOL_4 + " = \"" + password + "\"", null);
         if (cursor.getCount() > 0) {
             result = true;
         }
         db.close();
         return result;
     }
+
     // authenticate cashier
     public boolean getCashier(String email, String password) {
         SQLiteDatabase db = this.getReadableDatabase();
         boolean result = false;
-        Cursor cursor = db.rawQuery("select * from " + TABLE_CASHIER + " where " + TCCOL_3 + " =  \"" + email + "\""+ " AND " + TCCOL_4+" = \"" + password + "\"", null);
+        Cursor cursor = db.rawQuery("select * from " + TABLE_CASHIER + " where " + TCCOL_3 + " =  \"" + email + "\"" + " AND " + TCCOL_4 + " = \"" + password + "\"", null);
         if (cursor.getCount() > 0) {
             result = true;
         }
@@ -317,81 +321,104 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     // reset password
-    public boolean resetPassword( String email, String password) {
+    public boolean resetPassword(String email, String password) {
         SQLiteDatabase db = this.getReadableDatabase();
         boolean result = false;
-        Cursor cursor = db.rawQuery("select * from " + TABLE_PATIENT + " where " + TPCOL_3 + " =  \"" + email +  "\"", null);
+        Cursor cursor = db.rawQuery("select * from " + TABLE_PATIENT + " where " + TPCOL_3 + " =  \"" + email + "\"", null);
         if (cursor.getCount() > 0) {
             ContentValues values = new ContentValues();
-            values.put(TPCOL_4,password);
+            values.put(TPCOL_4, password);
             result = true;
-            db.update(TABLE_PATIENT, values,TPCOL_3 + " =  \"" + email +  "\"",null);
+            db.update(TABLE_PATIENT, values, TPCOL_3 + " =  \"" + email + "\"", null);
         }
         db.close();
         return result;
     }
 
     // delete records of patient
-    public void deletePatient(String email){
+    public void deletePatient(String email) {
         SQLiteDatabase db = this.getReadableDatabase();
-        try{
-            String where=TPCOL_3;
-            db.delete(TABLE_PATIENT, where, new String[]{email});
-        }
-        catch (Exception e){
-
+        try {
+            int b = db.delete(TABLE_PATIENT, TPCOL_3 + " =  \"" + email + "\"", null);
+            Log.d("HERE", String.valueOf(b));
+        } catch (Exception e) {
+            Log.d("HERE", String.valueOf(e.getMessage()));
         }
     }
 
     // to delete doctor's records
-    public void deleteDoctor(String email){
+    public void deleteDoctor(String email) {
         SQLiteDatabase db = this.getReadableDatabase();
-        try{
-            String where=TPCOL_3;
-            db.delete(TABLE_DOCTOR, where, new String[]{email});
-        }
-        catch (Exception e){
+        try {
+            db.delete(TABLE_DOCTOR, TDCOL_3 + " =  \"" + email + "\"", null);
+        } catch (Exception e) {
             Log.d("HERE", e.getMessage());
         }
     }
 
     // to delete cashier records
 
-    public void deleteCashier(String email){
+    public void deleteCashier(String email) {
         SQLiteDatabase db = this.getReadableDatabase();
-        try{
-            String where=TPCOL_3;
-            db.delete(TABLE_CASHIER, where, new String[]{email});
-        }
-        catch (Exception e){
+        try {
+
+            db.delete(TABLE_CASHIER, TCCOL_3 + " =  \"" + email + "\"", null);
+        } catch (Exception e) {
 
         }
     }
 
     // to update patient records
-    public void updatePatient(String name, String email, String password, String postalCode,
+    public void updatePatient(String name, String email, String postalCode,
                               String PhoneNo, double height,
-                              double weight, String gender, int age, String msp, String medication, String diseases){
+                              double weight, String gender, int age, String msp, String medication, String diseases) {
         try {
             SQLiteDatabase db = this.getReadableDatabase();
             ContentValues values = new ContentValues();
-            values.put(TPCOL_2,name);
-            values.put(TPCOL_3,email);
-            values.put(TPCOL_4,password);
-            values.put(TPCOL_5,postalCode);
-            values.put(TPCOL_6,PhoneNo);
-            values.put(TPCOL_7,height);
-            values.put(TPCOL_8,weight);
-            values.put(TPCOL_11,gender);
-            values.put(TPCOL_10,age);
-            values.put(TPCOL_12,msp);
-            values.put(TPCOL_13,medication);
-            values.put(TPCOL_14,diseases);
+            values.put(TPCOL_2, name);
+            values.put(TPCOL_3, email);
+            values.put(TPCOL_5, postalCode);
+            values.put(TPCOL_6, PhoneNo);
+            values.put(TPCOL_7, height);
+            values.put(TPCOL_8, weight);
+            values.put(TPCOL_11, gender);
+            values.put(TPCOL_10, age);
+            values.put(TPCOL_12, msp);
+            values.put(TPCOL_13, medication);
+            values.put(TPCOL_14, diseases);
 
-            db.update(TABLE_PATIENT, values,TPCOL_3 + " = ? ",new String[]{ String.valueOf(email) });
+            db.update(TABLE_PATIENT, values, TPCOL_3 + " = ? ", new String[]{String.valueOf(email)});
+        } catch (Exception e) {
+            Log.d("Update Tasks: ", e.getMessage());
         }
-        catch (Exception e){
-            Log.d("Update Tasks: ",e.getMessage());
+    }
+
+    public void updateDoctor(String name, String email,String postalCode, String PhoneNo, String speciality, String fees) {
+        try {
+            SQLiteDatabase db = this.getReadableDatabase();
+            ContentValues values = new ContentValues();
+            values.put(TDCOL_2, name);
+            values.put(TDCOL_3, email);
+            values.put(TDCOL_5, postalCode);
+            values.put(TDCOL_6, PhoneNo);
+            values.put(TDCOL_7, speciality);
+            values.put(TDCOL_8, fees);
+
+            db.update(TABLE_DOCTOR, values, TDCOL_3 + " = ? ", new String[]{String.valueOf(email)});
+        } catch (Exception e) {
+            Log.d("Update Tasks: ", e.getMessage());
+        }
+    }
+
+    public void updateCashier(String name, String email) {
+        try {
+            SQLiteDatabase db = this.getReadableDatabase();
+            ContentValues values = new ContentValues();
+            values.put(TCCOL_2, name);
+            values.put(TCCOL_3, email);
+            db.update(TABLE_CASHIER, values, TCCOL_3 + " = ? ", new String[]{String.valueOf(email)});
+        } catch (Exception e) {
+            Log.d("Update Tasks: ", e.getMessage());
         }
     }
 }
