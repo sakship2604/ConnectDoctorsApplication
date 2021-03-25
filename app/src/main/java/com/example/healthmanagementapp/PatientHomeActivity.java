@@ -8,11 +8,14 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import static com.example.healthmanagementapp.RegisterActivity.MyPREFERENCES;
 
 public class PatientHomeActivity extends AppCompatActivity {
     SharedPreferences sharedPreferences;
+    ImageView track_calories, find_doctor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,5 +44,29 @@ public class PatientHomeActivity extends AppCompatActivity {
     public void goToFindDoctor(View view) {
         Intent intent = new Intent(PatientHomeActivity.this, AddQueryActivity.class);
         startActivity(intent);
+
+        find_doctor = findViewById(R.id.imageViewFindDoctor);
+        track_calories = findViewById(R.id.imageViewTrackCalories);
+
+
+        track_calories.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+
+                startActivity(new Intent(PatientHomeActivity.this, TrackCalories.class));
+            }
+        });
+        find_doctor.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+
+                startActivity(new Intent(PatientHomeActivity.this, FindADoctorActivity.class));
+            }
+        });
+
     }
 }

@@ -3,7 +3,6 @@
     package="com.example.healthmanagementapp">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -13,6 +12,8 @@
         android:theme="@style/AppTheme">
         <activity android:name=".DeleteUsersActivity"></activity>
 
+        <activity android:name=".FindADoctorActivity" />
+        <activity android:name=".Doctors_List"></activity>
         <activity android:name=".FindADoctorActivity" />
         <activity android:name=".TrackCalories" />
         <activity android:name=".DoctorHomeActivity" />
