@@ -18,5 +18,10 @@
     <string name="searchdoctor">Search</string>
     <string name="refresh_button">Refresh</string>
     <string name="text">button</string>
+    <string name="back">Back</string>
+    <string name="search_all_doctors">Search All Doctors</string>
+    <string name="search_by_postal_code">Search by postal code</string>
+    <string name="back">Back</string>
+    <string name="total_calories">Total Calories</string>
 
 </resources>

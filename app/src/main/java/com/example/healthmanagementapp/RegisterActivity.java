@@ -129,10 +129,12 @@ public class RegisterActivity extends AppCompatActivity {
                         gender, 0, Integer.parseInt(patAge.getText().toString()), msp, patMedi.getText().toString(),patDiseases.getText().toString());
             }
         });
+
         // to add doctors
         addDoc.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 databaseHelper.addDoctor(docName.getText().toString(),docEmail.getText().toString(),
                         docPass.getText().toString(),docCode.getText().toString(),docPhone.getText().toString(),docSpl.getText().toString(),docFees.getText().toString());
             }

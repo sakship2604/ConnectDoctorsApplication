@@ -9,8 +9,7 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
-import java.util.Date;
-import java.util.List;
+import java.util.ArrayList;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     final static String DATABASE_NAME = "HealthManagement1.db";
@@ -367,6 +366,60 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             return true;
         else
             return false;
+    }
+    public ArrayList<doctors_model> getAllDoctors()
+    {
+        ArrayList<doctors_model> arrayList = new ArrayList<>();
+        SQLiteDatabase db = getReadableDatabase();
+        String query = "SELECT * FROM " + TABLE_DOCTOR;
+        Cursor cursor = db.rawQuery(query, null);
+
+        while (cursor.moveToNext())
+        {
+            int ID = cursor.getInt(0);
+            String name  = cursor.getString(1);
+            String email = cursor.getString(2);
+            int phone = cursor.getInt(5);
+            String speciality = cursor.getString(6);
+            int fees = cursor.getInt(7);
+
+            String button1 = "Online Help";
+            String button2 = "Book Appointment";
+            doctors_model doctors = new doctors_model(ID,name, email,speciality,fees,phone, button1, button2);
+
+            arrayList.add(doctors);
+
+        }
+        return arrayList;
+
+    }
+
+
+    public ArrayList<doctors_model> getDoctorsByPostalCode(String postalCode)
+    {
+        ArrayList<doctors_model> arrayList = new ArrayList<>();
+        SQLiteDatabase db = getReadableDatabase();
+        String query = "SELECT * FROM " + TABLE_DOCTOR + " WHERE " + TDCOL_5 + " LIKE '" + postalCode + "%'";
+        Cursor cursor = db.rawQuery(query, null);
+
+        while (cursor.moveToNext())
+        {
+            int ID = cursor.getInt(0);
+            String name  = cursor.getString(1);
+            String email = cursor.getString(2);
+            int phone = cursor.getInt(5);
+            String speciality = cursor.getString(6);
+            int fees = cursor.getInt(7);
+
+            String button1 = "Online Help";
+            String button2 = "Book Appointment";
+            doctors_model doctors = new doctors_model(ID,name, email,speciality,fees,phone, button1, button2);
+
+            arrayList.add(doctors);
+
+        }
+        return arrayList;
+
     }
 }
 

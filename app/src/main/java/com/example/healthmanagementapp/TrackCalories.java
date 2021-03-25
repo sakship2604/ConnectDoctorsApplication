@@ -29,6 +29,8 @@ public class TrackCalories extends AppCompatActivity
 
     String datePattern;
 
+    final int dailyCalorieLimit = 1000;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -53,10 +55,11 @@ public class TrackCalories extends AppCompatActivity
         {
             boolean isInserted;
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 String dateTodayString = new SimpleDateFormat(datePattern).format(new Date());
                 isInserted = databaseHelper.addFoodItem(food_item.getText().toString(),
-                        Integer.valueOf(amount.getText().toString()), dateTodayString);
+                        Integer.parseInt(amount.getText().toString()), dateTodayString);
 
                 if(isInserted)
                 {
@@ -80,13 +83,20 @@ public class TrackCalories extends AppCompatActivity
                 Cursor c = databaseHelper.getFoodData(dateTodayString);
 
                 StringBuilder str = new StringBuilder();
+                int totalCalories = 0;
                 if(c.getCount()>0) {
                     while (c.moveToNext()) {
                         //str.append("ID : " + c.getString(0));
-                        str.append("Food : " + c.getString(1));
-                        str.append(", Amount: " + c.getString(2));
-                        str.append("\n");
-                        str.append("Total Calories Eaten : ").append(c.getString(4));
+                        //str.append("Food : " + c.getString(1));
+                        //str.append(", Amount: " + c.getString(2));
+                        //str.append("\n");
+                        if(c.getInt(4) != 0){
+                            totalCalories = c.getInt(4);
+                        }
+                        if(totalCalories > dailyCalorieLimit){
+                            Toast.makeText(getApplicationContext(), "You have exceeded today's calorie limit!", Toast.LENGTH_SHORT).show();
+                        }
+                        str.append("Total Calories Eaten Today: ").append(totalCalories);
                         str.append("\n");
                     }
                     str.append("\n");
