@@ -9,6 +9,7 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
@@ -341,7 +342,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return c;
     }
 
-
     public boolean addFoodItem(String fn, int am, String date) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -349,13 +349,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(T1Col_3, am);
         values.put(T1Col_4, date);
 
-
         long r = sqLiteDatabase.insert(TABLE_FoodItems, null, values);
         if (r > 0)
             return true;
         else
             return false;
-
     }
 
     public Cursor getFoodData(String dateTodayString) {

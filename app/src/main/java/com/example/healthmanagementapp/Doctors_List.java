@@ -51,7 +51,7 @@ public class Doctors_List extends AppCompatActivity
       String whichButton = intent.getStringExtra("whichButton");
       if(whichButton.equalsIgnoreCase("byPostalCode")){
         String postalcode = intent.getStringExtra("postalcode");
-        postalcode = postalcode.substring(0,2);
+
         arrayList = databaseHelper.getDoctorsByPostalCode(postalcode);
       }
       else{
@@ -60,8 +60,6 @@ public class Doctors_List extends AppCompatActivity
       doctorsListAdapter = new DoctorsListAdapter(this,arrayList);
       l1.setAdapter(doctorsListAdapter);
       doctorsListAdapter.notifyDataSetChanged();
-
-
     }
     public void insert(View v)
     {

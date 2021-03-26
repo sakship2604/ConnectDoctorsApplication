@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -29,6 +30,23 @@ public class PatientHomeActivity extends AppCompatActivity {
             editor.putInt("admin", 0);
             editor.apply();
         }
+        find_doctor = findViewById(R.id.imageViewFindDoctor);
+        track_calories = findViewById(R.id.imageViewTrackCalories);
+        find_doctor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i("Pat", "click");
+                startActivity(new Intent(PatientHomeActivity.this, FindADoctorActivity.class));
+
+            }
+        });
+
+        track_calories.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(PatientHomeActivity.this, TrackCalories.class));
+            }
+        });
     }
 
 // for back navigation
@@ -40,33 +58,5 @@ public class PatientHomeActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-    public void goToFindDoctor(View view) {
-        Intent intent = new Intent(PatientHomeActivity.this, AddQueryActivity.class);
-        startActivity(intent);
-
-        find_doctor = findViewById(R.id.imageViewFindDoctor);
-        track_calories = findViewById(R.id.imageViewTrackCalories);
-
-
-        track_calories.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-
-                startActivity(new Intent(PatientHomeActivity.this, TrackCalories.class));
-            }
-        });
-        find_doctor.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-
-                startActivity(new Intent(PatientHomeActivity.this, FindADoctorActivity.class));
-            }
-        });
-
     }
 }
