@@ -2,7 +2,9 @@ package com.example.healthmanagementapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +16,9 @@ public class AddQueryActivity extends AppCompatActivity {
 
     DatabaseHelper databaseHelper;
     EditText editTextPatientId,editTextDoctorId,editTextTextQuestion,editTextTextSolution;
+    SharedPreferences preferences;
+    String user_id;
+    public static final String MyPREFERENCES = "MyPrefs" ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,6 +31,13 @@ public class AddQueryActivity extends AppCompatActivity {
         editTextTextSolution = findViewById(R.id.editTextTextSolution);
         //if(typeUser.equals("d") || )
         //editTextTextSolution.setVisibility(View.GONE);
+
+        preferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        user_id = preferences.getString("user_id","DEFAULT");
+        //SharedPreferences.Editor editor = preferences.edit();
+        //editor.putInt("user_id",1);
+       /// editor.putInt("admin_id",2);
+       // editor.apply();
     }
 
     public void addQuery(View view) {
@@ -33,7 +45,7 @@ public class AddQueryActivity extends AppCompatActivity {
         boolean isInserted;
 
         if(validateForm()){
-            isInserted = databaseHelper.addQueries(Integer.parseInt(editTextPatientId.getText().toString()),
+            isInserted = databaseHelper.addQueries(Integer.parseInt(user_id),
                     Integer.parseInt(editTextDoctorId.getText().toString()),
                     editTextTextQuestion.getText().toString(), editTextTextSolution.getText().toString());
             if(isInserted){
