@@ -21,10 +21,12 @@ import com.google.android.material.snackbar.Snackbar;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class DoctorsListAdapter extends BaseAdapter
+public class DoctorsListAdapter extends BaseAdapter implements DatePickerDialog.OnDateSetListener
 {
     Context context;
     ArrayList<doctors_model> arrayList;
+    DatabaseHelper databaseHelper;
+    int pos;
     public DoctorsListAdapter(Context context, ArrayList<doctors_model> arrayList)
     {
         this.context = context;
@@ -64,6 +66,7 @@ public class DoctorsListAdapter extends BaseAdapter
             Button b2 = convertView.findViewById(R.id.book_appointment);
 
             doctors_model doctors_model = arrayList.get(position);
+            pos = position;
             t1.setText(String.valueOf(doctors_model.getID()));
             t2.setText(doctors_model.getName());
          //   t3.setText(doctors_model.getEmail());
@@ -74,7 +77,27 @@ public class DoctorsListAdapter extends BaseAdapter
 
             b2.setText("Book Appointment");
 
+            //appoint booking button
+            b2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    DatePickerDialog datePickerDialog = new DatePickerDialog(
+                            context,
+                            DoctorsListAdapter.this::onDateSet,
+                            Calendar.getInstance().get(Calendar.YEAR),
+                            Calendar.getInstance().get(Calendar.MONTH),
+                            Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
+                    datePickerDialog.show();
+                }
+            });
+
             return convertView;
         }
 
+    //appoint booking
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        databaseHelper =  new DatabaseHelper(context);
+        //databaseHelper.bookAppointment();
+        //not sure how to get this to work yet
+    }
 }

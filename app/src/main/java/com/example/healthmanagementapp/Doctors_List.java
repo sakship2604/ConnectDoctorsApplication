@@ -28,7 +28,6 @@ public class Doctors_List extends AppCompatActivity
   DoctorsListAdapter doctorsListAdapter;
   RegisterActivity ra = new RegisterActivity();
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -65,6 +64,7 @@ public class Doctors_List extends AppCompatActivity
       doctorsListAdapter.notifyDataSetChanged();
 
     }
+
     public void insert(View v)
     {
 
