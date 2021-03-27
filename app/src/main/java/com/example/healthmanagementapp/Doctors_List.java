@@ -2,12 +2,14 @@ package com.example.healthmanagementapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -15,6 +17,7 @@ import android.widget.Toast;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class Doctors_List extends AppCompatActivity
@@ -60,6 +63,7 @@ public class Doctors_List extends AppCompatActivity
       doctorsListAdapter = new DoctorsListAdapter(this,arrayList);
       l1.setAdapter(doctorsListAdapter);
       doctorsListAdapter.notifyDataSetChanged();
+
     }
     public void insert(View v)
     {

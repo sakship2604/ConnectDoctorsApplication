@@ -23,5 +23,6 @@
     <string name="search_by_postal_code">Search by postal code</string>
 
     <string name="total_calories">Total Calories</string>
+    <string name="request">REQUEST</string>
 
 </resources>
