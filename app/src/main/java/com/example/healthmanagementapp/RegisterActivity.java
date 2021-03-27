@@ -153,10 +153,12 @@ public class RegisterActivity extends AppCompatActivity {
                 }
             }
         });
+
         // to add doctors
         addDoc.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 databaseHelper.addDoctor(docName.getText().toString(),docEmail.getText().toString(),
                         docPass.getText().toString(),docCode.getText().toString(),docPhone.getText().toString(),docSpl.getText().toString(),docFees.getText().toString());
                 Toast.makeText(RegisterActivity.this, "Doctor added", Toast.LENGTH_SHORT).show();

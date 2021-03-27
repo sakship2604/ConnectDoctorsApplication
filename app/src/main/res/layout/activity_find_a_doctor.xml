@@ -7,6 +7,21 @@
     android:background="@drawable/layoutimage"
     tools:context=".FindADoctorActivity">
 
+    <Button
+        android:id="@+id/buttonSearchDoctorByPostalCode"
+        android:layout_width="118dp"
+        android:layout_height="51dp"
+        android:background="#DC1F1F"
+        android:text="@string/search_by_postal_code"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.778"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.526" />
+
     <TextView
         android:id="@+id/textview10"
         android:layout_width="wrap_content"
@@ -21,48 +36,48 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textViewDoctorPostalCode"
-        android:layout_width="197dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="167dp"
-        android:layout_marginLeft="167dp"
-        android:layout_marginTop="128dp"
-        android:layout_marginEnd="187dp"
-        android:layout_marginRight="187dp"
-        android:gravity="center"
-        android:hint="@string/postalcodehint"
-        android:textColor="#F44336"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.428"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textview10" />
-
     <Button
         android:id="@+id/buttonSearchDoctor"
         android:layout_width="118dp"
         android:layout_height="51dp"
-        android:layout_marginTop="148dp"
         android:background="#DC1F1F"
-        android:text="@string/searchdoctor"
+        android:text="@string/search_all_doctors"
         android:textColor="#FFFFFF"
         android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.146"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewDoctorPostalCode" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.536" />
 
     <Button
         android:id="@+id/buttonBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
         android:background="#F44336"
-        android:text="Back"
+        android:text="@string/back"
         android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonSearchDoctor" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.715" />
+
+    <EditText
+        android:id="@+id/postalcode_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/postalcodehint"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.298"
+        android:autofillHints="" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

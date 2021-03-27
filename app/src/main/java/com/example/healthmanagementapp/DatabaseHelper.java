@@ -9,11 +9,14 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     final static String DATABASE_NAME = "HealthManagement.db";
-    final static int DATABASE_VERSION = 4;
+
+    final static int DATABASE_VERSION = 1;
+    
     final static String TABLE_PATIENT = "Patient";
     final static String TPCOL_1 = "Patient_Id";
     final static String TPCOL_2 = "Patient_Name";
@@ -73,6 +76,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     final static String TADCOL_2 = "Admin_email";
     final static String TADCOL_3 = "Admin_password";
 
+    final static String TABLE_FoodItems = "FoodItems";
+    final static String T1COL_1 = "Id";
+    final static String T1Col_2 = "Food_Name";
+    final static String T1Col_3 = "Amount";
+    final static String T1Col_4 = "Date";
 
     public DatabaseHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -82,15 +90,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String queryP = "CREATE TABLE " + TABLE_PATIENT + " (" + TPCOL_1 + " INTEGER PRIMARY KEY NOT NULL," +
-                TPCOL_2 + " TEXT," + TPCOL_3 + " TEXT UNIQUE ," + TPCOL_4 + " TEXT," + TPCOL_5 + " TEXT," + TPCOL_6 +
+                TPCOL_2 + " TEXT," + TPCOL_3 + " TEXT," + TPCOL_4 + " TEXT," + TPCOL_5 + " TEXT," + TPCOL_6 +
                 " INTEGER," + TPCOL_7 + " DECIMAL," + TPCOL_8 + " DECIMAL," + TPCOL_9 + " DECIMAL," + TPCOL_10 + " INTEGER,"
                 + TPCOL_11 + " TEXT," + TPCOL_12 + " TEXT," + TPCOL_13 + " TEXT," + TPCOL_14 + " TEXT)";
 
         String queryD = "CREATE TABLE " + TABLE_DOCTOR + " (" + TDCOL_1 + " INTEGER PRIMARY KEY NOT NULL," +
-                TDCOL_2 + " TEXT," + TDCOL_3 + " TEXT UNIQUE," + TDCOL_4 + " TEXT," + TDCOL_5 + " TEXT," + TDCOL_6 + " INTEGER," + TDCOL_7 + " TEXT," + TDCOL_8 + " DECIMAL)";
+                TDCOL_2 + " TEXT," + TDCOL_3 + " TEXT," + TDCOL_4 + " TEXT," + TDCOL_5 + " TEXT," + TDCOL_6 + " INTEGER," + TDCOL_7 + " TEXT," + TDCOL_8 + " DECIMAL)";
 
         String queryC = "CREATE TABLE " + TABLE_CASHIER + " (" + TCCOL_1 + " INTEGER PRIMARY KEY NOT NULL," +
-                TCCOL_2 + " TEXT," + TCCOL_3 + " TEXT UNIQUE," + TCCOL_4 + " TEXT)";
+                TCCOL_2 + " TEXT," + TCCOL_3 + " TEXT," + TCCOL_4 + " TEXT)";
 
         String queryQ = "CREATE TABLE " + TABLE_QUERIES + " (" + TQCOL_1 + " INTEGER PRIMARY KEY NOT NULL," +
                 TQCOL_2 + " INTEGER," + TQCOL_3 + " INTERGER," + TQCOL_4 + " TEXT," + TQCOL_5 + " TEXT" +
@@ -113,6 +121,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 TADCOL_2 + " TEXT," + TADCOL_3 + " TEXT)";
 
 
+        String queryF = "CREATE TABLE " + TABLE_FoodItems + " (" + T1COL_1 + " INTEGER PRIMARY KEY," +
+                T1Col_2 + " TEXT," + T1Col_3 + " INTEGER, " + T1Col_4 + " TEXT )";
+
         db.execSQL(queryP);
         db.execSQL(queryD);
         db.execSQL(queryC);
@@ -120,6 +131,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(queryA);
         db.execSQL(queryB);
         db.execSQL(queryAd);
+        db.execSQL(queryF);
+
     }
 
     @Override
@@ -329,6 +342,108 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         db.close();
         return result;
+
+
+    }
+
+    public Cursor viewdoctors() {
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+        String query = "SELECT * FROM " + TABLE_DOCTOR;
+        Cursor c = sqLiteDatabase.rawQuery(query, null);
+        return c;
+    }
+
+    public boolean addFoodItem(String fn, int am, String date) {
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(T1Col_2, fn);
+        values.put(T1Col_3, am);
+        values.put(T1Col_4, date);
+
+        long r = sqLiteDatabase.insert(TABLE_FoodItems, null, values);
+        if (r > 0)
+            return true;
+        else
+            return false;
+    }
+
+    public Cursor getFoodData(String dateTodayString) {
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+        String query = "SELECT *, SUM(amount)  FROM " + TABLE_FoodItems + " WHERE " + T1Col_4 + " LIKE '" + dateTodayString + "'";
+        Log.i("QUERY", query);
+        Cursor c = sqLiteDatabase.rawQuery(query, null);
+        return c;
+    }
+
+    public Cursor onrefresh() {
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+        String query = "DELETE  FROM " + TABLE_FoodItems;
+        Cursor c = sqLiteDatabase.rawQuery(query, null);
+        return c;
+    }
+
+    public boolean updateRec(int id, String c) {
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(T1Col_3, c);
+
+        int d = sqLiteDatabase.update(TABLE_FoodItems, values, "id=?",
+                new String[]{Integer.toString(id)});
+        if (d > 0)
+            return true;
+        else
+            return false;
+    }
+
+    public ArrayList<doctors_model> getAllDoctors() {
+        ArrayList<doctors_model> arrayList = new ArrayList<>();
+        SQLiteDatabase db = getReadableDatabase();
+        String query = "SELECT * FROM " + TABLE_DOCTOR;
+        Cursor cursor = db.rawQuery(query, null);
+
+        while (cursor.moveToNext()) {
+            int ID = cursor.getInt(0);
+            String name = cursor.getString(1);
+            String email = cursor.getString(2);
+            int phone = cursor.getInt(5);
+            String speciality = cursor.getString(6);
+            int fees = cursor.getInt(7);
+
+            String button1 = "Online Help";
+            String button2 = "Book Appointment";
+            doctors_model doctors = new doctors_model(ID, name, email, speciality, fees, phone, button1, button2);
+
+            arrayList.add(doctors);
+
+        }
+        return arrayList;
+
+    }
+
+
+    public ArrayList<doctors_model> getDoctorsByPostalCode(String postalCode) {
+        ArrayList<doctors_model> arrayList = new ArrayList<>();
+        SQLiteDatabase db = getReadableDatabase();
+        String query = "SELECT * FROM " + TABLE_DOCTOR + " WHERE " + TDCOL_5 + " LIKE '" + postalCode + "%'";
+        Cursor cursor = db.rawQuery(query, null);
+
+        while (cursor.moveToNext()) {
+            int ID = cursor.getInt(0);
+            String name = cursor.getString(1);
+            String email = cursor.getString(2);
+            int phone = cursor.getInt(5);
+            String speciality = cursor.getString(6);
+            int fees = cursor.getInt(7);
+
+            String button1 = "Online Help";
+            String button2 = "Book Appointment";
+            doctors_model doctors = new doctors_model(ID, name, email, speciality, fees, phone, button1, button2);
+
+            arrayList.add(doctors);
+
+        }
+        return arrayList;
+
     }
 
     // reset password
@@ -404,7 +519,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public void updateDoctor(String name, String email,String postalCode, String PhoneNo, String speciality, String fees) {
+    public void updateDoctor(String name, String email, String postalCode, String PhoneNo, String speciality, String fees) {
         try {
             SQLiteDatabase db = this.getReadableDatabase();
             ContentValues values = new ContentValues();
