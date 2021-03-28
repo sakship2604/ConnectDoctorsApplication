@@ -69,7 +69,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     final static String TBCOL_2 = "Appointment_Id";
     final static String TBCOL_3 = "Cashier_Id";
     final static String TBCOL_4 = "Patient_Id";
-    final static String TBCOL_5 = "Payment_Status";
+    final static String TBCOL_5 = "Payment_Amt";
+    final static String TBCOL_6 = "Payment_Status";
 
     final static String TABLE_ADMIN = "Admin";
     final static String TADCOL_1 = "Admin_Id";
@@ -254,13 +255,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public boolean addBilling(int appointmentId, int cashierId, int patientId, int paymentStatus) {
+    public boolean addBilling(int appointmentId, int cashierId, int patientId, int paymentAmt, int paymentStatus) {
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(TBCOL_2, appointmentId);
         contentValues.put(TBCOL_3, cashierId);
         contentValues.put(TBCOL_4, patientId);
-        contentValues.put(TBCOL_4, paymentStatus);
+        contentValues.put(TBCOL_5, paymentAmt);
+        contentValues.put(TBCOL_6, paymentStatus);
 
 
         long r = sqLiteDatabase.insert(TABLE_BILLING, null, contentValues);
@@ -441,6 +443,29 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
             arrayList.add(doctors);
 
+        }
+        return arrayList;
+
+    }
+
+    //get all billing for cashier
+    public ArrayList<Payment_Model> getAllbills() {
+        ArrayList<Payment_Model> arrayList = new ArrayList<>();
+        SQLiteDatabase db = getReadableDatabase();
+        String query = "SELECT * FROM " + TABLE_BILLING;
+        Cursor cursor = db.rawQuery(query, null);
+
+        while (cursor.moveToNext()) {
+            int billingID = cursor.getInt(3);
+            int appointmentID = cursor.getInt(4);
+            int cashierID = cursor.getInt(5);
+            int patientID = cursor.getInt(6);
+            int paymentAmt = cursor.getInt(7);
+            int paymentStatus = cursor.getInt(8);
+
+            Payment_Model bills = new Payment_Model(billingID, appointmentID, cashierID, patientID, paymentAmt, paymentStatus);
+
+            arrayList.add(bills);
         }
         return arrayList;
 

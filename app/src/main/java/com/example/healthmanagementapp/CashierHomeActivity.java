@@ -9,6 +9,7 @@ import android.widget.Button;
 
 public class CashierHomeActivity extends AppCompatActivity {
 
+    DatabaseHelper databaseHelper;
     Button btnShow, btnPayment, btnLogout;
 
     @Override
@@ -16,30 +17,23 @@ public class CashierHomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cashier_home);
 
+        databaseHelper = new DatabaseHelper(this);
         btnShow = findViewById(R.id.buttonShowPayments);
         btnLogout = findViewById(R.id.buttonCashierLogout);
-        btnPayment = findViewById(R.id.buttonPayment);
 
         btnShow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //would load the payment data here
+                Intent intentpay = new Intent(CashierHomeActivity.this, Payments_List.class);
+                startActivity(intentpay);
             }
         });
 
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(CashierHomeActivity.this,MainActivity.class);
-                startActivity(intent);
             }
         });
 
-        btnPayment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //would use the patients email to notify/request payment from them
-            }
-        });
     }
 }
