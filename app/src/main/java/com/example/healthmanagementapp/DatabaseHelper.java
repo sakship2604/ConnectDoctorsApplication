@@ -16,7 +16,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     final static String DATABASE_NAME = "HealthManagement.db";
 
     final static int DATABASE_VERSION = 1;
-    
+
     final static String TABLE_PATIENT = "Patient";
     final static String TPCOL_1 = "Patient_Id";
     final static String TPCOL_2 = "Patient_Name";

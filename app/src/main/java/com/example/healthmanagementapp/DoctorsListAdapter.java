@@ -1,6 +1,7 @@
 package com.example.healthmanagementapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,6 +61,14 @@ public class DoctorsListAdapter extends BaseAdapter
           //  t4.setText(String.valueOf(doctors_model.getFees()));
          //   t5.setText(String.valueOf(doctors_model.getPhonenumber()));
             b1.setText("Online Help");
+            b1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, AddQueryActivity.class);
+                    intent.putExtra("doctor_id", doctors_model.getID());
+                    context.startActivity(intent);
+                }
+            });
 
             b2.setText("Book Appointment");
 

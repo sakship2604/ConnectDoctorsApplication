@@ -95,29 +95,24 @@ public class MainActivity extends AppCompatActivity {
                     boolean result = databaseHelper.getPatient(username.getText().toString(), pass.getText().toString());
                     FLAG = 1;
                     if(result){
-                        Cursor c = databaseHelper.getPatientId(username.getText().toString(), pass.getText().toString());
-
-
-                        if(c.getCount()>0){
-                            while(c.moveToNext()){
-
-                                Log.i("ID ", c.getString(0));
-                                Log.i("Name ", c.getString(1));
-
-                                SharedPreferences.Editor editor = preferences.edit();
-                                editor.putString("user_id",c.getString(0));
-
-                                editor.apply();
+                        try (Cursor c = databaseHelper.getPatientId(username.getText().toString(), pass.getText().toString())) {
+                            if (c.getCount() > 0) {
+                                while (c.moveToNext()) {
+                                    Log.i("ID ", c.getString(0));
+                                    Log.i("Name ", c.getString(1));
+                                    Log.i("MSP ", c.getString(11));
+                                    SharedPreferences.Editor editor = preferences.edit();
+                                    editor.putString("user_id", c.getString(0));
+                                    editor.putString("msp", c.getString(11));
+                                    editor.apply();
+                                }
+                                Toast.makeText(MainActivity.this, String.valueOf("Successfully Logged In"), Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(MainActivity.this, PatientHomeActivity.class);
+                                intent.putExtra("Flag", FLAG);
+                                startActivity(intent);
                             }
                         }
-
                     }
-
-
-                    Toast.makeText(MainActivity.this, String.valueOf("Successfully Logged In"), Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(MainActivity.this, PatientHomeActivity.class);
-                    intent.putExtra("Flag",FLAG);
-                    startActivity(intent);
                 } else if (radDoctor.isChecked()) {
                     boolean result = databaseHelper.getDoctor(username.getText().toString(), pass.getText().toString());
                     Toast.makeText(MainActivity.this, String.valueOf("Successfully Logged In"), Toast.LENGTH_SHORT).show();

@@ -10,14 +10,17 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class AddQueryActivity extends AppCompatActivity {
 
     DatabaseHelper databaseHelper;
-    EditText editTextPatientId,editTextDoctorId,editTextTextQuestion,editTextTextSolution;
+    EditText editTextPatientId,editTextDoctorId,editTextNameCrediCard, editTextCrediCardNumber,editTextTextQuestion,editTextTextSolution;
     SharedPreferences preferences;
-    String user_id;
+    String user_id, msp;
+    TextView textAmout;
+    int doctor_id;
     public static final String MyPREFERENCES = "MyPrefs" ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,19 +28,31 @@ public class AddQueryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_query);
         databaseHelper = new DatabaseHelper(this);
 
-        editTextPatientId = findViewById(R.id.editTextPatientId);
-        editTextDoctorId = findViewById(R.id.editTextDoctorId);
+
         editTextTextQuestion = findViewById(R.id.editTextTextQuestion);
         editTextTextSolution = findViewById(R.id.editTextTextSolution);
+        textAmout = findViewById(R.id.textAmout);
+        editTextNameCrediCard = findViewById(R.id.editTextNameCrediCard);
+        editTextCrediCardNumber = findViewById(R.id.editTextCrediCardNumber);
         //if(typeUser.equals("d") || )
-        //editTextTextSolution.setVisibility(View.GONE);
+
+        doctor_id = getIntent().getIntExtra("layoutToShow",0);
+        editTextTextSolution.setVisibility(View.GONE);
 
         preferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         user_id = preferences.getString("user_id","DEFAULT");
+        msp = preferences.getString("msp","DEFAULT");
+
+        if(!msp.equals("NO")){
+            textAmout.setVisibility(View.GONE);
+            editTextNameCrediCard.setVisibility(View.GONE);
+            editTextCrediCardNumber.setVisibility(View.GONE);
+
+        }
         //SharedPreferences.Editor editor = preferences.edit();
         //editor.putInt("user_id",1);
-       /// editor.putInt("admin_id",2);
-       // editor.apply();
+        /// editor.putInt("admin_id",2);
+        // editor.apply();
     }
 
     public void addQuery(View view) {
@@ -46,12 +61,12 @@ public class AddQueryActivity extends AppCompatActivity {
 
         if(validateForm()){
             isInserted = databaseHelper.addQueries(Integer.parseInt(user_id),
-                    Integer.parseInt(editTextDoctorId.getText().toString()),
+                    doctor_id,
                     editTextTextQuestion.getText().toString(), editTextTextSolution.getText().toString());
             if(isInserted){
                 Toast.makeText(AddQueryActivity.this, "Data added", Toast.LENGTH_LONG).show();
-                editTextPatientId.setText("");
-                editTextDoctorId.setText("");
+               // editTextPatientId.setText("");
+               // editTextDoctorId.setText("");
                 editTextTextQuestion.setText("");
                 editTextTextSolution.setText("");
                 functionView();
