@@ -14,7 +14,9 @@
 
         <activity android:name=".FindADoctorActivity" />
         <activity android:name=".Doctors_List"></activity>
-        <activity android:name=".FindADoctorActivity" />
+
+        <activity android:name=".AddQueryActivity" />
+        <activity android:name=".ListQueriesActivity" />
         <activity android:name=".TrackCalories" />
         <activity android:name=".DoctorHomeActivity" />
         <activity android:name=".AdminActivity" />
