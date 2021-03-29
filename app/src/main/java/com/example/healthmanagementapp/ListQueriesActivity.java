@@ -2,7 +2,9 @@ package com.example.healthmanagementapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,16 +21,34 @@ import java.util.List;
 public class ListQueriesActivity extends AppCompatActivity {
 
     DatabaseHelper databaseHelper;
+    SharedPreferences preferences;
+    String doctor_id;
+    int flag_doctor;
+    public static final String MyPREFERENCES = "MyPrefs" ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_queries);
         databaseHelper = new DatabaseHelper(this);
+
+        flag_doctor = getIntent().getIntExtra("flag_doctor",0);
+        doctor_id = "0";
+        if(flag_doctor==1){
+            preferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+            doctor_id = preferences.getString("doctor_id","DEFAULT");
+        }
+
+
         functionView();
     }
 
     public void functionView(){
-        Cursor c = databaseHelper.viewDataQuery();
+        Cursor c;
+        if(flag_doctor==1)
+            c = databaseHelper.viewDataQueryDoctor(doctor_id);
+        else
+            c = databaseHelper.viewDataQuery();
+
         StringBuilder str = new StringBuilder();
 
 
@@ -63,21 +83,12 @@ public class ListQueriesActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                switch (position){
-                    case 0:
-                        startActivity(new Intent(Intent.ACTION_VIEW,
-                                Uri.parse("https://www.douglascollege.ca/")));
-                        break;
-                    case 1:
-                        startActivity(new Intent(Intent.ACTION_VIEW,
-                                Uri.parse("https://www.sfu.ca/")));
-                        break;
-                    case 2:
-                        //startActivity(new Intent(MainActivity.this, Willis.class));
-
+                if(flag_doctor==1) {
+                    Intent intent = new Intent(ListQueriesActivity.this, AddQueryActivity.class);
+                    intent.putExtra("position", position);
+                    intent.putExtra("flag_doctor", 1);
+                    startActivity(intent);
                 }
-
 
             }
         });

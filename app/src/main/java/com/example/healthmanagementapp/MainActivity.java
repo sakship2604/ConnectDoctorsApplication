@@ -115,9 +115,25 @@ public class MainActivity extends AppCompatActivity {
                     }
                 } else if (radDoctor.isChecked()) {
                     boolean result = databaseHelper.getDoctor(username.getText().toString(), pass.getText().toString());
-                    Toast.makeText(MainActivity.this, String.valueOf("Successfully Logged In"), Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(MainActivity.this, DoctorHomeActivity.class);
-                    startActivity(intent);
+
+                    FLAG = 1;
+                    if(result){
+                        try (Cursor c = databaseHelper.getDoctorId(username.getText().toString(), pass.getText().toString())) {
+                            if (c.getCount() > 0) {
+                                while (c.moveToNext()) {
+                                    Log.i("ID ", c.getString(0));
+                                    Log.i("Name ", c.getString(1));
+                                    SharedPreferences.Editor editor = preferences.edit();
+                                    editor.putString("doctor_id", c.getString(0));
+                                    editor.apply();
+                                }
+
+                                Toast.makeText(MainActivity.this, String.valueOf("Successfully Logged In"), Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(MainActivity.this, DoctorHomeActivity.class);
+                                startActivity(intent);
+                            }
+                        }
+                    }
                 } else if (radCashier.isChecked()) {
                     boolean result = databaseHelper.getCashier(username.getText().toString(), pass.getText().toString());
                     Toast.makeText(MainActivity.this, String.valueOf("Successfully Logged In"), Toast.LENGTH_SHORT).show();
