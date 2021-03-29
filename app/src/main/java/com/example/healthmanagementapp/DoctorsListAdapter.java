@@ -82,6 +82,14 @@ public class DoctorsListAdapter extends BaseAdapter
 
             b2.setText("Book Appointment");
 
+            //online help button
+            b1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+
             //appoint booking button
             b2.setOnClickListener(new View.OnClickListener() {
                 @Override
