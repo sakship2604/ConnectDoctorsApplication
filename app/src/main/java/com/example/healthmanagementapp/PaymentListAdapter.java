@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -49,6 +50,13 @@ public class PaymentListAdapter extends BaseAdapter {
         t1.setText(payment_model.getBillingID());
         t2.setText(payment_model.getPatientID());
         t3.setText(payment_model.getPaymentAmt());
+
+        b1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context, "Request Emailed", Toast.LENGTH_LONG);
+            }
+        });
 
         return convertView;
     }

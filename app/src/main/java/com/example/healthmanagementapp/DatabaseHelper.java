@@ -205,12 +205,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return c;
     }
 
-    public boolean bookAppointment(int doctorId, int patientId, String date, int status, double fees) {
+    public boolean bookAppointment(int doctorId, int patientId, String date, int status, int fees) {
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(TACOL_2, doctorId);
         contentValues.put(TACOL_3, patientId);
-        contentValues.put(TACOL_4, date.toString());
+        contentValues.put(TACOL_4, date);
         contentValues.put(TACOL_5, status);
         contentValues.put(TACOL_6, fees);
 
@@ -255,11 +255,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public boolean addBilling(int appointmentId, int cashierId, int patientId, int paymentAmt, int paymentStatus) {
+    public boolean addBilling(int appointmentId, int patientId, int paymentAmt, int paymentStatus) {
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(TBCOL_2, appointmentId);
-        contentValues.put(TBCOL_3, cashierId);
         contentValues.put(TBCOL_4, patientId);
         contentValues.put(TBCOL_5, paymentAmt);
         contentValues.put(TBCOL_6, paymentStatus);

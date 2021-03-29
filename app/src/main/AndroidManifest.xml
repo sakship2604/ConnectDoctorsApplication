@@ -11,10 +11,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".DeleteUsersActivity"></activity>
-
         <activity android:name=".FindADoctorActivity" />
         <activity android:name=".Doctors_List"></activity>
-
         <activity android:name=".AddQueryActivity" />
         <activity android:name=".ListQueriesActivity" />
         <activity android:name=".TrackCalories" />

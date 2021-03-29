@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
                 else{
-                    Toast.makeText(MainActivity.this, "Only patients canregister", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Only patients can register", Toast.LENGTH_SHORT).show();
                 }
 
             }

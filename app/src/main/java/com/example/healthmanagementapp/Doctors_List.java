@@ -3,7 +3,9 @@ package com.example.healthmanagementapp;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
@@ -27,6 +29,8 @@ public class Doctors_List extends AppCompatActivity
   ArrayList<doctors_model> arrayList;
   DoctorsListAdapter doctorsListAdapter;
   RegisterActivity ra = new RegisterActivity();
+  SharedPreferences preferences;
+  public static final String MyPREFERENCES = "MyPrefs" ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -39,6 +43,8 @@ public class Doctors_List extends AppCompatActivity
         //EditText docphn = ra.docPhone;
         EditText spcl = ra.docSpl;
         //EditText  fees = ra.docFees;
+
+        preferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
 
         databaseHelper = new DatabaseHelper(this);
         arrayList = new ArrayList<>();
@@ -59,7 +65,7 @@ public class Doctors_List extends AppCompatActivity
       else{
         arrayList = databaseHelper.getAllDoctors();
       }
-      doctorsListAdapter = new DoctorsListAdapter(this,arrayList);
+      doctorsListAdapter = new DoctorsListAdapter(this,arrayList, preferences);
       l1.setAdapter(doctorsListAdapter);
       doctorsListAdapter.notifyDataSetChanged();
 
