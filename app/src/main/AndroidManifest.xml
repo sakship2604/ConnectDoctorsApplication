@@ -11,15 +11,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".DeleteUsersActivity"></activity>
-
         <activity android:name=".FindADoctorActivity" />
         <activity android:name=".Doctors_List"></activity>
-<<<<<<<<< Temporary merge branch 1
-=========
-
         <activity android:name=".AddQueryActivity" />
         <activity android:name=".ListQueriesActivity" />
->>>>>>>>> Temporary merge branch 2
         <activity android:name=".TrackCalories" />
         <activity android:name=".DoctorHomeActivity" />
         <activity android:name=".AdminActivity" />

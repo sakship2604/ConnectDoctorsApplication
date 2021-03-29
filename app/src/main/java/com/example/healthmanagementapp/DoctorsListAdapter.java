@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,17 +23,20 @@ import com.google.android.material.snackbar.Snackbar;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class DoctorsListAdapter extends BaseAdapter implements DatePickerDialog.OnDateSetListener
+public class DoctorsListAdapter extends BaseAdapter
 {
     Context context;
     ArrayList<doctors_model> arrayList;
     DatabaseHelper databaseHelper;
     int pos;
-    public DoctorsListAdapter(Context context, ArrayList<doctors_model> arrayList)
+    DatePickerDialog.OnDateSetListener dateSetListener;
+    SharedPreferences preferences;
+
+    public DoctorsListAdapter(Context context, ArrayList<doctors_model> arrayList, SharedPreferences preferences)
     {
         this.context = context;
         this.arrayList = arrayList;
-
+        this.preferences = preferences;
     }
     @Override
     public int getCount()
@@ -84,7 +88,7 @@ public class DoctorsListAdapter extends BaseAdapter implements DatePickerDialog.
                 public void onClick(View v) {
                     DatePickerDialog datePickerDialog = new DatePickerDialog(
                             context,
-                            DoctorsListAdapter.this::onDateSet,
+                            dateSetListener,
                             Calendar.getInstance().get(Calendar.YEAR),
                             Calendar.getInstance().get(Calendar.MONTH),
                             Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
@@ -92,13 +96,31 @@ public class DoctorsListAdapter extends BaseAdapter implements DatePickerDialog.
                 }
             });
 
+            DatabaseHelper databaseHelper = new DatabaseHelper(context);
+            dateSetListener = new DatePickerDialog.OnDateSetListener() {
+                @Override
+                public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                    databaseHelper.bookAppointment(
+                            doctors_model.getID(),
+                            Integer.valueOf(preferences.getString("user_id", "DEFAULT")),
+                            year + " " + month + " " + dayOfMonth,
+                            0,
+                            doctors_model.getFees()
+                    );
+
+                    databaseHelper.addBilling(
+                            0,
+                            Integer.valueOf(preferences.getString("user_id", "DEFAULT")),
+                            doctors_model.getFees(),
+                            0
+                    );
+
+
+
+                };
+            };
+
             return convertView;
         }
 
-    //appoint booking
-    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        databaseHelper =  new DatabaseHelper(context);
-        //databaseHelper.bookAppointment();
-        //not sure how to get this to work yet
-    }
 }
