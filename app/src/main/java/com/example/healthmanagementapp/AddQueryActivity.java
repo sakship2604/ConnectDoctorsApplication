@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,7 +21,10 @@ public class AddQueryActivity extends AppCompatActivity {
     SharedPreferences preferences;
     String user_id, msp;
     TextView textAmout;
+    Button buttonPay;
     int doctor_id;
+    int flag_doctor;
+    int query_id;
     public static final String MyPREFERENCES = "MyPrefs" ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,39 +40,71 @@ public class AddQueryActivity extends AppCompatActivity {
         editTextCrediCardNumber = findViewById(R.id.editTextCrediCardNumber);
         //if(typeUser.equals("d") || )
 
-        doctor_id = getIntent().getIntExtra("layoutToShow",0);
-        editTextTextSolution.setVisibility(View.GONE);
-
-        preferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
-        user_id = preferences.getString("user_id","DEFAULT");
-        msp = preferences.getString("msp","DEFAULT");
-
-        if(!msp.equals("NO")){
+        buttonPay = findViewById(R.id.buttonPay);
+        buttonPay.setVisibility(View.GONE);
+        query_id = 0;
+        flag_doctor = getIntent().getIntExtra("flag_doctor",0);
+        if(flag_doctor==1){
             textAmout.setVisibility(View.GONE);
+            //editTextTextQuestion.setVisibility(View.GONE);
             editTextNameCrediCard.setVisibility(View.GONE);
             editTextCrediCardNumber.setVisibility(View.GONE);
 
+            query_id = getIntent().getIntExtra("position",0);
+            getQueryInfo();
+
+        }else{
+            doctor_id = getIntent().getIntExtra("doctor_id",0);
+            editTextTextSolution.setVisibility(View.GONE);
+            preferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+            user_id = preferences.getString("user_id","DEFAULT");
+            msp = preferences.getString("msp","DEFAULT");
+
+            if(!msp.equals("NO")){
+                textAmout.setVisibility(View.GONE);
+                editTextNameCrediCard.setVisibility(View.GONE);
+                editTextCrediCardNumber.setVisibility(View.GONE);
+            }
         }
-        //SharedPreferences.Editor editor = preferences.edit();
-        //editor.putInt("user_id",1);
-        /// editor.putInt("admin_id",2);
-        // editor.apply();
+    }
+
+    public void getQueryInfo(){
+        Cursor c = databaseHelper.getQuery(query_id+1);
+
+        if (c.getCount() > 0) {
+            while (c.moveToNext()) {
+
+                doctor_id = Integer.parseInt(c.getString(1));
+                user_id = c.getString(2);
+                editTextTextQuestion.setText(c.getString(3));
+            }
+        }
     }
 
     public void addQuery(View view) {
 
-        boolean isInserted;
+        boolean isInserted = false;
 
         if(validateForm()){
-            isInserted = databaseHelper.addQueries(Integer.parseInt(user_id),
-                    doctor_id,
-                    editTextTextQuestion.getText().toString(), editTextTextSolution.getText().toString());
+            if(flag_doctor==1){
+                isInserted = databaseHelper.updateQuery(editTextTextSolution.getText().toString(), String.valueOf(query_id+1));
+
+            }else{
+                isInserted = databaseHelper.addQueries(Integer.parseInt(user_id),
+                        doctor_id,
+                        editTextTextQuestion.getText().toString(), editTextTextSolution.getText().toString());
+
+                if(msp.equals("NO"))
+                    buttonPay.setVisibility(View.VISIBLE);
+            }
+
             if(isInserted){
                 Toast.makeText(AddQueryActivity.this, "Data added", Toast.LENGTH_LONG).show();
-               // editTextPatientId.setText("");
-               // editTextDoctorId.setText("");
+                // editTextPatientId.setText("");
+                // editTextDoctorId.setText("");
                 editTextTextQuestion.setText("");
                 editTextTextSolution.setText("");
+
                 functionView();
             }else{
                 Toast.makeText(AddQueryActivity.this,"Data not added",Toast.LENGTH_LONG).show();
@@ -106,6 +142,13 @@ public class AddQueryActivity extends AppCompatActivity {
 
     public void goToCheckHistory(View view) {
         Intent intent = new Intent(AddQueryActivity.this, ListQueriesActivity.class);
+        startActivity(intent);
+    }
+
+    public void goToCheckPay(View view) {
+        Intent intent = new Intent(AddQueryActivity.this, CashierHomeActivity.class);
+        intent.putExtra("nameCredicard",editTextNameCrediCard.getText().toString() );
+        intent.putExtra("credicardNumber", editTextCrediCardNumber.getText().toString());
         startActivity(intent);
     }
 }
