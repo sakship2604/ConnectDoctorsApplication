@@ -334,6 +334,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return result;
     }
 
+    public Cursor getDoctorId(String email, String password) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        boolean result = false;
+        Cursor cursor = db.rawQuery("select * from " + TABLE_DOCTOR + " where " + TDCOL_3 + " =  \"" + email + "\"" + " AND " + TDCOL_4 + " = \"" + password + "\"", null);
+        if (cursor.getCount() > 0) {
+            result = true;
+        }
+        //db.close();
+        return cursor;
+    }
+
+    public Cursor viewDataQueryDoctor(String doctor_id) {
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+        String query = "SELECT * FROM " + TABLE_QUERIES + " WHERE " + TQCOL_2 + " = " + doctor_id;
+        Cursor c = sqLiteDatabase.rawQuery(query, null);
+        return c;
+    }
+
     // authenticate cashier
     public boolean getCashier(String email, String password) {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -346,6 +364,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return result;
 
 
+    }
+
+    public Cursor getQuery(int query_id) {
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+        String query = "SELECT * FROM " + TABLE_QUERIES + " WHERE " + TQCOL_1 + " = " + query_id;
+        Cursor c = sqLiteDatabase.rawQuery(query, null);
+        return c;
     }
 
     public Cursor viewdoctors() {
@@ -570,6 +595,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             db.update(TABLE_CASHIER, values, TCCOL_3 + " = ? ", new String[]{String.valueOf(email)});
         } catch (Exception e) {
             Log.d("Update Tasks: ", e.getMessage());
+        }
+    }
+
+    public boolean updateQuery(String solution, String query_id) {
+        try {
+            SQLiteDatabase db = this.getReadableDatabase();
+            ContentValues values = new ContentValues();
+            values.put(TQCOL_5, solution);
+            db.update(TABLE_QUERIES, values, TQCOL_1 + " = ? ", new String[]{String.valueOf(query_id)});
+            return true;
+        } catch (Exception e) {
+            Log.d("Update Tasks: ", e.getMessage());
+            return false;
         }
     }
 }
