@@ -14,8 +14,8 @@ import java.util.Date;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     final static String DATABASE_NAME = "HealthManagement.db";
-    final static int DATABASE_VERSION = 1;
 
+    final static int DATABASE_VERSION = 1;
 
     final static String TABLE_PATIENT = "Patient";
     final static String TPCOL_1 = "Patient_Id";
@@ -309,6 +309,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         db.close();
         return result;
+    }
+
+    public Cursor getPatientId(String email, String password) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select * from " + TABLE_PATIENT + " where " + TPCOL_3 + " =  \"" + email + "\"" + " AND " + TPCOL_4 + " = \"" + password + "\"", null);
+        if (cursor.getCount() > 0) {
+            //result = true;
+        }
+        db.close();
+
+        return cursor;
     }
 
     // authenticate doctor

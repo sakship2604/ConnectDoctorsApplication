@@ -2,8 +2,10 @@ package com.example.healthmanagementapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -29,12 +31,15 @@ public class MainActivity extends AppCompatActivity {
     TextView register, resetPass;
     LinearLayout layoutAdmin, layoutUser;
     DatabaseHelper databaseHelper;
+    public static final String MyPREFERENCES = "MyPrefs" ;
     int FLAG = 0;
+    SharedPreferences preferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        preferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
 
         databaseHelper = new DatabaseHelper(this);
         btnALogin = findViewById(R.id.buttonAdminLogin);
@@ -89,10 +94,25 @@ public class MainActivity extends AppCompatActivity {
                 if (radPatient.isChecked()) {
                     boolean result = databaseHelper.getPatient(username.getText().toString(), pass.getText().toString());
                     FLAG = 1;
-                    Toast.makeText(MainActivity.this, String.valueOf("Successfully Logged In"), Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(MainActivity.this, PatientHomeActivity.class);
-                    intent.putExtra("Flag",FLAG);
-                    startActivity(intent);
+                    if(result){
+                        try (Cursor c = databaseHelper.getPatientId(username.getText().toString(), pass.getText().toString())) {
+                            if (c.getCount() > 0) {
+                                while (c.moveToNext()) {
+                                    Log.i("ID ", c.getString(0));
+                                    Log.i("Name ", c.getString(1));
+                                    Log.i("MSP ", c.getString(11));
+                                    SharedPreferences.Editor editor = preferences.edit();
+                                    editor.putString("user_id", c.getString(0));
+                                    editor.putString("msp", c.getString(11));
+                                    editor.apply();
+                                }
+                                Toast.makeText(MainActivity.this, String.valueOf("Successfully Logged In"), Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(MainActivity.this, PatientHomeActivity.class);
+                                intent.putExtra("Flag", FLAG);
+                                startActivity(intent);
+                            }
+                        }
+                    }
                 } else if (radDoctor.isChecked()) {
                     boolean result = databaseHelper.getDoctor(username.getText().toString(), pass.getText().toString());
                     Toast.makeText(MainActivity.this, String.valueOf("Successfully Logged In"), Toast.LENGTH_SHORT).show();
