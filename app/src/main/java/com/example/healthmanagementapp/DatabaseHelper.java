@@ -15,7 +15,7 @@ import java.util.List;
 public class DatabaseHelper extends SQLiteOpenHelper {
     final static String DATABASE_NAME = "HealthManagement.db";
 
-    final static int DATABASE_VERSION = 1;
+    final static int DATABASE_VERSION = 2;
 
     final static String TABLE_PATIENT = "Patient";
     final static String TPCOL_1 = "Patient_Id";
@@ -63,6 +63,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     final static String TACOL_4 = "Date";
     final static String TACOL_5 = "Status";
     final static String TACOL_6 = "App_Fees";
+    final static String TACOL_7 = "Time_Spot";
 
     final static String TABLE_BILLING = "Billing";
     final static String TBCOL_1 = "Billing_Id";
@@ -106,7 +107,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "," + "FOREIGN KEY (" + TQCOL_3 + ") REFERENCES " + TABLE_PATIENT + "(" + TPCOL_1 + "));";
 
         String queryA = "CREATE TABLE " + TABLE_APPOINTMENTS + " (" + TACOL_1 + " INTEGER PRIMARY KEY NOT NULL," +
-                TACOL_2 + " INTEGER," + TACOL_3 + " INTEGER," + TACOL_4 + " TEXT," + TACOL_5 + " DECIMAL," + TACOL_6 + " DECIMAL" +
+                TACOL_2 + " INTEGER," + TACOL_3 + " INTEGER," + TACOL_4 + " TEXT," + TACOL_5 + " DECIMAL," + TACOL_6 + " DECIMAL," + TACOL_7 + " TEXT" +
                 "," + " FOREIGN KEY (" + TACOL_2 + ") REFERENCES " + TABLE_DOCTOR + "(" + TDCOL_1 + ")" +
                 "," + "FOREIGN KEY (" + TACOL_3 + ") REFERENCES " + TABLE_PATIENT + "(" + TPCOL_1 + "));";
 
@@ -205,7 +206,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return c;
     }
 
-    public boolean bookAppointment(int doctorId, int patientId, String date, int status, int fees) {
+    public boolean bookAppointment(int doctorId, int patientId, String date, int status, int fees, String timeSpot) {
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(TACOL_2, doctorId);
@@ -213,6 +214,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(TACOL_4, date);
         contentValues.put(TACOL_5, status);
         contentValues.put(TACOL_6, fees);
+        contentValues.put(TACOL_7, timeSpot);
 
         long r = sqLiteDatabase.insert(TABLE_APPOINTMENTS, null, contentValues);
         if (r > 0) {
@@ -312,6 +314,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+
+    // authenticate patient
+    public boolean checkBookAppointment(int doctorId, String date, String timeSpot) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        boolean result = false;
+        Cursor cursor = db.rawQuery("select * from " + TABLE_APPOINTMENTS + " where " + TACOL_2 + " =  \"" + doctorId + "\"" + " AND " + TACOL_4 + " = \"" + date + "\"" + " AND " + TACOL_7 + " = \"" + timeSpot + "\"", null);
+        if (cursor.getCount() > 0) {
+            result = true;
+        }
+        db.close();
+        return result;
+    }
     // authenticate patient
     public boolean getPatient(String email, String password) {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -356,6 +370,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         //db.close();
         return cursor;
+    }
+
+    public Cursor viewDataDoctorAppointment(int doctor_id) {
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+        String query = "SELECT * FROM " + TABLE_APPOINTMENTS + " WHERE " + TACOL_2 + " = " + doctor_id;
+        Cursor c = sqLiteDatabase.rawQuery(query, null);
+        return c;
     }
 
     public Cursor viewDataQueryDoctor(String doctor_id) {

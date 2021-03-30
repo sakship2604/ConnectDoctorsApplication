@@ -3,6 +3,7 @@ package com.example.healthmanagementapp;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.view.LayoutInflater;
@@ -12,8 +13,10 @@ import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
@@ -29,12 +32,23 @@ public class DoctorsListAdapter extends BaseAdapter implements DatePickerDialog.
     DatabaseHelper databaseHelper;
     String patId;
     int pos;
+    int doctor_id;
     public DoctorsListAdapter(Context context, ArrayList<doctors_model> arrayList, String patId)
     {
         this.patId = patId;
         this.context = context;
         this.arrayList = arrayList;
     }
+
+    public int getDoctor_id() {
+        return doctor_id;
+    }
+
+    public void setDoctor_id(int doctor_id) {
+        this.doctor_id = doctor_id;
+    }
+
+
     @Override
     public int getCount()
     {
@@ -76,6 +90,7 @@ public class DoctorsListAdapter extends BaseAdapter implements DatePickerDialog.
           //  t4.setText(String.valueOf(doctors_model.getFees()));
          //   t5.setText(String.valueOf(doctors_model.getPhonenumber()));
             b1.setText("Online Help");
+        this.setDoctor_id(doctors_model.getID());
             b1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -106,9 +121,37 @@ public class DoctorsListAdapter extends BaseAdapter implements DatePickerDialog.
         }
 
     //appoint booking
+    //appoint booking
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
         databaseHelper =  new DatabaseHelper(context);
-        //databaseHelper.bookAppointment();
-        //not sure how to get this to work yet
+
+        //(int doctorId, int patientId, String date, int status, int fees)
+        String date = String.valueOf(year)+"-"+String.valueOf(month)+"-"+String.valueOf(dayOfMonth);
+        int timeSpot = 1;
+        //verificar disponibilidade
+
+        final EditText taskEditText = new EditText(context);
+        AlertDialog dialog = new AlertDialog.Builder(context)
+                .setTitle("Select an spot of time")
+                .setMessage("You can choose any one 08:00 to 18:00 24 hours the spot represent 1 hour!")
+                .setView(taskEditText)
+                .setPositiveButton("Add", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        Intent intent = new Intent(context, ListDoctorAppointmentActivity.class);
+                        intent.putExtra("doctor_id", doctor_id);
+                        intent.putExtra("patient_id", patId);
+                        intent.putExtra("time_spot", taskEditText.getText().toString());
+                        intent.putExtra("date", date);
+                        context.startActivity(intent);
+                    }
+                })
+                .setNegativeButton("Cancel", null)
+                .create();
+        //
+        dialog.show();
+
     }
+
 }
