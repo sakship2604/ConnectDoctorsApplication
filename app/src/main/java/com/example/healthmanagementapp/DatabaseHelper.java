@@ -10,7 +10,7 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     final static String DATABASE_NAME = "HealthManagement.db";
@@ -66,7 +66,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     final static String TABLE_BILLING = "Billing";
     final static String TBCOL_1 = "Billing_Id";
-    final static String TBCOL_2 = "Appointment_Id";
+    final static String TBCOL_2 = "Query_Id";
     final static String TBCOL_3 = "Cashier_Id";
     final static String TBCOL_4 = "Patient_Id";
     final static String TBCOL_5 = "Payment_Amt";
@@ -111,8 +111,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "," + "FOREIGN KEY (" + TACOL_3 + ") REFERENCES " + TABLE_PATIENT + "(" + TPCOL_1 + "));";
 
         String queryB = "CREATE TABLE " + TABLE_BILLING + " (" + TBCOL_1 + " INTEGER PRIMARY KEY NOT NULL," +
-                TBCOL_2 + " INTEGER," + TBCOL_3 + " INTEGER," + TBCOL_4 + " INTEGER," + TBCOL_5 + " INTEGER" +
-                "," + " FOREIGN KEY (" + TBCOL_2 + ") REFERENCES " + TABLE_APPOINTMENTS + "(" + TACOL_1 + ")" +
+                TBCOL_2 + " INTEGER," + TBCOL_3 + " INTEGER," + TBCOL_4 + " INTEGER," + TBCOL_5 + " INTEGER," + TBCOL_6 + " INTEGER" +
+                "," + " FOREIGN KEY (" + TBCOL_2 + ") REFERENCES " + TABLE_QUERIES + "(" + TQCOL_1 + ")" +
                 "," + " FOREIGN KEY (" + TBCOL_3 + ") REFERENCES " + TABLE_CASHIER + "(" + TCCOL_1 + ")" +
                 "," + " FOREIGN KEY (" + TBCOL_4 + ") REFERENCES " + TABLE_PATIENT + "(" + TPCOL_1 + "));";
 
@@ -200,7 +200,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public Cursor viewPatientQuery(String patientId) {
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
-        String query = "SELECT * FROM " + TABLE_QUERIES + " where " + TQCOL_3+ " = " +  patientId;
+        String query = "SELECT * FROM " + TABLE_QUERIES + " where " + TQCOL_3 + " = " + patientId;
         Cursor c = sqLiteDatabase.rawQuery(query, null);
         return c;
     }
@@ -229,7 +229,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(TCCOL_3, email);
         contentValues.put(TCCOL_4, password);
 
-
         long r = sqLiteDatabase.insert(TABLE_CASHIER, null, contentValues);
         if (r > 0) {
             return true;
@@ -246,7 +245,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(TQCOL_4, questions);
         contentValues.put(TQCOL_5, solutions);
 
-
         long r = sqLiteDatabase.insert(TABLE_QUERIES, null, contentValues);
         if (r > 0) {
             return true;
@@ -255,14 +253,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public boolean addBilling(int appointmentId, int patientId, int paymentAmt, int paymentStatus) {
+    public boolean addBilling(int queryId, int cashierId, int patientId, int paymentAmt, int paymentStatus) {
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(TBCOL_2, appointmentId);
+        contentValues.put(TBCOL_2, queryId);
+        contentValues.put(TBCOL_3, cashierId);
         contentValues.put(TBCOL_4, patientId);
         contentValues.put(TBCOL_5, paymentAmt);
         contentValues.put(TBCOL_6, paymentStatus);
-
 
         long r = sqLiteDatabase.insert(TABLE_BILLING, null, contentValues);
         if (r > 0) {
@@ -296,6 +294,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         db.close();
         return result;
+    }
+
+    public Cursor getBilling() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        boolean result = false;
+        Cursor cursor = db.rawQuery("select * from " + TABLE_BILLING, null);
+        db.close();
+        return cursor;
+    }
+
+    public void updateBilling(String id, int status) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(TBCOL_6, status);
+        db.update(TABLE_BILLING, values, TQCOL_1 + " = ? ", new String[]{String.valueOf(id)});
+        db.close();
     }
 
     // authenticate patient
@@ -361,8 +375,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         db.close();
         return result;
-
-
     }
 
     public Cursor getQuery(int query_id) {
@@ -382,7 +394,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public boolean addFoodItem(String food, int cal, String date) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(TCALCOL_2,food );
+        values.put(TCALCOL_2, food);
         values.put(TCALCOL_3, cal);
         values.put(TCALCOL_4, date);
 
@@ -434,16 +446,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             int phone = cursor.getInt(5);
             String speciality = cursor.getString(6);
             int fees = cursor.getInt(7);
-
             String button1 = "Online Help";
             String button2 = "Book Appointment";
             doctors_model doctors = new doctors_model(ID, name, email, speciality, fees, phone, button1, button2);
-
             arrayList.add(doctors);
-
         }
         return arrayList;
-
     }
 
 
@@ -466,33 +474,28 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             doctors_model doctors = new doctors_model(ID, name, email, speciality, fees, phone, button1, button2);
 
             arrayList.add(doctors);
-
         }
         return arrayList;
-
     }
 
     //get all billing for cashier
-    public ArrayList<Payment_Model> getAllbills() {
-        ArrayList<Payment_Model> arrayList = new ArrayList<>();
+    public List<Payment_Model> getAllbills() {
+        List<Payment_Model> arrayList = new ArrayList<>();
         SQLiteDatabase db = getReadableDatabase();
-        String query = "SELECT * FROM " + TABLE_BILLING;
+        String query = "SELECT * FROM " + TABLE_BILLING + " where " + TBCOL_6 + " =  \"" + 1 + "\"";
         Cursor cursor = db.rawQuery(query, null);
 
         while (cursor.moveToNext()) {
-            int billingID = cursor.getInt(3);
-            int appointmentID = cursor.getInt(4);
-            int cashierID = cursor.getInt(5);
-            int patientID = cursor.getInt(6);
-            int paymentAmt = cursor.getInt(7);
-            int paymentStatus = cursor.getInt(8);
-
+            int billingID = cursor.getInt(0);
+            int appointmentID = cursor.getInt(1);
+            int cashierID = cursor.getInt(2);
+            int patientID = cursor.getInt(3);
+            int paymentAmt = cursor.getInt(4);
+            int paymentStatus = cursor.getInt(5);
             Payment_Model bills = new Payment_Model(billingID, appointmentID, cashierID, patientID, paymentAmt, paymentStatus);
-
             arrayList.add(bills);
         }
         return arrayList;
-
     }
 
     // reset password

@@ -10,7 +10,7 @@ import android.widget.Button;
 public class CashierHomeActivity extends AppCompatActivity {
 
     DatabaseHelper databaseHelper;
-    Button btnShow, btnPayment, btnLogout;
+    Button btnShow, btnPayment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,8 +19,6 @@ public class CashierHomeActivity extends AppCompatActivity {
 
         databaseHelper = new DatabaseHelper(this);
         btnShow = findViewById(R.id.buttonShowPayments);
-        btnLogout = findViewById(R.id.buttonCashierLogout);
-
         btnShow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -28,12 +26,5 @@ public class CashierHomeActivity extends AppCompatActivity {
                 startActivity(intentpay);
             }
         });
-
-        btnLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            }
-        });
-
     }
 }

@@ -42,6 +42,7 @@ public class AddQueryActivity extends AppCompatActivity {
         buttonPay = findViewById(R.id.buttonPay);
         buttonPay.setVisibility(View.GONE);
         query_id = 0;
+
         flag_doctor = getIntent().getIntExtra("flag_doctor", 0);
         if (flag_doctor == 1) {
             textAmout.setVisibility(View.GONE);
@@ -61,12 +62,20 @@ public class AddQueryActivity extends AppCompatActivity {
                 editTextCrediCardNumber.setVisibility(View.GONE);
             }
         }
+        buttonPay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                databaseHelper.addBilling(1, 1,1,90,1);
+                Toast.makeText(AddQueryActivity.this, "Added to cashier for authorization.", Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     public void getQueryInfo() {
         Cursor c = databaseHelper.getQuery(query_id + 1);
         if (c.getCount() > 0) {
             while (c.moveToNext()) {
+                query_id = Integer.parseInt(c.getString(0));
                 doctor_id = Integer.parseInt(c.getString(1));
                 editTextTextQuestion.setText(c.getString(3));
             }
