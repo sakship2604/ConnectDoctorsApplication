@@ -23,9 +23,8 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3"
-        tools:layout_editor_absoluteX="-29dp">
+        tools:layout_editor_absoluteX="16dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -71,7 +70,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
 
-
                 <EditText
                     android:id="@+id/editTextTextQuestion"
                     android:layout_width="match_parent"
@@ -94,9 +92,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:text="$90.00"
                     android:hint="Solution"
-                    android:inputType="text" />
+                    android:inputType="text"
+                    android:text="$90.00" />
 
                 <EditText
                     android:id="@+id/editTextNameCrediCard"

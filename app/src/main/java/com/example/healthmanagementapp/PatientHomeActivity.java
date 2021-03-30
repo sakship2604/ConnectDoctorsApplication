@@ -36,8 +36,10 @@ public class PatientHomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.i("Pat", "click");
-                startActivity(new Intent(PatientHomeActivity.this, FindADoctorActivity.class));
-
+                String patientId = getIntent().getStringExtra("patientId");
+                Intent intent = new Intent(PatientHomeActivity.this, FindADoctorActivity.class);
+                intent.putExtra("patientId", patientId);
+                startActivity(intent);
             }
         });
 

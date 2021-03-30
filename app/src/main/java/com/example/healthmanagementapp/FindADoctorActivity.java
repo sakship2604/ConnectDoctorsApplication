@@ -21,14 +21,16 @@ public class FindADoctorActivity extends AppCompatActivity
         setContentView(R.layout.activity_find_a_doctor);
         searchAllDoctors = findViewById(R.id.buttonSearchDoctor);
         searchDoctorsBypostalCode = findViewById(R.id.buttonSearchDoctorByPostalCode);
-        Button back = findViewById(R.id.buttonBack);
+
         etPostalCode = findViewById(R.id.postalcode_id);
+        String patId = getIntent().getStringExtra("patientId");
         searchAllDoctors.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
             {
                 Intent intent = new Intent(FindADoctorActivity.this,Doctors_List.class);
                 intent.putExtra("whichButton", "allDoctors");
+                intent.putExtra("patientId", patId);
                 startActivity(intent);
             }
         });
@@ -39,9 +41,12 @@ public class FindADoctorActivity extends AppCompatActivity
             {
                 String postalCode = etPostalCode.getText().toString();
                 if(!postalCode.isEmpty()){
+                    String patientId = getIntent().getStringExtra("patientId");
                     Intent intent = new Intent(FindADoctorActivity.this,Doctors_List.class);
                     intent.putExtra("whichButton", "byPostalCode");
                     intent.putExtra("postalcode", postalCode);
+                    intent.putExtra("patientId", patientId);
+                    intent.putExtra("patientId", patId);
                     startActivity(intent);
                 }
                 else{
@@ -51,13 +56,6 @@ public class FindADoctorActivity extends AppCompatActivity
             }
         });
 
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v)
-            {
-                Intent intent = new Intent(FindADoctorActivity.this,PatientHomeActivity.class);
-                startActivity(intent);
-            }
-        });
+
     }
 }

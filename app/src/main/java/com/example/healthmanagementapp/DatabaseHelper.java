@@ -77,16 +77,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     final static String TADCOL_2 = "Admin_email";
     final static String TADCOL_3 = "Admin_password";
 
-    final static String TABLE_FoodItems = "FoodItems";
-    final static String T1COL_1 = "Id";
-    final static String T1Col_2 = "Food_Name";
-    final static String T1Col_3 = "Amount";
-    final static String T1Col_4 = "Date";
+    final static String TABLE_CALORIES = "Calories";
+    final static String TCALCOL_1 = "Calorie_Id";
+    final static String TCALCOL_2 = "Food_Name";
+    final static String TCALCOL_3 = "Calories";
+    final static String TCALCOL_4 = "Date";
 
     public DatabaseHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
-
 
     @Override
     public void onCreate(SQLiteDatabase db) {
@@ -111,7 +110,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "," + " FOREIGN KEY (" + TACOL_2 + ") REFERENCES " + TABLE_DOCTOR + "(" + TDCOL_1 + ")" +
                 "," + "FOREIGN KEY (" + TACOL_3 + ") REFERENCES " + TABLE_PATIENT + "(" + TPCOL_1 + "));";
 
-
         String queryB = "CREATE TABLE " + TABLE_BILLING + " (" + TBCOL_1 + " INTEGER PRIMARY KEY NOT NULL," +
                 TBCOL_2 + " INTEGER," + TBCOL_3 + " INTEGER," + TBCOL_4 + " INTEGER," + TBCOL_5 + " INTEGER" +
                 "," + " FOREIGN KEY (" + TBCOL_2 + ") REFERENCES " + TABLE_APPOINTMENTS + "(" + TACOL_1 + ")" +
@@ -121,9 +119,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String queryAd = "CREATE TABLE " + TABLE_ADMIN + " (" + TADCOL_1 + " INTEGER PRIMARY KEY NOT NULL," +
                 TADCOL_2 + " TEXT," + TADCOL_3 + " TEXT)";
 
-
-        String queryF = "CREATE TABLE " + TABLE_FoodItems + " (" + T1COL_1 + " INTEGER PRIMARY KEY," +
-                T1Col_2 + " TEXT," + T1Col_3 + " INTEGER, " + T1Col_4 + " TEXT )";
+        String queryCal = "CREATE TABLE " + TABLE_CALORIES + " (" + TCALCOL_1 + " INTEGER PRIMARY KEY," +
+                TCALCOL_2 + " TEXT," + TCALCOL_3 + " INTEGER, " + TCALCOL_4 + " TEXT )";
 
         db.execSQL(queryP);
         db.execSQL(queryD);
@@ -132,13 +129,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(queryA);
         db.execSQL(queryB);
         db.execSQL(queryAd);
-        db.execSQL(queryF);
-
+        db.execSQL(queryCal);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
         db.execSQL("DROP TABLE if exists " + TABLE_PATIENT);
         db.execSQL("DROP TABLE if exists " + TABLE_ADMIN);
         db.execSQL("DROP TABLE if exists " + TABLE_APPOINTMENTS);
@@ -146,9 +141,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE if exists " + TABLE_CASHIER);
         db.execSQL("DROP TABLE if exists " + TABLE_DOCTOR);
         db.execSQL("DROP TABLE if exists " + TABLE_QUERIES);
-
         onCreate(db);
-
     }
 
     public boolean addPatient(String name, String email, String password, String postalCode,
@@ -201,6 +194,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public Cursor viewDataQuery() {
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
         String query = "SELECT * FROM " + TABLE_QUERIES;
+        Cursor c = sqLiteDatabase.rawQuery(query, null);
+        return c;
+    }
+
+    public Cursor viewPatientQuery(String patientId) {
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+        String query = "SELECT * FROM " + TABLE_QUERIES + " where " + TQCOL_3+ " = " +  patientId;
         Cursor c = sqLiteDatabase.rawQuery(query, null);
         return c;
     }
@@ -379,14 +379,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return c;
     }
 
-    public boolean addFoodItem(String fn, int am, String date) {
+    public boolean addFoodItem(String food, int cal, String date) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(T1Col_2, fn);
-        values.put(T1Col_3, am);
-        values.put(T1Col_4, date);
+        values.put(TCALCOL_2,food );
+        values.put(TCALCOL_3, cal);
+        values.put(TCALCOL_4, date);
 
-        long r = sqLiteDatabase.insert(TABLE_FoodItems, null, values);
+        long r = sqLiteDatabase.insert(TABLE_CALORIES, null, values);
         if (r > 0)
             return true;
         else
@@ -395,7 +395,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public Cursor getFoodData(String dateTodayString) {
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
-        String query = "SELECT *, SUM(amount)  FROM " + TABLE_FoodItems + " WHERE " + T1Col_4 + " LIKE '" + dateTodayString + "'";
+        String query = "SELECT *, SUM(calories)  FROM " + TABLE_CALORIES + " WHERE " + TCALCOL_4 + " LIKE '" + dateTodayString + "'";
         Log.i("QUERY", query);
         Cursor c = sqLiteDatabase.rawQuery(query, null);
         return c;
@@ -403,7 +403,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public Cursor onrefresh() {
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
-        String query = "DELETE  FROM " + TABLE_FoodItems;
+        String query = "DELETE  FROM " + TABLE_CALORIES;
         Cursor c = sqLiteDatabase.rawQuery(query, null);
         return c;
     }
@@ -411,9 +411,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public boolean updateRec(int id, String c) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(T1Col_3, c);
+        values.put(TCALCOL_3, c);
 
-        int d = sqLiteDatabase.update(TABLE_FoodItems, values, "id=?",
+        int d = sqLiteDatabase.update(TABLE_CALORIES, values, "id=?",
                 new String[]{Integer.toString(id)});
         if (d > 0)
             return true;
