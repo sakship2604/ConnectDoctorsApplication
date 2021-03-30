@@ -9,24 +9,22 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Payments_List extends AppCompatActivity {
 
     DatabaseHelper databaseHelper;
     ListView l1;
-    ArrayList<Payment_Model> arrayList;
+    List<Payment_Model> arrayList;
     PaymentListAdapter paymentListAdapter;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.payments_list);
         l1 = findViewById(R.id.listView);
-
         databaseHelper = new DatabaseHelper(this);
         arrayList = new ArrayList<>();
-
         loadDataInListView();
     }
 
