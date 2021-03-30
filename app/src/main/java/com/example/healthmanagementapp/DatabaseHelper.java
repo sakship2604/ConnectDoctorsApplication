@@ -77,16 +77,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     final static String TADCOL_2 = "Admin_email";
     final static String TADCOL_3 = "Admin_password";
 
-    final static String TABLE_FoodItems = "FoodItems";
-    final static String T1COL_1 = "Id";
-    final static String T1Col_2 = "Food_Name";
-    final static String T1Col_3 = "Amount";
-    final static String T1Col_4 = "Date";
+    final static String TABLE_CALORIES = "Calories";
+    final static String TCALCOL_1 = "Calorie_Id";
+    final static String TCALCOL_2 = "Food_Name";
+    final static String TCALCOL_3 = "Calories";
+    final static String TCALCOL_4 = "Date";
 
     public DatabaseHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
-
 
     @Override
     public void onCreate(SQLiteDatabase db) {
@@ -111,7 +110,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "," + " FOREIGN KEY (" + TACOL_2 + ") REFERENCES " + TABLE_DOCTOR + "(" + TDCOL_1 + ")" +
                 "," + "FOREIGN KEY (" + TACOL_3 + ") REFERENCES " + TABLE_PATIENT + "(" + TPCOL_1 + "));";
 
-
         String queryB = "CREATE TABLE " + TABLE_BILLING + " (" + TBCOL_1 + " INTEGER PRIMARY KEY NOT NULL," +
                 TBCOL_2 + " INTEGER," + TBCOL_3 + " INTEGER," + TBCOL_4 + " INTEGER," + TBCOL_5 + " INTEGER" +
                 "," + " FOREIGN KEY (" + TBCOL_2 + ") REFERENCES " + TABLE_APPOINTMENTS + "(" + TACOL_1 + ")" +
@@ -121,9 +119,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String queryAd = "CREATE TABLE " + TABLE_ADMIN + " (" + TADCOL_1 + " INTEGER PRIMARY KEY NOT NULL," +
                 TADCOL_2 + " TEXT," + TADCOL_3 + " TEXT)";
 
-
-        String queryF = "CREATE TABLE " + TABLE_FoodItems + " (" + T1COL_1 + " INTEGER PRIMARY KEY," +
-                T1Col_2 + " TEXT," + T1Col_3 + " INTEGER, " + T1Col_4 + " TEXT )";
+        String queryCal = "CREATE TABLE " + TABLE_CALORIES + " (" + TCALCOL_1 + " INTEGER PRIMARY KEY," +
+                TCALCOL_2 + " TEXT," + TCALCOL_3 + " INTEGER, " + TCALCOL_4 + " TEXT )";
 
         db.execSQL(queryP);
         db.execSQL(queryD);
@@ -132,13 +129,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(queryA);
         db.execSQL(queryB);
         db.execSQL(queryAd);
-        db.execSQL(queryF);
-
+        db.execSQL(queryCal);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
         db.execSQL("DROP TABLE if exists " + TABLE_PATIENT);
         db.execSQL("DROP TABLE if exists " + TABLE_ADMIN);
         db.execSQL("DROP TABLE if exists " + TABLE_APPOINTMENTS);
@@ -146,9 +141,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE if exists " + TABLE_CASHIER);
         db.execSQL("DROP TABLE if exists " + TABLE_DOCTOR);
         db.execSQL("DROP TABLE if exists " + TABLE_QUERIES);
-
         onCreate(db);
-
     }
 
     public boolean addPatient(String name, String email, String password, String postalCode,
@@ -205,12 +198,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return c;
     }
 
-    public boolean bookAppointment(int doctorId, int patientId, String date, int status, double fees) {
+    public Cursor viewPatientQuery(String patientId) {
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+        String query = "SELECT * FROM " + TABLE_QUERIES + " where " + TQCOL_3+ " = " +  patientId;
+        Cursor c = sqLiteDatabase.rawQuery(query, null);
+        return c;
+    }
+
+    public boolean bookAppointment(int doctorId, int patientId, String date, int status, int fees) {
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(TACOL_2, doctorId);
         contentValues.put(TACOL_3, patientId);
-        contentValues.put(TACOL_4, date.toString());
+        contentValues.put(TACOL_4, date);
         contentValues.put(TACOL_5, status);
         contentValues.put(TACOL_6, fees);
 
@@ -255,11 +255,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public boolean addBilling(int appointmentId, int cashierId, int patientId, int paymentAmt, int paymentStatus) {
+    public boolean addBilling(int appointmentId, int patientId, int paymentAmt, int paymentStatus) {
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(TBCOL_2, appointmentId);
-        contentValues.put(TBCOL_3, cashierId);
         contentValues.put(TBCOL_4, patientId);
         contentValues.put(TBCOL_5, paymentAmt);
         contentValues.put(TBCOL_6, paymentStatus);
@@ -334,6 +333,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return result;
     }
 
+    public Cursor getDoctorId(String email, String password) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        boolean result = false;
+        Cursor cursor = db.rawQuery("select * from " + TABLE_DOCTOR + " where " + TDCOL_3 + " =  \"" + email + "\"" + " AND " + TDCOL_4 + " = \"" + password + "\"", null);
+        if (cursor.getCount() > 0) {
+            result = true;
+        }
+        //db.close();
+        return cursor;
+    }
+
+    public Cursor viewDataQueryDoctor(String doctor_id) {
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+        String query = "SELECT * FROM " + TABLE_QUERIES + " WHERE " + TQCOL_2 + " = " + doctor_id;
+        Cursor c = sqLiteDatabase.rawQuery(query, null);
+        return c;
+    }
+
     // authenticate cashier
     public boolean getCashier(String email, String password) {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -348,6 +365,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
+    public Cursor getQuery(int query_id) {
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+        String query = "SELECT * FROM " + TABLE_QUERIES + " WHERE " + TQCOL_1 + " = " + query_id;
+        Cursor c = sqLiteDatabase.rawQuery(query, null);
+        return c;
+    }
+
     public Cursor viewdoctors() {
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
         String query = "SELECT * FROM " + TABLE_DOCTOR;
@@ -355,14 +379,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return c;
     }
 
-    public boolean addFoodItem(String fn, int am, String date) {
+    public boolean addFoodItem(String food, int cal, String date) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(T1Col_2, fn);
-        values.put(T1Col_3, am);
-        values.put(T1Col_4, date);
+        values.put(TCALCOL_2,food );
+        values.put(TCALCOL_3, cal);
+        values.put(TCALCOL_4, date);
 
-        long r = sqLiteDatabase.insert(TABLE_FoodItems, null, values);
+        long r = sqLiteDatabase.insert(TABLE_CALORIES, null, values);
         if (r > 0)
             return true;
         else
@@ -371,7 +395,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public Cursor getFoodData(String dateTodayString) {
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
-        String query = "SELECT *, SUM(amount)  FROM " + TABLE_FoodItems + " WHERE " + T1Col_4 + " LIKE '" + dateTodayString + "'";
+        String query = "SELECT *, SUM(calories)  FROM " + TABLE_CALORIES + " WHERE " + TCALCOL_4 + " LIKE '" + dateTodayString + "'";
         Log.i("QUERY", query);
         Cursor c = sqLiteDatabase.rawQuery(query, null);
         return c;
@@ -379,7 +403,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public Cursor onrefresh() {
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
-        String query = "DELETE  FROM " + TABLE_FoodItems;
+        String query = "DELETE  FROM " + TABLE_CALORIES;
         Cursor c = sqLiteDatabase.rawQuery(query, null);
         return c;
     }
@@ -387,9 +411,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public boolean updateRec(int id, String c) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(T1Col_3, c);
+        values.put(TCALCOL_3, c);
 
-        int d = sqLiteDatabase.update(TABLE_FoodItems, values, "id=?",
+        int d = sqLiteDatabase.update(TABLE_CALORIES, values, "id=?",
                 new String[]{Integer.toString(id)});
         if (d > 0)
             return true;
@@ -570,6 +594,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             db.update(TABLE_CASHIER, values, TCCOL_3 + " = ? ", new String[]{String.valueOf(email)});
         } catch (Exception e) {
             Log.d("Update Tasks: ", e.getMessage());
+        }
+    }
+
+    public boolean updateQuery(String solution, String query_id) {
+        try {
+            SQLiteDatabase db = this.getReadableDatabase();
+            ContentValues values = new ContentValues();
+            values.put(TQCOL_5, solution);
+            db.update(TABLE_QUERIES, values, TQCOL_1 + " = ? ", new String[]{String.valueOf(query_id)});
+            return true;
+        } catch (Exception e) {
+            Log.d("Update Tasks: ", e.getMessage());
+            return false;
         }
     }
 }

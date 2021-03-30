@@ -20,17 +20,15 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class Doctors_List extends AppCompatActivity
-{
-  DatabaseHelper databaseHelper;
-  ListView l1;
-  ArrayList<doctors_model> arrayList;
-  DoctorsListAdapter doctorsListAdapter;
-  RegisterActivity ra = new RegisterActivity();
-
+public class Doctors_List extends AppCompatActivity {
+    DatabaseHelper databaseHelper;
+    ListView l1;
+    ArrayList<doctors_model> arrayList;
+    DoctorsListAdapter doctorsListAdapter;
+    RegisterActivity ra = new RegisterActivity();
+    String patId;
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_doctors__list);
         l1 = findViewById(R.id.listView);
@@ -39,34 +37,29 @@ public class Doctors_List extends AppCompatActivity
         //EditText docphn = ra.docPhone;
         EditText spcl = ra.docSpl;
         //EditText  fees = ra.docFees;
-
+        patId = getIntent().getStringExtra("patientId");
         databaseHelper = new DatabaseHelper(this);
         arrayList = new ArrayList<>();
-
         loadDataInListView();
 
     }
 
-    private void loadDataInListView()
-    {
-      Intent intent = getIntent();
-      String whichButton = intent.getStringExtra("whichButton");
-      if(whichButton.equalsIgnoreCase("byPostalCode")){
-        String postalcode = intent.getStringExtra("postalcode");
-
-        arrayList = databaseHelper.getDoctorsByPostalCode(postalcode);
-      }
-      else{
-        arrayList = databaseHelper.getAllDoctors();
-      }
-      doctorsListAdapter = new DoctorsListAdapter(this,arrayList);
-      l1.setAdapter(doctorsListAdapter);
-      doctorsListAdapter.notifyDataSetChanged();
+    private void loadDataInListView() {
+        Intent intent = getIntent();
+        String whichButton = intent.getStringExtra("whichButton");
+        if (whichButton.equalsIgnoreCase("byPostalCode")) {
+            String postalcode = intent.getStringExtra("postalcode");
+            arrayList = databaseHelper.getDoctorsByPostalCode(postalcode);
+        } else {
+            arrayList = databaseHelper.getAllDoctors();
+        }
+        doctorsListAdapter = new DoctorsListAdapter(this, arrayList, patId);
+        l1.setAdapter(doctorsListAdapter);
+        doctorsListAdapter.notifyDataSetChanged();
 
     }
 
-    public void insert(View v)
-    {
+    public void insert(View v) {
 
     }
 

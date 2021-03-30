@@ -27,12 +27,13 @@ public class DoctorsListAdapter extends BaseAdapter implements DatePickerDialog.
     Context context;
     ArrayList<doctors_model> arrayList;
     DatabaseHelper databaseHelper;
+    String patId;
     int pos;
-    public DoctorsListAdapter(Context context, ArrayList<doctors_model> arrayList)
+    public DoctorsListAdapter(Context context, ArrayList<doctors_model> arrayList, String patId)
     {
+        this.patId = patId;
         this.context = context;
         this.arrayList = arrayList;
-
     }
     @Override
     public int getCount()
@@ -80,6 +81,7 @@ public class DoctorsListAdapter extends BaseAdapter implements DatePickerDialog.
                 public void onClick(View v) {
                     Intent intent = new Intent(context, AddQueryActivity.class);
                     intent.putExtra("doctor_id", doctors_model.getID());
+                    intent.putExtra("patientId", patId);
                     context.startActivity(intent);
                 }
             });

@@ -9,18 +9,17 @@
 
     <Button
         android:id="@+id/buttonSearchDoctorByPostalCode"
-        android:layout_width="118dp"
+        android:layout_width="wrap_content"
         android:layout_height="51dp"
+        android:layout_marginTop="100dp"
         android:background="#DC1F1F"
         android:text="@string/search_by_postal_code"
         android:textColor="#FFFFFF"
         android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.778"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.526" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonSearchDoctor" />
 
     <TextView
         android:id="@+id/textview10"
@@ -38,46 +37,30 @@
 
     <Button
         android:id="@+id/buttonSearchDoctor"
-        android:layout_width="118dp"
-        android:layout_height="51dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="120dp"
         android:background="#DC1F1F"
         android:text="@string/search_all_doctors"
         android:textColor="#FFFFFF"
         android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.146"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.536" />
-
-    <Button
-        android:id="@+id/buttonBack"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="#F44336"
-        android:text="@string/back"
-        android:textColor="#FFFFFF"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.715" />
+        app:layout_constraintTop_toBottomOf="@+id/postalcode_id" />
 
     <EditText
         android:id="@+id/postalcode_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="128dp"
+        android:autofillHints=""
         android:ems="10"
         android:hint="@string/postalcodehint"
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.512"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.298"
-        android:autofillHints="" />
+        app:layout_constraintTop_toBottomOf="@+id/textview10" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
