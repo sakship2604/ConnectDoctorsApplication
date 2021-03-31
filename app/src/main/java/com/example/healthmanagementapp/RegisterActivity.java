@@ -1,13 +1,9 @@
 package com.example.healthmanagementapp;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -17,13 +13,17 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 public class RegisterActivity extends AppCompatActivity {
 
-    int flag =0;
+    public static final String MyPREFERENCES = "MyPrefs";
+    int flag = 0;
     DatabaseHelper databaseHelper;
-    LinearLayout layoutDoctor,layoutPatient,layoutImg, layoutCashier;
+    LinearLayout layoutDoctor, layoutPatient, layoutImg, layoutCashier;
     ImageView aImage;
-    Button regBack, addPat,addDoc,addCash;
+    Button regBack, addPat, addDoc, addCash;
     Button delPat, delDoc, delCashier;
     Button updatePat, updateDoc, updateCashier;
     EditText patName, patEmail, patPass, patCode, patPhone, patHeight, patWeight, patAge, patMedi, patDiseases;
@@ -33,7 +33,6 @@ public class RegisterActivity extends AppCompatActivity {
     EditText docName, docEmail, docPass, docCode, docPhone, docSpl, docFees;
     EditText cashName, cashEmail, cashPass;
     SharedPreferences preferences;
-    public static final String MyPREFERENCES = "MyPrefs" ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +41,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        flag = getIntent().getIntExtra("layoutToShow",0);
+        flag = getIntent().getIntExtra("layoutToShow", 0);
 
         databaseHelper = new DatabaseHelper(this);
 
@@ -97,9 +96,9 @@ public class RegisterActivity extends AppCompatActivity {
         cashPass = findViewById(R.id.editTextCashierPassword);
 
         // to switch layout according to selection
-        int layoutToShow = getIntent().getIntExtra("layoutToShow",0);
+        int layoutToShow = getIntent().getIntExtra("layoutToShow", 0);
 
-        switch (layoutToShow){
+        switch (layoutToShow) {
             case 1:
                 aImage.setImageResource(R.drawable.doctor);
                 getSupportActionBar().setTitle("Admin Panel - Doctor");
@@ -127,28 +126,26 @@ public class RegisterActivity extends AppCompatActivity {
         addPat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(radMale.isChecked()){
+                if (radMale.isChecked()) {
                     gender = "MALE";
-                }
-                else{
+                } else {
                     gender = "FEMALE";
                 }
 
-                if(radMSP.isChecked()){
+                if (radMSP.isChecked()) {
                     msp = "YES";
-                }
-                else{
+                } else {
                     msp = "NO";
                 }
                 databaseHelper.addPatient(patName.getText().toString(),
                         patEmail.getText().toString(),
-                        patPass.getText().toString(),patCode.getText().toString(),patPhone.getText().toString()
-                        ,Double.parseDouble(patHeight.getText().toString()), Double.parseDouble(patWeight.getText().toString()),
-                        gender, 0, Integer.parseInt(patAge.getText().toString()), msp, patMedi.getText().toString(),patDiseases.getText().toString());
+                        patPass.getText().toString(), patCode.getText().toString(), patPhone.getText().toString()
+                        , Double.parseDouble(patHeight.getText().toString()), Double.parseDouble(patWeight.getText().toString()),
+                        gender, 0, Integer.parseInt(patAge.getText().toString()), msp, patMedi.getText().toString(), patDiseases.getText().toString());
                 Toast.makeText(RegisterActivity.this, "Patient added", Toast.LENGTH_SHORT).show();
-                if(layoutToShow == 3){
+                if (layoutToShow == 3) {
                     SharedPreferences.Editor editor = preferences.edit();
-                    editor.putInt("admin",1);
+                    editor.putInt("admin", 1);
                     editor.apply();
                 }
             }
@@ -157,10 +154,9 @@ public class RegisterActivity extends AppCompatActivity {
         // to add doctors
         addDoc.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
-                databaseHelper.addDoctor(docName.getText().toString(),docEmail.getText().toString(),
-                        docPass.getText().toString(),docCode.getText().toString(),docPhone.getText().toString(),docSpl.getText().toString(),docFees.getText().toString());
+            public void onClick(View v) {
+                databaseHelper.addDoctor(docName.getText().toString(), docEmail.getText().toString(),
+                        docPass.getText().toString(), docCode.getText().toString(), docPhone.getText().toString(), docSpl.getText().toString(), docFees.getText().toString());
                 Toast.makeText(RegisterActivity.this, "Doctor added", Toast.LENGTH_SHORT).show();
             }
         });
@@ -168,7 +164,7 @@ public class RegisterActivity extends AppCompatActivity {
         addCash.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                databaseHelper.addCashier(cashName.getText().toString(),cashEmail.getText().toString(),
+                databaseHelper.addCashier(cashName.getText().toString(), cashEmail.getText().toString(),
                         cashPass.getText().toString());
                 Toast.makeText(RegisterActivity.this, "Cashier Added", Toast.LENGTH_SHORT).show();
             }
@@ -178,15 +174,15 @@ public class RegisterActivity extends AppCompatActivity {
         delPat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               Intent intent = new Intent(RegisterActivity.this,DeleteUsersActivity.class);
-               startActivity(intent);
+                Intent intent = new Intent(RegisterActivity.this, DeleteUsersActivity.class);
+                startActivity(intent);
             }
         });
         // to delete doctor
         delDoc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(RegisterActivity.this,DeleteUsersActivity.class);
+                Intent intent = new Intent(RegisterActivity.this, DeleteUsersActivity.class);
                 startActivity(intent);
             }
         });
@@ -194,7 +190,7 @@ public class RegisterActivity extends AppCompatActivity {
         delCashier.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(RegisterActivity.this,DeleteUsersActivity.class);
+                Intent intent = new Intent(RegisterActivity.this, DeleteUsersActivity.class);
                 startActivity(intent);
             }
         });
@@ -203,17 +199,15 @@ public class RegisterActivity extends AppCompatActivity {
         updatePat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(radMale.isChecked()){
+                if (radMale.isChecked()) {
                     gender = "MALE";
-                }
-                else{
+                } else {
                     gender = "FEMALE";
                 }
 
-                if(radMSP.isChecked()){
+                if (radMSP.isChecked()) {
                     msp = "YES";
-                }
-                else{
+                } else {
                     msp = "NO";
                 }
                 databaseHelper.updatePatient(patName.getText().toString(),
@@ -234,22 +228,24 @@ public class RegisterActivity extends AppCompatActivity {
         updateDoc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                databaseHelper.updateDoctor((docName.getText().toString()),docEmail.getText().toString(),docCode.getText().toString(),docPhone.getText().toString(),docSpl.getText().toString(),docFees.getText().toString());
+                databaseHelper.updateDoctor((docName.getText().toString()), docEmail.getText().toString(), docCode.getText().toString(), docPhone.getText().toString(), docSpl.getText().toString(), docFees.getText().toString());
             }
         });
 
         updateCashier.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                databaseHelper.updateCashier(cashName.getText().toString(),cashEmail.getText().toString());
+                databaseHelper.updateCashier(cashName.getText().toString(), cashEmail.getText().toString());
             }
         });
     }
 
+    /////////////////////////////////////////
+    // to back button in action bar
+    ////////////////////////////////////////
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId())
-        {
+        switch (item.getItemId()) {
             case android.R.id.home:
                 this.finish();
                 return true;

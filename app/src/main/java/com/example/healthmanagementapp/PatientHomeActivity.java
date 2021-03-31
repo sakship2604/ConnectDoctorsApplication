@@ -1,10 +1,8 @@
 package com.example.healthmanagementapp;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -12,16 +10,50 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import static com.example.healthmanagementapp.RegisterActivity.MyPREFERENCES;
 
 public class PatientHomeActivity extends AppCompatActivity {
+
     SharedPreferences sharedPreferences;
     ImageView track_calories, find_doctor;
+    TextView patientinfo;
+    StringBuilder patInfoString;
+    DatabaseHelper databaseHelper;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_home);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        patInfoString = new StringBuilder();
+        databaseHelper = new DatabaseHelper(this);
+        patientinfo = findViewById(R.id.textViewPatDisplay);
+        String email = getIntent().getExtras().getString("patEmail");
+        patInfoString = new StringBuilder();
+        patInfoString.append("");
+        try{
+            Cursor cursor = databaseHelper.getPatientDetails("r");
+            Log.d("ART", String.valueOf(cursor.getCount()));
+            while (cursor.moveToNext()) {
+                patInfoString.append(" Id: ").append(cursor.getString(0)).append("\n");
+                patInfoString.append(" Name: ").append(cursor.getString(1)).append("\n");
+                patInfoString.append(" Email: ").append(cursor.getString(2)).append("\n");
+                patInfoString.append(" Postal Code: ").append(cursor.getString(4)).append("\n");
+                patInfoString.append(" Phone: ").append(cursor.getString(5)).append("\n");
+                patInfoString.append(" Speciality: ").append(cursor.getString(6)).append("\n");
+                patInfoString.append(" Fees: ").append(cursor.getString(7)).append("\n");
+            }
+        }
+        catch (Exception e){
+            Log.d("Pat", e.getMessage());
+        }
+        patientinfo.setText(patInfoString);
+
+        // ////////////////////////////////////////
+        // to set for reset pass if new login
+        //////////////////////////////////////////
         sharedPreferences = getSharedPreferences(MyPREFERENCES, MODE_PRIVATE);
         if (sharedPreferences.getInt("admin", 0) == 1) {
             Intent intent = new Intent(this, ResetPasswordActivity.class);
@@ -30,8 +62,11 @@ public class PatientHomeActivity extends AppCompatActivity {
             editor.putInt("admin", 0);
             editor.apply();
         }
+
         find_doctor = findViewById(R.id.imageViewFindDoctor);
         track_calories = findViewById(R.id.imageViewTrackCalories);
+
+        // to find doctors
         find_doctor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -43,6 +78,7 @@ public class PatientHomeActivity extends AppCompatActivity {
             }
         });
 
+        //to find calories
         track_calories.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -51,7 +87,9 @@ public class PatientHomeActivity extends AppCompatActivity {
         });
     }
 
-// for back navigation
+    /////////////////////////////////////////
+    // to back button in action bar
+    ////////////////////////////////////////
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {

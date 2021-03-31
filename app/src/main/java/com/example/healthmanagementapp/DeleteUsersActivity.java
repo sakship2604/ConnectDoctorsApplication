@@ -1,13 +1,15 @@
 package com.example.healthmanagementapp;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 public class DeleteUsersActivity extends AppCompatActivity {
 
@@ -28,6 +30,9 @@ public class DeleteUsersActivity extends AppCompatActivity {
         btndel = findViewById(R.id.buttonDEL);
         databaseHelper = new DatabaseHelper(this);
 
+        ///////////////////////////////////////////////////
+        // to delete patient or doctor or cashier by admin
+        /////////////////////////////////////////////////
 
         btndel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -45,5 +50,19 @@ public class DeleteUsersActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    /////////////////////////////////////////
+    // to back button in action bar
+    ////////////////////////////////////////
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId())
+        {
+            case android.R.id.home:
+                this.finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

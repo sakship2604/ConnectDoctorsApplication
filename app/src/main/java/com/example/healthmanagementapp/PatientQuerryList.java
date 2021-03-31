@@ -1,17 +1,14 @@
 package com.example.healthmanagementapp;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
+import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,9 +28,13 @@ public class PatientQuerryList extends AppCompatActivity {
         functionView();
     }
 
+    ///////////////////////////////////////////////////
+    // for patient to view queries
+    /////////////////////////////////////////////////////
+
     public void functionView() {
         Cursor c;
-        if(patientId != "-1") {
+        if (patientId != "-1") {
             c = databaseHelper.viewPatientQuery(patientId);
             Log.d("Patid", patientId);
             StringBuilder str = new StringBuilder();
@@ -49,7 +50,7 @@ public class PatientQuerryList extends AppCompatActivity {
                 }
             }
 
-            String[] from = {"textpateintid", "txtQuery", "txtSolution"};        //Why need theses arrays?
+            String[] from = {"textpateintid", "txtQuery", "txtSolution"};
             int[] to = {R.id.textpateintid, R.id.txtQuery, R.id.txtSolution};
             SimpleAdapter adapter = new SimpleAdapter
                     (getBaseContext(), aList, R.layout.listview_layout, from, to);
@@ -57,5 +58,18 @@ public class PatientQuerryList extends AppCompatActivity {
             listView.setAdapter(adapter);
             c.close();
         }
+    }
+    /////////////////////////////////////////
+    // to back button in action bar
+    ////////////////////////////////////////
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId())
+        {
+            case android.R.id.home:
+                this.finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

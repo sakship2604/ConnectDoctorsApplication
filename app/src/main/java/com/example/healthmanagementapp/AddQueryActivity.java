@@ -6,19 +6,21 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class AddQueryActivity extends AppCompatActivity {
 
     public static final String MyPREFERENCES = "MyPrefs";
     DatabaseHelper databaseHelper;
-    EditText  editTextNameCrediCard, editTextCrediCardNumber, editTextTextQuestion, editTextTextSolution;
+    EditText editTextNameCrediCard, editTextCrediCardNumber, editTextTextQuestion, editTextTextSolution;
     SharedPreferences preferences;
     String user_id, msp;
     TextView textAmout;
@@ -31,6 +33,7 @@ public class AddQueryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_query);
+
         databaseHelper = new DatabaseHelper(this);
         user_id = getIntent().getStringExtra("patientId");
         Log.d("PatIdIn", user_id);
@@ -42,6 +45,10 @@ public class AddQueryActivity extends AppCompatActivity {
         buttonPay = findViewById(R.id.buttonPay);
         buttonPay.setVisibility(View.GONE);
         query_id = 0;
+
+        //////////////////////////////////////////////////////
+        // to enter query for doctor
+        //////////////////////////////////////////////////////
 
         flag_doctor = getIntent().getIntExtra("flag_doctor", 0);
         if (flag_doctor == 1) {
@@ -62,10 +69,15 @@ public class AddQueryActivity extends AppCompatActivity {
                 editTextCrediCardNumber.setVisibility(View.GONE);
             }
         }
+
+        /////////////////////////////////////////
+        // to pay for query if no msp
+        /////////////////////////////////////////////////
+
         buttonPay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                databaseHelper.addBilling(1, 1,1,90,1);
+                databaseHelper.addBilling(1, 1, 1, 90, 1);
                 Toast.makeText(AddQueryActivity.this, "Added to cashier for authorization.", Toast.LENGTH_LONG).show();
             }
         });
@@ -88,7 +100,7 @@ public class AddQueryActivity extends AppCompatActivity {
             if (flag_doctor == 1) {
                 isInserted = databaseHelper.updateQuery(editTextTextSolution.getText().toString(), String.valueOf(query_id + 1));
             } else {
-                isInserted = databaseHelper.addQueries(doctor_id,Integer.parseInt(user_id),
+                isInserted = databaseHelper.addQueries(doctor_id, Integer.parseInt(user_id),
                         editTextTextQuestion.getText().toString(), editTextTextSolution.getText().toString());
                 if (msp.equals("NO"))
                     buttonPay.setVisibility(View.VISIBLE);
@@ -138,5 +150,19 @@ public class AddQueryActivity extends AppCompatActivity {
         intent.putExtra("nameCredicard", editTextNameCrediCard.getText().toString());
         intent.putExtra("credicardNumber", editTextCrediCardNumber.getText().toString());
         startActivity(intent);
+    }
+
+    /////////////////////////////////////////
+    // to back button in action bar
+    ////////////////////////////////////////
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId())
+        {
+            case android.R.id.home:
+                this.finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

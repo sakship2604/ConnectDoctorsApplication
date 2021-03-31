@@ -1,7 +1,6 @@
 package com.example.healthmanagementapp;
 
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +10,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class PaymentListAdapter extends BaseAdapter {
@@ -50,9 +48,9 @@ public class PaymentListAdapter extends BaseAdapter {
         TextView t3 = convertView.findViewById(R.id.pay_amt_txt);
         Button b1 = convertView.findViewById(R.id.request_btn);
         Log.d("SIZE", String.valueOf(arrayList.get(position).billingID));
-        t1.setText(String.valueOf("BillId"+arrayList.get(position).billingID));
-        t2.setText(String.valueOf(" PatId"+arrayList.get(position).patientID));
-        t3.setText(String.valueOf(" Amt"+arrayList.get(position).paymentAmt));
+        t1.setText("BillId" + arrayList.get(position).billingID);
+        t2.setText(" PatId" + arrayList.get(position).patientID);
+        t3.setText(" Amt" + arrayList.get(position).paymentAmt);
 
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
