@@ -34,7 +34,7 @@ public class PatientHomeActivity extends AppCompatActivity {
         patInfoString = new StringBuilder();
         patInfoString.append("");
         try{
-            Cursor cursor = databaseHelper.getPatientDetails("r");
+            Cursor cursor = databaseHelper.getPatientDetails(email);
             Log.d("ART", String.valueOf(cursor.getCount()));
             while (cursor.moveToNext()) {
                 patInfoString.append(" Id: ").append(cursor.getString(0)).append("\n");
@@ -42,8 +42,11 @@ public class PatientHomeActivity extends AppCompatActivity {
                 patInfoString.append(" Email: ").append(cursor.getString(2)).append("\n");
                 patInfoString.append(" Postal Code: ").append(cursor.getString(4)).append("\n");
                 patInfoString.append(" Phone: ").append(cursor.getString(5)).append("\n");
-                patInfoString.append(" Speciality: ").append(cursor.getString(6)).append("\n");
-                patInfoString.append(" Fees: ").append(cursor.getString(7)).append("\n");
+                patInfoString.append(" Height: ").append(cursor.getString(6)).append("\n");
+                patInfoString.append(" Weight: ").append(cursor.getString(7)).append("\n");
+                patInfoString.append(" Age: ").append(cursor.getString(8)).append("\n");
+                patInfoString.append(" Medication: ").append(cursor.getString(12)).append("\n");
+                patInfoString.append(" Diseases: ").append(cursor.getString(13)).append("\n");
             }
         }
         catch (Exception e){

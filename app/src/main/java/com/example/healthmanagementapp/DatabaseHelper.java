@@ -62,6 +62,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     final static String TACOL_4 = "Date";
     final static String TACOL_5 = "Status";
     final static String TACOL_6 = "App_Fees";
+    final static String TACOL_7 = "Time_Spot";
 
     final static String TABLE_BILLING = "Billing";
     final static String TBCOL_1 = "Billing_Id";
@@ -105,7 +106,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "," + "FOREIGN KEY (" + TQCOL_3 + ") REFERENCES " + TABLE_PATIENT + "(" + TPCOL_1 + "));";
 
         String queryA = "CREATE TABLE " + TABLE_APPOINTMENTS + " (" + TACOL_1 + " INTEGER PRIMARY KEY NOT NULL," +
-                TACOL_2 + " INTEGER," + TACOL_3 + " INTEGER," + TACOL_4 + " TEXT," + TACOL_5 + " DECIMAL," + TACOL_6 + " DECIMAL" +
+                TACOL_2 + " INTEGER," + TACOL_3 + " INTEGER," + TACOL_4 + " TEXT," + TACOL_5 + " DECIMAL," + TACOL_6 + " DECIMAL," + TACOL_7 + " TEXT" +
                 "," + " FOREIGN KEY (" + TACOL_2 + ") REFERENCES " + TABLE_DOCTOR + "(" + TDCOL_1 + ")" +
                 "," + "FOREIGN KEY (" + TACOL_3 + ") REFERENCES " + TABLE_PATIENT + "(" + TPCOL_1 + "));";
 
@@ -143,22 +144,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    ////////////////////////////////////////////////
-    //to add data to tables
-    ///////////////////////////////////////////////
-
-    // add admin to the table
-    public boolean addAdmin(String email, String password) {
-        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(TADCOL_2, email);
-        contentValues.put(TADCOL_3, password);
-
-        long r = sqLiteDatabase.insert(TABLE_ADMIN, null, contentValues);
-        return r > 0;
-    }
-
-    //adding patient information to table
     public boolean addPatient(String name, String email, String password, String postalCode,
                               String PhoneNo, double height,
                               double weight, String gender, double bmi, int age, String msp, String medication, String diseases) {
@@ -180,10 +165,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(TPCOL_14, diseases);
 
         long r = sqLiteDatabase.insert(TABLE_PATIENT, null, contentValues);
-        return r > 0;
+        if (r > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
-    //adding doctor information to the table
     public boolean addDoctor(String name, String email, String password, String postalCode, String phoneNo, String speciality, String fees) {
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -196,10 +184,45 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(TDCOL_8, fees);
 
         long r = sqLiteDatabase.insert(TABLE_DOCTOR, null, contentValues);
-        return r > 0;
+        if (r > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
-    // adding cashier informaion to the table
+    public Cursor viewDataQuery() {
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+        String query = "SELECT * FROM " + TABLE_QUERIES;
+        Cursor c = sqLiteDatabase.rawQuery(query, null);
+        return c;
+    }
+
+    public Cursor viewPatientQuery(String patientId) {
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+        String query = "SELECT * FROM " + TABLE_QUERIES + " where " + TQCOL_3 + " = " + patientId;
+        Cursor c = sqLiteDatabase.rawQuery(query, null);
+        return c;
+    }
+
+    public boolean bookAppointment(int doctorId, int patientId, String date, int status, int fees, String timeSpot) {
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(TACOL_2, doctorId);
+        contentValues.put(TACOL_3, patientId);
+        contentValues.put(TACOL_4, date);
+        contentValues.put(TACOL_5, status);
+        contentValues.put(TACOL_6, fees);
+        contentValues.put(TACOL_7, timeSpot);
+
+        long r = sqLiteDatabase.insert(TABLE_APPOINTMENTS, null, contentValues);
+        if (r > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public boolean addCashier(String name, String email, String password) {
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -208,10 +231,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(TCCOL_4, password);
 
         long r = sqLiteDatabase.insert(TABLE_CASHIER, null, contentValues);
-        return r > 0;
+        if (r > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
-    // adding queries to the table
     public boolean addQueries(int doctorId, int patientId, String questions, String solutions) {
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -221,24 +247,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(TQCOL_5, solutions);
 
         long r = sqLiteDatabase.insert(TABLE_QUERIES, null, contentValues);
-        return r > 0;
+        if (r > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
-    // adding appointments to the table
-    public boolean bookAppointment(int doctorId, int patientId, String date, int status, int fees) {
-        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(TACOL_2, doctorId);
-        contentValues.put(TACOL_3, patientId);
-        contentValues.put(TACOL_4, date);
-        contentValues.put(TACOL_5, status);
-        contentValues.put(TACOL_6, fees);
-
-        long r = sqLiteDatabase.insert(TABLE_APPOINTMENTS, null, contentValues);
-        return r > 0;
-    }
-
-    // add bill and payment infomation to the table
     public boolean addBilling(int queryId, int cashierId, int patientId, int paymentAmt, int paymentStatus) {
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -249,19 +264,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(TBCOL_6, paymentStatus);
 
         long r = sqLiteDatabase.insert(TABLE_BILLING, null, contentValues);
-        return r > 0;
+        if (r > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
-    // add food details for calories
-    public boolean addFoodItem(String food, int cal, String date) {
-        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(TCALCOL_2, food);
-        values.put(TCALCOL_3, cal);
-        values.put(TCALCOL_4, date);
+    public boolean addAdmin(String email, String password) {
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(TADCOL_2, email);
+        contentValues.put(TADCOL_3, password);
 
-        long r = sqLiteDatabase.insert(TABLE_CALORIES, null, values);
-        return r > 0;
+        long r = sqLiteDatabase.insert(TABLE_ADMIN, null, contentValues);
+        if (r > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
     //////////////////////////////////////////////////////////////////////
     // to authenticate logins
@@ -279,6 +300,34 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return result;
     }
 
+    public Cursor getBilling() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        boolean result = false;
+        Cursor cursor = db.rawQuery("select * from " + TABLE_BILLING, null);
+        db.close();
+        return cursor;
+    }
+
+    public void updateBilling(String id, int status) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(TBCOL_6, status);
+        db.update(TABLE_BILLING, values, TQCOL_1 + " = ? ", new String[]{String.valueOf(id)});
+        db.close();
+    }
+
+
+    // authenticate patient
+    public boolean checkBookAppointment(int doctorId, String date, String timeSpot) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        boolean result = false;
+        Cursor cursor = db.rawQuery("select * from " + TABLE_APPOINTMENTS + " where " + TACOL_2 + " =  \"" + doctorId + "\"" + " AND " + TACOL_4 + " = \"" + date + "\"" + " AND " + TACOL_7 + " = \"" + timeSpot + "\"", null);
+        if (cursor.getCount() > 0) {
+            result = true;
+        }
+        db.close();
+        return result;
+    }
     // authenticate patient
     public boolean getPatient(String email, String password) {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -315,6 +364,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
+    public Cursor viewDataDoctorAppointment(String doctor_id) {
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+        String query = "SELECT * FROM " + TABLE_APPOINTMENTS + " WHERE " + TACOL_2 + " = " + doctor_id;
+        Cursor c = sqLiteDatabase.rawQuery(query, null);
+        return c;
+    }
+
+    public Cursor viewDataQueryDoctor(String doctor_id) {
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+        String query = "SELECT * FROM " + TABLE_QUERIES + " WHERE " + TQCOL_2 + " = " + doctor_id;
+        Cursor c = sqLiteDatabase.rawQuery(query, null);
+        return c;
+    }
+
     // authenticate cashier
     public boolean getCashier(String email, String password) {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -325,181 +388,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         db.close();
         return result;
-    }
-    //////////////////////////////////////////////////
-    // to update records
-    /////////////////////////////////////////////////
-
-    // to update patient records
-    public void updatePatient(String name, String email, String postalCode,
-                              String PhoneNo, double height,
-                              double weight, String gender, int age, String msp, String medication, String diseases) {
-        try {
-            SQLiteDatabase db = this.getReadableDatabase();
-            ContentValues values = new ContentValues();
-            values.put(TPCOL_2, name);
-            values.put(TPCOL_3, email);
-            values.put(TPCOL_5, postalCode);
-            values.put(TPCOL_6, PhoneNo);
-            values.put(TPCOL_7, height);
-            values.put(TPCOL_8, weight);
-            values.put(TPCOL_11, gender);
-            values.put(TPCOL_10, age);
-            values.put(TPCOL_12, msp);
-            values.put(TPCOL_13, medication);
-            values.put(TPCOL_14, diseases);
-
-            db.update(TABLE_PATIENT, values, TPCOL_3 + " = ? ", new String[]{String.valueOf(email)});
-        } catch (Exception e) {
-            Log.d("Update Tasks: ", e.getMessage());
-        }
-    }
-
-    // to update doctor
-    public void updateDoctor(String name, String email, String postalCode, String PhoneNo, String speciality, String fees) {
-        try {
-            SQLiteDatabase db = this.getReadableDatabase();
-            ContentValues values = new ContentValues();
-            values.put(TDCOL_2, name);
-            values.put(TDCOL_3, email);
-            values.put(TDCOL_5, postalCode);
-            values.put(TDCOL_6, PhoneNo);
-            values.put(TDCOL_7, speciality);
-            values.put(TDCOL_8, fees);
-
-            db.update(TABLE_DOCTOR, values, TDCOL_3 + " = ? ", new String[]{String.valueOf(email)});
-        } catch (Exception e) {
-            Log.d("Update Tasks: ", e.getMessage());
-        }
-    }
-
-    // to update cashier
-    public void updateCashier(String name, String email) {
-        try {
-            SQLiteDatabase db = this.getReadableDatabase();
-            ContentValues values = new ContentValues();
-            values.put(TCCOL_2, name);
-            values.put(TCCOL_3, email);
-            db.update(TABLE_CASHIER, values, TCCOL_3 + " = ? ", new String[]{String.valueOf(email)});
-        } catch (Exception e) {
-            Log.d("Update Tasks: ", e.getMessage());
-        }
-    }
-
-    //to update query
-    public boolean updateQuery(String solution, String query_id) {
-        try {
-            SQLiteDatabase db = this.getReadableDatabase();
-            ContentValues values = new ContentValues();
-            values.put(TQCOL_5, solution);
-            db.update(TABLE_QUERIES, values, TQCOL_1 + " = ? ", new String[]{String.valueOf(query_id)});
-            return true;
-        } catch (Exception e) {
-            Log.d("Update Tasks: ", e.getMessage());
-            return false;
-        }
-    }
-
-    // viewing queries to doctor
-    public Cursor viewDataQuery() {
-        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
-        String query = "SELECT * FROM " + TABLE_QUERIES;
-        Cursor c = sqLiteDatabase.rawQuery(query, null);
-        return c;
-    }
-
-    //viewing queries to patient
-    public Cursor viewPatientQuery(String patientId) {
-        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
-        String query = "SELECT * FROM " + TABLE_QUERIES + " where " + TQCOL_3 + " = " + patientId;
-        Cursor c = sqLiteDatabase.rawQuery(query, null);
-        return c;
-    }
-
-    // to update the payment status once approved by cashier
-    public void updateBilling(String id, int status) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(TBCOL_6, status);
-        db.update(TABLE_BILLING, values, TQCOL_1 + " = ? ", new String[]{String.valueOf(id)});
-        db.close();
-    }
-
-    public boolean updateRec(int id, String c) {
-        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(TCALCOL_3, c);
-
-        int d = sqLiteDatabase.update(TABLE_CALORIES, values, "id=?",
-                new String[]{Integer.toString(id)});
-        return d > 0;
-    }
-    ///////////////////////////////////////////////////////////////////
-    // to delete records from table
-    //////////////////////////////////////////////////////////////////
-
-    // delete records of patient
-    public void deletePatient(String email) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        try {
-            int b = db.delete(TABLE_PATIENT, TPCOL_3 + " =  \"" + email + "\"", null);
-            Log.d("HERE", String.valueOf(b));
-        } catch (Exception e) {
-            Log.d("HERE", String.valueOf(e.getMessage()));
-        }
-    }
-
-    // to delete doctor's records
-    public void deleteDoctor(String email) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        try {
-            db.delete(TABLE_DOCTOR, TDCOL_3 + " =  \"" + email + "\"", null);
-        } catch (Exception e) {
-            Log.d("HERE", e.getMessage());
-        }
-    }
-
-    // to delete cashier records
-
-    public void deleteCashier(String email) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        try {
-
-            db.delete(TABLE_CASHIER, TCCOL_3 + " =  \"" + email + "\"", null);
-        } catch (Exception e) {
-
-        }
-    }
-    //////////////////////////////////////////////////////////////////
-    // to reset password for all users
-    /////////////////////////////////////////////////////////////////
-
-    // reset password
-    public boolean resetPassword(String email, String password) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        boolean result = false;
-        Cursor cursor = db.rawQuery("select * from " + TABLE_PATIENT + " where " + TPCOL_3 + " =  \"" + email + "\"", null);
-        if (cursor.getCount() > 0) {
-            ContentValues values = new ContentValues();
-            values.put(TPCOL_4, password);
-            result = true;
-            db.update(TABLE_PATIENT, values, TPCOL_3 + " =  \"" + email + "\"", null);
-        }
-        db.close();
-        return result;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    // to get the data from tables
-    /////////////////////////////////////////////////////////////////
-
-    // to retrive the information from billing table
-    public Cursor getBilling() {
-        SQLiteDatabase db = this.getReadableDatabase();
-        boolean result = false;
-        Cursor cursor = db.rawQuery("select * from " + TABLE_BILLING, null);
-        db.close();
-        return cursor;
     }
 
     // to retrive from patient table
@@ -526,7 +414,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
-    // to retrive from query table
     public Cursor getQuery(int query_id) {
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
         String query = "SELECT * FROM " + TABLE_QUERIES + " WHERE " + TQCOL_1 + " = " + query_id;
@@ -534,7 +421,27 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return c;
     }
 
-    //to retrive from calorie table
+    public Cursor viewdoctors() {
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+        String query = "SELECT * FROM " + TABLE_DOCTOR;
+        Cursor c = sqLiteDatabase.rawQuery(query, null);
+        return c;
+    }
+
+    public boolean addFoodItem(String food, int cal, String date) {
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(TCALCOL_2, food);
+        values.put(TCALCOL_3, cal);
+        values.put(TCALCOL_4, date);
+
+        long r = sqLiteDatabase.insert(TABLE_CALORIES, null, values);
+        if (r > 0)
+            return true;
+        else
+            return false;
+    }
+
     public Cursor getFoodData(String dateTodayString) {
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
         String query = "SELECT *, SUM(calories)  FROM " + TABLE_CALORIES + " WHERE " + TCALCOL_4 + " LIKE '" + dateTodayString + "'";
@@ -543,26 +450,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return c;
     }
 
-    public Cursor viewDataQueryDoctor(String doctor_id) {
-        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
-        String query = "SELECT * FROM " + TABLE_QUERIES + " WHERE " + TQCOL_2 + " = " + doctor_id;
-        Cursor c = sqLiteDatabase.rawQuery(query, null);
-        return c;
-    }
-
-    //////////////////////////////////////////////////////////
-    // to view data
-    ////////////////////////////////////////////////////////
-
-    // to view doctors
-    public Cursor viewdoctors() {
-        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
-        String query = "SELECT * FROM " + TABLE_DOCTOR;
-        Cursor c = sqLiteDatabase.rawQuery(query, null);
-        return c;
-    }
-
-    // view when new data added
     public Cursor onrefresh() {
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
         String query = "DELETE  FROM " + TABLE_CALORIES;
@@ -570,11 +457,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return c;
     }
 
-    ////////////////////////////////////////////////////////
-    // models to show data
-    //////////////////////////////////////////////////////
+    public boolean updateRec(int id, String c) {
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(TCALCOL_3, c);
 
-    //model for doctor
+        int d = sqLiteDatabase.update(TABLE_CALORIES, values, "id=?",
+                new String[]{Integer.toString(id)});
+        if (d > 0)
+            return true;
+        else
+            return false;
+    }
 
     public ArrayList<doctors_model> getAllDoctors() {
         ArrayList<doctors_model> arrayList = new ArrayList<>();
@@ -597,7 +491,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return arrayList;
     }
 
-    // model to show doctors by postal code
+
     public ArrayList<doctors_model> getDoctorsByPostalCode(String postalCode) {
         ArrayList<doctors_model> arrayList = new ArrayList<>();
         SQLiteDatabase db = getReadableDatabase();
@@ -641,6 +535,122 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return arrayList;
     }
 
+    // reset password
+    public boolean resetPassword(String email, String password) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        boolean result = false;
+        Log.d("Result", String.valueOf(result));
+        Cursor cursor = db.rawQuery("select * from " + TABLE_PATIENT + " where " + TPCOL_3 + " =  \"" + email + "\"", null);
+        if (cursor.getCount() > 0) {
+            ContentValues values = new ContentValues();
+            values.put(TPCOL_4, password);
+            result = true;
+            db.update(TABLE_PATIENT, values, TPCOL_3 + " =  \"" + email + "\"", null);
+        }
+        db.close();
+        Log.d("Result", String.valueOf(result));
+        return result;
 
+    }
+
+    // delete records of patient
+    public void deletePatient(String email) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        try {
+            int b = db.delete(TABLE_PATIENT, TPCOL_3 + " =  \"" + email + "\"", null);
+            Log.d("HERE", String.valueOf(b));
+        } catch (Exception e) {
+            Log.d("HERE", String.valueOf(e.getMessage()));
+        }
+    }
+
+    // to delete doctor's records
+    public void deleteDoctor(String email) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        try {
+            db.delete(TABLE_DOCTOR, TDCOL_3 + " =  \"" + email + "\"", null);
+        } catch (Exception e) {
+            Log.d("HERE", e.getMessage());
+        }
+    }
+
+    // to delete cashier records
+
+    public void deleteCashier(String email) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        try {
+
+            db.delete(TABLE_CASHIER, TCCOL_3 + " =  \"" + email + "\"", null);
+        } catch (Exception e) {
+
+        }
+    }
+
+    // to update patient records
+    public void updatePatient(String name, String email, String postalCode,
+                              String PhoneNo, double height,
+                              double weight, String gender, int age, String msp, String medication, String diseases) {
+        try {
+            SQLiteDatabase db = this.getReadableDatabase();
+            ContentValues values = new ContentValues();
+            values.put(TPCOL_2, name);
+            values.put(TPCOL_3, email);
+            values.put(TPCOL_5, postalCode);
+            values.put(TPCOL_6, PhoneNo);
+            values.put(TPCOL_7, height);
+            values.put(TPCOL_8, weight);
+            values.put(TPCOL_11, gender);
+            values.put(TPCOL_10, age);
+            values.put(TPCOL_12, msp);
+            values.put(TPCOL_13, medication);
+            values.put(TPCOL_14, diseases);
+
+            db.update(TABLE_PATIENT, values, TPCOL_3 + " = ? ", new String[]{String.valueOf(email)});
+        } catch (Exception e) {
+            Log.d("Update Tasks: ", e.getMessage());
+        }
+    }
+
+    public void updateDoctor(String name, String email, String postalCode, String PhoneNo, String speciality, String fees) {
+        try {
+            SQLiteDatabase db = this.getReadableDatabase();
+            ContentValues values = new ContentValues();
+            values.put(TDCOL_2, name);
+            values.put(TDCOL_3, email);
+            values.put(TDCOL_5, postalCode);
+            values.put(TDCOL_6, PhoneNo);
+            values.put(TDCOL_7, speciality);
+            values.put(TDCOL_8, fees);
+
+            db.update(TABLE_DOCTOR, values, TDCOL_3 + " = ? ", new String[]{String.valueOf(email)});
+        } catch (Exception e) {
+            Log.d("Update Tasks: ", e.getMessage());
+        }
+    }
+
+    public void updateCashier(String name, String email) {
+        try {
+            SQLiteDatabase db = this.getReadableDatabase();
+            ContentValues values = new ContentValues();
+            values.put(TCCOL_2, name);
+            values.put(TCCOL_3, email);
+            db.update(TABLE_CASHIER, values, TCCOL_3 + " = ? ", new String[]{String.valueOf(email)});
+        } catch (Exception e) {
+            Log.d("Update Tasks: ", e.getMessage());
+        }
+    }
+
+    public boolean updateQuery(String solution, String query_id) {
+        try {
+            SQLiteDatabase db = this.getReadableDatabase();
+            ContentValues values = new ContentValues();
+            values.put(TQCOL_5, solution);
+            db.update(TABLE_QUERIES, values, TQCOL_1 + " = ? ", new String[]{String.valueOf(query_id)});
+            return true;
+        } catch (Exception e) {
+            Log.d("Update Tasks: ", e.getMessage());
+            return false;
+        }
+    }
 }
 
