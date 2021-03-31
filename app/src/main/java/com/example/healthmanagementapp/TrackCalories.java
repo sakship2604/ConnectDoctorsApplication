@@ -1,11 +1,7 @@
 package com.example.healthmanagementapp;
 
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.database.Cursor;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -13,27 +9,21 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.Date;
 
-public class TrackCalories extends AppCompatActivity
-{
+public class TrackCalories extends AppCompatActivity {
+    final int dailyCalorieLimit = 1000;
     DatabaseHelper databaseHelper;
-
     EditText food_item, amount;
-
     Button btnadd, calculateCalories, back;
-
     TextView output;
-
     String datePattern;
 
-    final int dailyCalorieLimit = 1000;
-
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_track_calories);
 
@@ -51,49 +41,42 @@ public class TrackCalories extends AppCompatActivity
 
         databaseHelper = new DatabaseHelper(this);
 
-        btnadd.setOnClickListener(new View.OnClickListener()
-        {
+        // to add calories with food items in table
+        btnadd.setOnClickListener(new View.OnClickListener() {
             boolean isInserted;
+
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 String dateTodayString = new SimpleDateFormat(datePattern).format(new Date());
                 isInserted = databaseHelper.addFoodItem(food_item.getText().toString(),
                         Integer.parseInt(amount.getText().toString()), dateTodayString);
 
-                if(isInserted)
-                {
-                    Toast.makeText(TrackCalories.this,"Data added",Toast.LENGTH_LONG).show();
+                if (isInserted) {
+                    Toast.makeText(TrackCalories.this, "Data added", Toast.LENGTH_LONG).show();
                     food_item.setText("");
                     amount.setText("");
-                }
-                else
-                {
-                    Toast.makeText(TrackCalories.this,"Data not added",Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(TrackCalories.this, "Data not added", Toast.LENGTH_LONG).show();
                 }
             }
         });
 
-        calculateCalories.setOnClickListener(new View.OnClickListener()
-        {
+        // to  calculate calories
+        calculateCalories.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 String dateTodayString = new SimpleDateFormat(datePattern).format(new Date());
                 Cursor c = databaseHelper.getFoodData(dateTodayString);
 
                 StringBuilder str = new StringBuilder();
                 int totalCalories = 0;
-                if(c.getCount()>0) {
+                if (c.getCount() > 0) {
                     while (c.moveToNext()) {
-                        //str.append("ID : " + c.getString(0));
-                        //str.append("Food : " + c.getString(1));
-                        //str.append(", Amount: " + c.getString(2));
-                        //str.append("\n");
-                        if(c.getInt(4) != 0){
+
+                        if (c.getInt(4) != 0) {
                             totalCalories = c.getInt(4);
                         }
-                        if(totalCalories > dailyCalorieLimit){
+                        if (totalCalories > dailyCalorieLimit) {
                             Toast.makeText(getApplicationContext(), "You have exceeded today's calorie limit!", Toast.LENGTH_SHORT).show();
                         }
                         str.append("Total Calories Eaten Today: ").append(totalCalories);
@@ -106,13 +89,12 @@ public class TrackCalories extends AppCompatActivity
             }
         });
 
+        // the back button
 
-        back.setOnClickListener(new View.OnClickListener()
-        {
+        back.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
-                Intent intent = new Intent(TrackCalories.this,PatientHomeActivity.class);
+            public void onClick(View v) {
+                Intent intent = new Intent(TrackCalories.this, PatientHomeActivity.class);
                 startActivity(intent);
             }
         });

@@ -1,13 +1,12 @@
 package com.example.healthmanagementapp;
 
+import android.os.Bundle;
+import android.view.MenuItem;
+import android.widget.ListView;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,5 +32,18 @@ public class Payments_List extends AppCompatActivity {
         paymentListAdapter = new PaymentListAdapter(this, arrayList);
         l1.setAdapter(paymentListAdapter);
         paymentListAdapter.notifyDataSetChanged();
+    }
+    /////////////////////////////////////////
+    // to back button in action bar
+    ////////////////////////////////////////
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId())
+        {
+            case android.R.id.home:
+                this.finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

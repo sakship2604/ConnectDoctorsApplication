@@ -4,8 +4,7 @@ public class Payment_Model {
 
     int billingID, appointmentID, cashierID, patientID, paymentAmt, paymentStatus;
 
-    public Payment_Model(int billingID, int appointmentID, int cashierID, int patientID, int paymentAmt, int paymentStatus)
-    {
+    public Payment_Model(int billingID, int appointmentID, int cashierID, int patientID, int paymentAmt, int paymentStatus) {
         this.billingID = billingID;
         this.appointmentID = appointmentID;
         this.cashierID = cashierID;
@@ -14,8 +13,16 @@ public class Payment_Model {
         this.paymentStatus = paymentStatus;
     }
 
-    public int getBillingID() { return billingID;}
-    public int getPatientID() { return patientID;}
-    public int getPaymentAmt() { return paymentAmt;}
+    public int getBillingID() {
+        return billingID;
+    }
+
+    public int getPatientID() {
+        return patientID;
+    }
+
+    public int getPaymentAmt() {
+        return paymentAmt;
+    }
 
 }

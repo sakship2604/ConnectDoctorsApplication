@@ -1,12 +1,25 @@
 package com.example.healthmanagementapp;
 
-import android.widget.Button;
-
-public class doctors_model
-{
+public class doctors_model {
     String name, email, password, Specality, button1, button2;
     int ID, fees, phonenumber;
 
+
+    public doctors_model(int id, String name, String email, String speciality, int fees, int phone, String button1, String button2) {
+        this.name = name;
+        this.email = email;
+
+        this.Specality = speciality;
+        this.fees = fees;
+        this.phonenumber = phone;
+        this.ID = id;
+        this.button1 = button1;
+        this.button2 = button2;
+    }
+
+    public doctors_model(String name, String email, String password, String specality, int fees, int phonenumber, int ID, String button1, String button2) {
+
+    }
 
     public String getButton1() {
         return button1;
@@ -24,19 +37,6 @@ public class doctors_model
         this.button2 = button2;
     }
 
-    public doctors_model(int id, String name, String email, String speciality, int fees, int phone, String button1, String button2)
-    {
-        this.name = name;
-        this.email = email;
-
-        this.Specality = speciality;
-        this.fees = fees;
-        this.phonenumber = phone;
-        this.ID = id;
-        this.button1 =button1;
-        this.button2 = button2;
-    }
-
     public int getID() {
         return ID;
     }
@@ -49,23 +49,15 @@ public class doctors_model
         return name;
     }
 
-    public doctors_model(String name, String email, String password, String specality, int fees, int phonenumber, int ID,  String button1, String button2)
-    {
-
-    }
-
-    public void setName(String name)
-    {
+    public void setName(String name) {
         this.name = name;
     }
 
-    public String getEmail()
-    {
+    public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email)
-    {
+    public void setEmail(String email) {
         this.email = email;
     }
 
@@ -100,7 +92,6 @@ public class doctors_model
     public void setPhonenumber(int phonenumber) {
         this.phonenumber = phonenumber;
     }
-
 
 
 }

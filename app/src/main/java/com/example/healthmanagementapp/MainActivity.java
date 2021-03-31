@@ -1,37 +1,31 @@
 package com.example.healthmanagementapp;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
-    RadioButton radAdmin, radPatient,radDoctor,radCashier;
-    EditText username,pass;
+    public static final String MyPREFERENCES = "MyPrefs";
+    RadioButton radAdmin, radPatient, radDoctor, radCashier;
+    EditText username, pass;
     Button btnULogin, btnSignUp, btnALogin;
     TextView register, resetPass;
     LinearLayout layoutAdmin, layoutUser;
     DatabaseHelper databaseHelper;
-    public static final String MyPREFERENCES = "MyPrefs" ;
     int FLAG = 0;
     SharedPreferences preferences;
 
@@ -63,16 +57,16 @@ public class MainActivity extends AppCompatActivity {
 
         layoutAdmin.setVisibility(View.GONE);
         layoutUser.setVisibility(View.GONE);
-// when patient wants to register
+
+        // when patient wants to register
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(radPatient.isChecked()) {
+                if (radPatient.isChecked()) {
                     Intent intent = new Intent(MainActivity.this, RegisterActivity.class);
                     intent.putExtra("layoutToShow", 3);
                     startActivity(intent);
-                }
-                else{
+                } else {
                     Toast.makeText(MainActivity.this, "Only patients can register", Toast.LENGTH_SHORT).show();
                 }
 
@@ -83,10 +77,13 @@ public class MainActivity extends AppCompatActivity {
         resetPass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this,ResetPasswordActivity.class);
+                Intent intent = new Intent(MainActivity.this, ResetPasswordActivity.class);
                 startActivity(intent);
             }
         });
+        ////////////////////////////////////////////////
+        // to login as patient doctor or cashier
+        ///////////////////////////////////////////////
 
         btnULogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,7 +92,8 @@ public class MainActivity extends AppCompatActivity {
                     boolean result = databaseHelper.getPatient(username.getText().toString(), pass.getText().toString());
                     FLAG = 1;
                     String patId = "";
-                    if(result){
+                    String patEmail = "";
+                    if (result) {
                         try (Cursor c = databaseHelper.getPatientId(username.getText().toString(), pass.getText().toString())) {
                             if (c.getCount() > 0) {
                                 while (c.moveToNext()) {
@@ -103,68 +101,76 @@ public class MainActivity extends AppCompatActivity {
                                     Log.i("Name ", c.getString(1));
                                     Log.i("MSP ", c.getString(11));
                                     patId = c.getString(0);
+                                    patEmail = c.getString(2);
                                     SharedPreferences.Editor editor = preferences.edit();
                                     editor.putString("user_id", c.getString(0));
                                     editor.putString("msp", c.getString(11));
                                     editor.apply();
                                 }
-                                Toast.makeText(MainActivity.this, String.valueOf("Successfully Logged In"), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(MainActivity.this, "Successfully Logged In", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(MainActivity.this, PatientHomeActivity.class);
                                 intent.putExtra("patientId", patId);
                                 intent.putExtra("Flag", FLAG);
+                                intent.putExtra("patEmail", patEmail);
                                 startActivity(intent);
                             }
                         }
                     }
                 } else if (radDoctor.isChecked()) {
                     boolean result = databaseHelper.getDoctor(username.getText().toString(), pass.getText().toString());
-
+                    String docEmail = "";
                     FLAG = 1;
-                    if(result){
+                    if (result) {
                         try (Cursor c = databaseHelper.getDoctorId(username.getText().toString(), pass.getText().toString())) {
                             if (c.getCount() > 0) {
                                 while (c.moveToNext()) {
                                     Log.i("ID ", c.getString(0));
                                     Log.i("Name ", c.getString(1));
+                                    docEmail = c.getString(2);
                                     SharedPreferences.Editor editor = preferences.edit();
                                     editor.putString("doctor_id", c.getString(0));
                                     editor.apply();
                                 }
 
-                                Toast.makeText(MainActivity.this, String.valueOf("Successfully Logged In"), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(MainActivity.this, "Successfully Logged In", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(MainActivity.this, DoctorHomeActivity.class);
+                                intent.putExtra("doctorEmail", docEmail);
                                 startActivity(intent);
                             }
                         }
                     }
                 } else if (radCashier.isChecked()) {
                     boolean result = databaseHelper.getCashier(username.getText().toString(), pass.getText().toString());
-                    Toast.makeText(MainActivity.this, String.valueOf("Successfully Logged In"), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Successfully Logged In", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(MainActivity.this, CashierHomeActivity.class);
                     startActivity(intent);
                 }
             }
         });
 
+        /////////////////////////////////////////////
+        // different layout switch
+        /////////////////////////////////////////////////
         radUsers.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if(radAdmin.isChecked()){
+                if (radAdmin.isChecked()) {
                     layoutAdmin.setVisibility(View.VISIBLE);
                     layoutUser.setVisibility(View.GONE);
 
-                }
-                else if(radPatient.isChecked() || radDoctor.isChecked() || radCashier.isChecked()){
+                } else if (radPatient.isChecked() || radDoctor.isChecked() || radCashier.isChecked()) {
                     layoutUser.setVisibility(View.VISIBLE);
                     layoutAdmin.setVisibility(View.GONE);
                 }
             }
         });
-
+        ///////////////////////////////////////////////////////////////////////////////////////
+        // admin signup and login
+        ////////////////////////////////////////////////////////////////////////////////////////
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(radAdmin.isChecked()){
+                if (radAdmin.isChecked()) {
                     databaseHelper.addAdmin(username.getText().toString(), pass.getText().toString());
                 }
             }
@@ -173,10 +179,10 @@ public class MainActivity extends AppCompatActivity {
         btnALogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(radAdmin.isChecked()){
+                if (radAdmin.isChecked()) {
                     boolean result = databaseHelper.getAdmin(username.getText().toString(), pass.getText().toString());
-                    Toast.makeText(MainActivity.this, String.valueOf("Successfully Logged In"), Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(MainActivity.this,AdminActivity.class);
+                    Toast.makeText(MainActivity.this, "Successfully Logged In", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(MainActivity.this, AdminActivity.class);
                     startActivity(intent);
                 }
             }

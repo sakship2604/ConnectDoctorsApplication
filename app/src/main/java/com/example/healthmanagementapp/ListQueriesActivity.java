@@ -6,11 +6,13 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
@@ -40,6 +42,10 @@ public class ListQueriesActivity extends AppCompatActivity {
         functionView();
     }
 
+    ///////////////////////////////////
+    // to view queries for doctor
+    /////////////////////////////////////
+
     public void functionView() {
         Cursor c;
         if (flag_doctor == 1)
@@ -67,12 +73,15 @@ public class ListQueriesActivity extends AppCompatActivity {
                 str.append("\n");
             }
         }
-        String[] from = {"textpateintid","txtQuery", "txtSolution"};        //Why need theses arrays?
+        String[] from = {"textpateintid", "txtQuery", "txtSolution"};
         int[] to = {R.id.textpateintid, R.id.txtQuery, R.id.txtSolution};
+
         SimpleAdapter adapter = new SimpleAdapter
                 (getBaseContext(), aList, R.layout.listview_layout, from, to);
         ListView listView = findViewById(R.id.listView);
         listView.setAdapter(adapter);
+
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -85,5 +94,18 @@ public class ListQueriesActivity extends AppCompatActivity {
             }
         });
         c.close();
+    }
+    /////////////////////////////////////////
+    // to back button in action bar
+    ////////////////////////////////////////
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId())
+        {
+            case android.R.id.home:
+                this.finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

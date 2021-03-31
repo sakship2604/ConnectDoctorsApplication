@@ -1,24 +1,16 @@
 package com.example.healthmanagementapp;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.app.DatePickerDialog;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Toast;
 
-import org.w3c.dom.Text;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
 
 public class Doctors_List extends AppCompatActivity {
     DatabaseHelper databaseHelper;
@@ -27,16 +19,16 @@ public class Doctors_List extends AppCompatActivity {
     DoctorsListAdapter doctorsListAdapter;
     RegisterActivity ra = new RegisterActivity();
     String patId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_doctors__list);
         l1 = findViewById(R.id.listView);
         EditText name = ra.docName;
-        //EditText email = ra.docEmail;
-        //EditText docphn = ra.docPhone;
+
         EditText spcl = ra.docSpl;
-        //EditText  fees = ra.docFees;
+
         patId = getIntent().getStringExtra("patientId");
         databaseHelper = new DatabaseHelper(this);
         arrayList = new ArrayList<>();
@@ -62,6 +54,18 @@ public class Doctors_List extends AppCompatActivity {
     public void insert(View v) {
 
     }
-
+    /////////////////////////////////////////
+    // to back button in action bar
+    ////////////////////////////////////////
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId())
+        {
+            case android.R.id.home:
+                this.finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
 }

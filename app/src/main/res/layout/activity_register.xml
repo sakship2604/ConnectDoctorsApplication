@@ -126,42 +126,34 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_gravity="center_horizontal"
-                    android:orientation="horizontal">
+                    android:layout_gravity="center_horizontal">
 
                     <RadioGroup
                         android:id="@+id/radioGroupGender"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent">
 
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:gravity="center_horizontal"
-                            android:orientation="horizontal">
+                        <RadioButton
+                            android:id="@+id/radioButtonFemale"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginEnd="5dp"
+                            android:layout_marginRight="5dp"
+                            android:text="FEMALE" />
 
-                            <RadioButton
-                                android:id="@+id/radioButtonFemale"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="5dp"
-                                android:layout_marginLeft="5dp"
-                                android:layout_marginEnd="5dp"
-                                android:layout_marginRight="5dp"
-                                android:text="FEMALE" />
-
-                            <RadioButton
-                                android:id="@+id/radioButtonMale"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="5dp"
-                                android:layout_marginLeft="5dp"
-                                android:layout_marginEnd="5dp"
-                                android:layout_marginRight="5dp"
-                                android:paddingLeft="5dp"
-                                android:paddingRight="5dp"
-                                android:text="MALE" />
-                        </LinearLayout>
+                        <RadioButton
+                            android:id="@+id/radioButtonMale"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginEnd="5dp"
+                            android:layout_marginRight="5dp"
+                            android:paddingLeft="5dp"
+                            android:paddingRight="5dp"
+                            android:text="MALE" />
 
                     </RadioGroup>
                 </LinearLayout>
@@ -190,27 +182,22 @@
 
                 <RadioGroup
                     android:id="@+id/radioGroupMSP"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center_horizontal|center_vertical">
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center_horizontal"
-                        android:orientation="horizontal">
+                    <RadioButton
+                        android:id="@+id/radioButtonMSP"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="WITH MSP" />
 
-                        <RadioButton
-                            android:id="@+id/radioButtonNOMSP"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="WITHOUT MSP" />
-
-                        <RadioButton
-                            android:id="@+id/radioButtonMSP"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="WITH MSP" />
-                    </LinearLayout>
+                    <RadioButton
+                        android:id="@+id/radioButtonNOMSP"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="WITHOUT MSP" />
 
                 </RadioGroup>
 
