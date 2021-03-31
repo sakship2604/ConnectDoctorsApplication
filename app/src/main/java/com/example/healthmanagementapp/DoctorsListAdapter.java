@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.MediaPlayer;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +33,7 @@ public class DoctorsListAdapter extends BaseAdapter implements DatePickerDialog.
     DatabaseHelper databaseHelper;
     String patId;
     int pos;
-    int doctor_id;
+    String doctor_id;
     public DoctorsListAdapter(Context context, ArrayList<doctors_model> arrayList, String patId)
     {
         this.patId = patId;
@@ -40,11 +41,11 @@ public class DoctorsListAdapter extends BaseAdapter implements DatePickerDialog.
         this.arrayList = arrayList;
     }
 
-    public int getDoctor_id() {
+    public String getDoctor_id() {
         return doctor_id;
     }
 
-    public void setDoctor_id(int doctor_id) {
+    public void setDoctor_id(String doctor_id) {
         this.doctor_id = doctor_id;
     }
 
@@ -90,7 +91,7 @@ public class DoctorsListAdapter extends BaseAdapter implements DatePickerDialog.
           //  t4.setText(String.valueOf(doctors_model.getFees()));
          //   t5.setText(String.valueOf(doctors_model.getPhonenumber()));
             b1.setText("Online Help");
-        this.setDoctor_id(doctors_model.getID());
+        this.setDoctor_id(String.valueOf(doctors_model.getID()));
             b1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -137,7 +138,7 @@ public class DoctorsListAdapter extends BaseAdapter implements DatePickerDialog.
                 .setPositiveButton("Add", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
+                        Log.d("VALUE", String.valueOf(doctor_id));
                         Intent intent = new Intent(context, ListDoctorAppointmentActivity.class);
                         intent.putExtra("doctor_id", doctor_id);
                         intent.putExtra("patient_id", patId);

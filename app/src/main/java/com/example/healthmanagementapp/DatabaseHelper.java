@@ -364,7 +364,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
-    public Cursor viewDataDoctorAppointment(int doctor_id) {
+    public Cursor viewDataDoctorAppointment(String doctor_id) {
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
         String query = "SELECT * FROM " + TABLE_APPOINTMENTS + " WHERE " + TACOL_2 + " = " + doctor_id;
         Cursor c = sqLiteDatabase.rawQuery(query, null);
@@ -388,6 +388,30 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         db.close();
         return result;
+    }
+
+    // to retrive from patient table
+    public Cursor getPatientId(String email, String password) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select * from " + TABLE_PATIENT + " where " + TPCOL_3 + " =  \"" + email + "\"" + " AND " + TPCOL_4 + " = \"" + password + "\"", null);
+        if (cursor.getCount() > 0) {
+            //result = true;
+        }
+        db.close();
+
+        return cursor;
+    }
+
+    // to retrive from doctor table
+    public Cursor getDoctorId(String email, String password) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        boolean result = false;
+        Cursor cursor = db.rawQuery("select * from " + TABLE_DOCTOR + " where " + TDCOL_3 + " =  \"" + email + "\"" + " AND " + TDCOL_4 + " = \"" + password + "\"", null);
+        if (cursor.getCount() > 0) {
+            result = true;
+        }
+        //db.close();
+        return cursor;
     }
 
     public Cursor getQuery(int query_id) {
@@ -515,6 +539,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public boolean resetPassword(String email, String password) {
         SQLiteDatabase db = this.getReadableDatabase();
         boolean result = false;
+        Log.d("Result", String.valueOf(result));
         Cursor cursor = db.rawQuery("select * from " + TABLE_PATIENT + " where " + TPCOL_3 + " =  \"" + email + "\"", null);
         if (cursor.getCount() > 0) {
             ContentValues values = new ContentValues();
@@ -523,7 +548,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             db.update(TABLE_PATIENT, values, TPCOL_3 + " =  \"" + email + "\"", null);
         }
         db.close();
+        Log.d("Result", String.valueOf(result));
         return result;
+
     }
 
     // delete records of patient

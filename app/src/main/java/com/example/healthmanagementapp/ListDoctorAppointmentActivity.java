@@ -21,54 +21,56 @@ import java.util.List;
 
 public class ListDoctorAppointmentActivity extends AppCompatActivity {
 
-
     public static final String MyPREFERENCES = "MyPrefs";
     DatabaseHelper databaseHelper;
     SharedPreferences preferences;
-    int doctor_id;
+    String doctor_id;
     String patient_id;
-    int flag_doctor;
+    int flag_doctor, visibilityFlag;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_doctor_appointment);
         databaseHelper = new DatabaseHelper(this);
-
+        Button book = findViewById(R.id.buttonBook);
         patient_id = "1";
-        doctor_id = getIntent().getIntExtra("doctor_id" ,0);
+        visibilityFlag = getIntent().getIntExtra("VisibilityFlag", 0);
+        if(visibilityFlag == 1){
+            book.setVisibility(View.GONE);
+        }
+        else {
+            book.setVisibility(View.VISIBLE);
+        }
+        doctor_id = getIntent().getStringExtra("doctor_id");
+        Log.d("FUNVI", String.valueOf(doctor_id));
         patient_id = getIntent().getStringExtra("patient_id");
         String bookDate = getIntent().getStringExtra("date");
         String timeSpot = getIntent().getStringExtra("time_spot");
-
-        Button book = findViewById(R.id.buttonBook);
+        functionView();
         book.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(databaseHelper.checkBookAppointment(doctor_id,bookDate, timeSpot)){
+                if(databaseHelper.checkBookAppointment(Integer.parseInt(doctor_id),bookDate, timeSpot)){
                     Toast.makeText(ListDoctorAppointmentActivity.this, "No time avalible for this time spot!", Toast.LENGTH_SHORT).show();
                 }else{
-                    databaseHelper.bookAppointment(doctor_id, Integer.parseInt(patient_id), bookDate, 1, 90, timeSpot);
+                    databaseHelper.bookAppointment(Integer.parseInt(doctor_id), Integer.parseInt(patient_id), bookDate, 1, 90, timeSpot);
                     Toast.makeText(ListDoctorAppointmentActivity.this, "Appointment Confirmed", Toast.LENGTH_SHORT).show();
                     functionView();
                 }
             }
         });
-        functionView();
     }
 
     public void functionView() {
         Cursor c;
         c = databaseHelper.viewDataDoctorAppointment(doctor_id);
-
-
         StringBuilder str = new StringBuilder();
-
         List<HashMap<String, String>> aList = new ArrayList<HashMap<String, String>>();
 
         if (c.getCount() > 0) {
             while (c.moveToNext()) {
-
                 HashMap<String, String> hashMap = new HashMap<String, String>();
                 hashMap.put("textpateintid", c.getString(0));
                 hashMap.put("txtQuery", c.getString(3));
@@ -77,7 +79,6 @@ public class ListDoctorAppointmentActivity extends AppCompatActivity {
 
                 Log.i("Appointment Date ", c.getString(3));
                 Log.i("Time spot ", c.getString(6));
-
 
                 str.append("\n");
             }
